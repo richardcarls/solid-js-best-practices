@@ -1,0 +1,17 @@
+{
+  "name": "solid-js-best-practices",
+  "version": "1.0.0",
+  "description": "Comprehensive best practices for Solid.js apps and components, designed for AI agents and LLMs. 32 rules organized into 7 categories, each ranked by priority.",
+  "keywords": [
+    "solid",
+    "solidjs",
+    "best-practices",
+    "claude-code",
+    "ai-agents",
+    "reactivity",
+    "signals",
+    "fine-grained-reactivity"
+  ],
+  "author": "Rick Carls <richard.j.carls@gmail.com>",
+  "license": "MIT"
+}
