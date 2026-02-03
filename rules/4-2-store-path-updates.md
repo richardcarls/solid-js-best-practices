@@ -1,6 +1,10 @@
-# Use Store Path Syntax
-
-**Priority:** HIGH
+---
+id: 4-2
+title: Use Store Path Syntax
+category: State Management
+priority: HIGH
+description: Use path syntax for granular, efficient store updates
+---
 
 ## Problem
 

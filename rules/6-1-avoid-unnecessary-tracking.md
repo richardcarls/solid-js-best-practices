@@ -1,6 +1,10 @@
-# Avoid Unnecessary Tracking
-
-**Priority:** HIGH
+---
+id: 6-1
+title: Avoid Unnecessary Tracking
+category: Performance
+priority: HIGH
+description: Don't access signals outside reactive contexts
+---
 
 ## Problem
 

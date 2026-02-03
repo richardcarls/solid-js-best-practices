@@ -1,6 +1,10 @@
-# Use splitProps
-
-**Priority:** HIGH
+---
+id: 2-3
+title: Use splitProps
+category: Components
+priority: HIGH
+description: Use splitProps to separate prop groups safely
+---
 
 ## Problem
 

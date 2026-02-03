@@ -1,6 +1,10 @@
-# Use Index for Primitives
-
-**Priority:** MEDIUM
+---
+id: 3-3
+title: Use Index for Primitives
+category: Control Flow
+priority: MEDIUM
+description: Use <Index> when array index matters more than identity
+---
 
 ## Problem
 

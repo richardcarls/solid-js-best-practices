@@ -1,6 +1,10 @@
-# Effects for Side Effects Only
-
-**Priority:** HIGH
+---
+id: 1-3
+title: Effects for Side Effects Only
+category: Reactivity
+priority: HIGH
+description: Use createEffect only for side effects, not derivations
+---
 
 ## Problem
 
