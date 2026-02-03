@@ -6,7 +6,7 @@ An [Agent Skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skil
 
 ## Features
 
-- **38 actionable rules** organized into 8 categories
+- **44 actionable rules** organized into 8 categories
 - **Priority levels** (CRITICAL, HIGH, MEDIUM, LOW) for focused code review
 - **Before/after code examples** showing incorrect vs correct patterns
 - **Detailed explanations** of why each practice matters
@@ -17,11 +17,11 @@ An [Agent Skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skil
 | Category | Rules | Focus Area |
 | -------- | ----- | ---------- |
 | [Reactivity](rules/1-1-use-signals-correctly.md) | 6 | Signals, effects, memos, batching |
-| [Components](rules/2-1-never-destructure-props.md) | 5 | Props, composition, children |
+| [Components](rules/2-1-never-destructure-props.md) | 8 | Props, composition, children, return-once, style |
 | [Control Flow](rules/3-1-use-show-for-conditionals.md) | 5 | Show, For, Switch, Index |
 | [State Management](rules/4-1-signals-vs-stores.md) | 5 | Stores, context, reconcile |
-| [Refs & DOM](rules/5-1-use-refs-correctly.md) | 4 | Refs, lifecycle, directives |
-| [Performance](rules/6-1-avoid-unnecessary-tracking.md) | 4 | Lazy loading, Suspense, optimization |
+| [Refs & DOM](rules/5-1-use-refs-correctly.md) | 6 | Refs, lifecycle, directives, events, security |
+| [Performance](rules/6-1-avoid-unnecessary-tracking.md) | 5 | Lazy loading, Suspense, optimization, classList |
 | [Accessibility](rules/7-1-semantic-html.md) | 3 | Semantic HTML, ARIA, keyboard |
 | [Testing](rules/8-1-configure-vitest-for-solid.md) | 6 | Vitest setup, render patterns, async, queries |
 
@@ -74,6 +74,7 @@ Contributions are welcome! There is also a Fork button 😁.
 
 - [Solid.js Documentation](https://docs.solidjs.com/)
 - [Solid.js Tutorial](https://www.solidjs.com/tutorial)
+- [eslint-plugin-solid](https://github.com/solidjs-community/eslint-plugin-solid) — Companion ESLint plugin for automated linting
 
 ## License
 

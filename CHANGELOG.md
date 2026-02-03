@@ -2,6 +2,31 @@
 
 All notable changes to this skill will be documented in this file.
 
+## [1.3.0] - ESLint plugin gap analysis
+
+### Added
+
+- 6 new rules based on [eslint-plugin-solid](https://github.com/solidjs-community/eslint-plugin-solid) gap analysis
+  - 2-6: Components Return Once (CRITICAL) - Never use early returns; use `<Show>`, `<Switch>` in JSX
+  - 2-7: No React-Specific Props (HIGH) - Use `class` not `className`, `for` not `htmlFor`
+  - 2-8: Style Prop Conventions (MEDIUM) - Object syntax with kebab-case and string values
+  - 5-5: Avoid innerHTML (HIGH) - Prevent XSS; use JSX or sanitize with DOMPurify
+  - 5-6: Event Handler Patterns (MEDIUM) - Delegated vs native events, `on:`/`oncapture:`, array handlers
+  - 6-5: Prefer classList (LOW) - Use `classList` prop for conditional class toggling
+- Tooling section in SKILL.md recommending `eslint-plugin-solid`
+- 5 new entries in Common Mistakes table
+- `eslint-plugin-solid` link in README.md Resources section
+
+### Changed
+
+- Rule count updated from 38 to 44
+- Components category expanded from 5 to 8 rules
+- Refs & DOM category expanded from 4 to 6 rules
+- Performance category expanded from 4 to 5 rules
+- Expanded React vs Solid comparison table with `className`/`class`, `htmlFor`/`for`, style syntax, and early returns
+- Updated Code Review task-based selection with new CRITICAL and HIGH rules
+- Updated Writing New Components task-based selection with 2-6
+
 ## [1.2.0] - Testing category
 
 ### Added
