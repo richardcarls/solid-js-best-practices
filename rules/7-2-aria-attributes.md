@@ -1,6 +1,10 @@
-# Use ARIA Attributes
-
-**Priority:** MEDIUM
+---
+id: 7-2
+title: Use ARIA Attributes
+category: Accessibility
+priority: MEDIUM
+description: Apply appropriate ARIA attributes for custom controls
+---
 
 ## Problem
 

@@ -1,6 +1,10 @@
-# Signals vs Stores
-
-**Priority:** HIGH
+---
+id: 4-1
+title: Signals vs Stores
+category: State Management
+priority: HIGH
+description: Use signals for primitives, stores for nested objects
+---
 
 ## Problem
 

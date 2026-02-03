@@ -1,6 +1,10 @@
-# Support Keyboard Navigation
-
-**Priority:** MEDIUM
+---
+id: 7-3
+title: Support Keyboard Navigation
+category: Accessibility
+priority: MEDIUM
+description: Ensure all interactive elements are keyboard accessible
+---
 
 ## Problem
 

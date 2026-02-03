@@ -1,6 +1,10 @@
-# Use Switch/Match
-
-**Priority:** MEDIUM
+---
+id: 3-4
+title: Use Switch/Match
+category: Control Flow
+priority: MEDIUM
+description: Use <Switch>/<Match> for multiple conditions
+---
 
 ## Problem
 

@@ -6,7 +6,7 @@ An [Agent Skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skil
 
 ## Features
 
-- **32 actionable rules** organized into 7 categories
+- **38 actionable rules** organized into 8 categories
 - **Priority levels** (CRITICAL, HIGH, MEDIUM, LOW) for focused code review
 - **Before/after code examples** showing incorrect vs correct patterns
 - **Detailed explanations** of why each practice matters
@@ -14,9 +14,13 @@ An [Agent Skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skil
 
 ### TODO
 
-- [ ] Testing - writing integration and unit tests, test libraries, examples
+- [x] Testing - writing integration and unit tests, test libraries, examples
 - [ ] [SolidStart](https://start.solidjs.com/) - maybe not fully in scope, but add a short reference table or something?
 - [ ] Libraries - list and summarize popular libraries, integration examples
+
+### Other best practices?
+- When to use Context vs. not (state mgmt. / perf)?
+- Busy states
 
 ## Categories
 
@@ -29,6 +33,7 @@ An [Agent Skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skil
 | [Refs & DOM](rules/5-1-use-refs-correctly.md) | 4 | Refs, lifecycle, directives |
 | [Performance](rules/6-1-avoid-unnecessary-tracking.md) | 4 | Lazy loading, Suspense, optimization |
 | [Accessibility](rules/7-1-semantic-html.md) | 3 | Semantic HTML, ARIA, keyboard |
+| [Testing](rules/8-1-configure-vitest-for-solid.md) | 6 | Vitest setup, render patterns, async, queries |
 
 ## Installation
 
@@ -61,12 +66,7 @@ Rules are categorized by impact:
 
 ### For AI Agents
 
-Start with [AGENTS.md](AGENTS.md) for task-based rule selection:
-
-- **Writing new components**: Load rules 1-1, 2-1, 2-2, 2-3, 3-1, 3-2, 5-3
-- **Code review**: Focus on CRITICAL rules (1-1, 2-1) and HIGH priority
-- **Performance optimization**: Load rules 1-2, 1-6, 4-2, 6-1, 6-2, 6-4
-- **Accessibility audit**: Load rules 7-1, 7-2, 7-3
+[SKILL.md](SKILL.md) contains the complete rule index, task-based rule selection, common mistakes table, and React-to-Solid comparison. See [AGENTS.md](AGENTS.md) for contributor guidance on the skill file structure.
 
 ## Example Prompts
 

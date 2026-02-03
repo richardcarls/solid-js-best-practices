@@ -1,6 +1,10 @@
-# Use mergeProps
-
-**Priority:** HIGH
+---
+id: 2-2
+title: Use mergeProps
+category: Components
+priority: HIGH
+description: Use mergeProps for default prop values
+---
 
 ## Problem
 

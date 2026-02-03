@@ -1,6 +1,10 @@
-# Use Memo for Derived Values
-
-**Priority:** HIGH
+---
+id: 1-2
+title: Use Memo for Derived Values
+category: Reactivity
+priority: HIGH
+description: Use createMemo for computed values, not createEffect
+---
 
 ## Problem
 

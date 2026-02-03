@@ -1,6 +1,10 @@
-# Access DOM in onMount
-
-**Priority:** HIGH
+---
+id: 5-2
+title: Access DOM in onMount
+category: Refs & DOM
+priority: HIGH
+description: Access DOM elements in onMount, not during render
+---
 
 ## Problem
 

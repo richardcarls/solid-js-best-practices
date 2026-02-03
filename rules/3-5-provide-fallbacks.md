@@ -1,6 +1,10 @@
-# Provide Fallbacks
-
-**Priority:** LOW
+---
+id: 3-5
+title: Provide Fallbacks
+category: Control Flow
+priority: LOW
+description: Always provide fallback props for loading states
+---
 
 ## Problem
 

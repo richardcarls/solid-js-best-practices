@@ -1,6 +1,10 @@
-# Use reconcile for Server Data
-
-**Priority:** MEDIUM
+---
+id: 4-4
+title: Use reconcile for Server Data
+category: State Management
+priority: MEDIUM
+description: Use reconcile when integrating server/external data
+---
 
 ## Problem
 

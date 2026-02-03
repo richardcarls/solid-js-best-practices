@@ -1,6 +1,10 @@
-# Avoid Setting Signals in Effects
-
-**Priority:** MEDIUM
+---
+id: 1-4
+title: Avoid Setting Signals in Effects
+category: Reactivity
+priority: MEDIUM
+description: Setting signals in effects can cause infinite loops
+---
 
 ## Problem
 
