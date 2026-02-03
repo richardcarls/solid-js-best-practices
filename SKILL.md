@@ -4,7 +4,7 @@ description: >
   Solid.js best practices for AI-assisted code generation, code review, refactoring,
   and debugging reactivity issues. Use when writing Solid.js components, auditing
   SolidJS code, migrating from React to Solid, or fixing signals and fine-grained
-  reactivity bugs. 38 rules across 8 categories (reactivity, components, control flow,
+  reactivity bugs. 44 rules across 8 categories (reactivity, components, control flow,
   state management, refs/DOM, performance, accessibility, testing) ranked by priority.
 allowed-tools:
   - Read
@@ -115,15 +115,18 @@ export default MyComponent;
 | [1-5](rules/1-5-use-untrack-when-needed.md) | Use Untrack When Needed | MEDIUM | Use `untrack()` to prevent unwanted reactive subscriptions |
 | [1-6](rules/1-6-batch-signal-updates.md) | Batch Signal Updates | LOW | Use `batch()` for multiple synchronous signal updates |
 
-### 2. Components (5 rules)
+### 2. Components (8 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
 | [2-1](rules/2-1-never-destructure-props.md) | Never Destructure Props | CRITICAL | Destructuring props breaks reactivity |
+| [2-6](rules/2-6-components-return-once.md) | Components Return Once | CRITICAL | Never use early returns — use `<Show>`, `<Switch>`, etc. in JSX |
 | [2-2](rules/2-2-use-merge-props.md) | Use mergeProps | HIGH | Use `mergeProps` for default prop values |
 | [2-3](rules/2-3-use-split-props.md) | Use splitProps | HIGH | Use `splitProps` to separate prop groups safely |
+| [2-7](rules/2-7-no-react-specific-props.md) | No React-Specific Props | HIGH | Use `class` not `className`, `for` not `htmlFor` |
 | [2-4](rules/2-4-use-children-helper.md) | Use children Helper | MEDIUM | Use `children()` helper for safe children access |
 | [2-5](rules/2-5-component-composition.md) | Prefer Composition | MEDIUM | Prefer composition and context over prop drilling |
+| [2-8](rules/2-8-style-prop-conventions.md) | Style Prop Conventions | MEDIUM | Use object syntax with kebab-case properties for `style` |
 
 ### 3. Control Flow (5 rules)
 
@@ -145,16 +148,18 @@ export default MyComponent;
 | [4-4](rules/4-4-use-reconcile-for-data.md) | Use reconcile for Server Data | MEDIUM | Use `reconcile` when integrating server/external data |
 | [4-5](rules/4-5-use-context-for-global.md) | Use Context for Global State | MEDIUM | Use Context API for cross-component shared state |
 
-### 5. Refs & DOM (4 rules)
+### 5. Refs & DOM (6 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
 | [5-1](rules/5-1-use-refs-correctly.md) | Use Refs Correctly | HIGH | Use callback refs for conditional elements |
 | [5-2](rules/5-2-access-dom-in-onmount.md) | Access DOM in onMount | HIGH | Access DOM elements in `onMount`, not during render |
 | [5-3](rules/5-3-cleanup-with-oncleanup.md) | Cleanup with onCleanup | HIGH | Always clean up subscriptions and timers |
+| [5-5](rules/5-5-avoid-innerhtml.md) | Avoid innerHTML | HIGH | Avoid `innerHTML` to prevent XSS — use JSX or `textContent` |
 | [5-4](rules/5-4-use-directives.md) | Use Directives | MEDIUM | Use `use:` directives for reusable element behaviors |
+| [5-6](rules/5-6-event-handler-patterns.md) | Event Handler Patterns | MEDIUM | Use `on:`/`oncapture:` namespaces and array handler syntax correctly |
 
-### 6. Performance (4 rules)
+### 6. Performance (5 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -162,6 +167,7 @@ export default MyComponent;
 | [6-2](rules/6-2-use-lazy-components.md) | Use Lazy Components | MEDIUM | Use `lazy()` for code splitting large components |
 | [6-3](rules/6-3-use-suspense.md) | Use Suspense | MEDIUM | Use `<Suspense>` for async loading boundaries |
 | [6-4](rules/6-4-optimize-store-access.md) | Optimize Store Access | LOW | Access only the store properties you need |
+| [6-5](rules/6-5-prefer-classlist.md) | Prefer classList | LOW | Use `classList` prop for conditional class toggling |
 
 ### 7. Accessibility (3 rules)
 
@@ -192,6 +198,7 @@ Load these rules when creating new Solid.js components:
 | ---- | --- |
 | [1-1](rules/1-1-use-signals-correctly.md) | Ensure signals are called as functions |
 | [2-1](rules/2-1-never-destructure-props.md) | Prevent reactivity breakage |
+| [2-6](rules/2-6-components-return-once.md) | No early returns — use control flow in JSX |
 | [2-2](rules/2-2-use-merge-props.md) | Handle default props correctly |
 | [2-3](rules/2-3-use-split-props.md) | Separate local and forwarded props |
 | [3-1](rules/3-1-use-show-for-conditionals.md) | Proper conditional rendering |
@@ -204,8 +211,8 @@ Focus on these rules during code review:
 
 | Priority | Rules |
 | -------- | ----- |
-| CRITICAL | [1-1](rules/1-1-use-signals-correctly.md), [2-1](rules/2-1-never-destructure-props.md) |
-| HIGH | [1-2](rules/1-2-use-memo-for-derived.md), [1-3](rules/1-3-effects-for-side-effects.md), [5-2](rules/5-2-access-dom-in-onmount.md), [5-3](rules/5-3-cleanup-with-oncleanup.md) |
+| CRITICAL | [1-1](rules/1-1-use-signals-correctly.md), [2-1](rules/2-1-never-destructure-props.md), [2-6](rules/2-6-components-return-once.md) |
+| HIGH | [1-2](rules/1-2-use-memo-for-derived.md), [1-3](rules/1-3-effects-for-side-effects.md), [2-7](rules/2-7-no-react-specific-props.md), [5-2](rules/5-2-access-dom-in-onmount.md), [5-3](rules/5-3-cleanup-with-oncleanup.md), [5-5](rules/5-5-avoid-innerhtml.md) |
 
 ### Performance Optimization
 
@@ -267,7 +274,12 @@ Load these rules when writing or reviewing tests:
 | Setting signals in effects | [1-4](rules/1-4-avoid-signal-in-effect.md) | Use `createMemo` or external triggers |
 | Accessing DOM during render | [5-2](rules/5-2-access-dom-in-onmount.md) | Use `onMount` |
 | Forgetting cleanup | [5-3](rules/5-3-cleanup-with-oncleanup.md) | Use `onCleanup` |
+| Early returns in components | [2-6](rules/2-6-components-return-once.md) | Use `<Show>`, `<Switch>` in JSX instead |
+| Using `className` or `htmlFor` | [2-7](rules/2-7-no-react-specific-props.md) | Use `class` and `for` (standard HTML) |
+| `style="color: red"` or camelCase styles | [2-8](rules/2-8-style-prop-conventions.md) | Use `style={{ color: "red" }}` with kebab-case |
+| Using `innerHTML` with user data | [5-5](rules/5-5-avoid-innerhtml.md) | Use JSX or sanitize with DOMPurify |
 | Spreading whole store | [6-4](rules/6-4-optimize-store-access.md) | Access specific properties |
+| String concatenation for class toggling | [6-5](rules/6-5-prefer-classlist.md) | Use `classList={{ active: isActive() }}` |
 | `render(<Comp />)` without arrow | [8-2](rules/8-2-wrap-render-in-arrow.md) | Use `render(() => <Comp />)` |
 | Effects in tests without owner | [8-3](rules/8-3-test-primitives-in-root.md) | Wrap in `createRoot` or use `renderHook` |
 | `getBy` for async content | [8-4](rules/8-4-handle-async-in-tests.md) | Use `findBy` queries |
@@ -281,10 +293,14 @@ When helping users familiar with React, keep these differences in mind:
 | Components re-render on state change | Components run once, signals update DOM directly |
 | `useState` returns `[value, setter]` | `createSignal` returns `[getter, setter]` |
 | `useMemo` with deps array | `createMemo` with automatic tracking |
-| `useEffect` with deps array | `createEffect` with automatic tracking |
+| `useEffect(fn, [deps])` | `createEffect(fn)` (no deps array — automatic tracking) |
 | Destructure props freely | Never destructure props |
+| Early returns (`if (!x) return null`) | `<Show>` / `<Switch>` in JSX (components return once) |
 | `{condition && <Component />}` | `<Show when={condition}><Component /></Show>` |
 | `{items.map(item => ...)}` | `<For each={items}>{item => ...}</For>` |
+| `className` | `class` |
+| `htmlFor` | `for` |
+| `style={{ fontSize: 14 }}` | `style={{ "font-size": "14px" }}` |
 | Context requires `useContext` hook | Context works with `useContext` or direct access |
 
 ## Priority Levels
@@ -319,6 +335,10 @@ For nested objects and arrays, Solid provides stores with:
 - Fine-grained updates via path syntax
 - Automatic proxy wrapping for nested reactivity
 - Utilities like `produce` and `reconcile` for common patterns
+
+## Tooling
+
+For automated linting alongside these best practices, use [eslint-plugin-solid](https://github.com/solidjs-community/eslint-plugin-solid). The plugin catches many of the same issues this skill covers (destructured props, early returns, React-specific props, innerHTML usage, style prop format, etc.) and provides auto-fixable rules.
 
 ## Resources
 
