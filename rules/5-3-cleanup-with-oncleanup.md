@@ -1,6 +1,10 @@
-# Cleanup with onCleanup
-
-**Priority:** HIGH
+---
+id: 5-3
+title: Cleanup with onCleanup
+category: Refs & DOM
+priority: HIGH
+description: Always clean up subscriptions and timers
+---
 
 ## Problem
 

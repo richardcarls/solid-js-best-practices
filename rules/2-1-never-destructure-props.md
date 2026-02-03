@@ -1,6 +1,10 @@
-# Never Destructure Props
-
-**Priority:** CRITICAL
+---
+id: 2-1
+title: Never Destructure Props
+category: Components
+priority: CRITICAL
+description: Destructuring props breaks reactivity
+---
 
 ## Problem
 

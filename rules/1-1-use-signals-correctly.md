@@ -1,6 +1,10 @@
-# Use Signals Correctly
-
-**Priority:** CRITICAL
+---
+id: 1-1
+title: Use Signals Correctly
+category: Reactivity
+priority: CRITICAL
+description: Always call signals as functions count() not count
+---
 
 ## Problem
 

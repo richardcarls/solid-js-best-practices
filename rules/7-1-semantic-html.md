@@ -1,6 +1,10 @@
-# Use Semantic HTML
-
-**Priority:** HIGH
+---
+id: 7-1
+title: Use Semantic HTML
+category: Accessibility
+priority: HIGH
+description: Use appropriate semantic HTML elements
+---
 
 ## Problem
 

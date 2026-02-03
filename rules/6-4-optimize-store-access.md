@@ -1,6 +1,10 @@
-# Optimize Store Access
-
-**Priority:** LOW
+---
+id: 6-4
+title: Optimize Store Access
+category: Performance
+priority: LOW
+description: Access only the store properties you need
+---
 
 ## Problem
 

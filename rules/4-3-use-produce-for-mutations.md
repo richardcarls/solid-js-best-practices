@@ -1,6 +1,10 @@
-# Use produce for Mutations
-
-**Priority:** MEDIUM
+---
+id: 4-3
+title: Use produce for Mutations
+category: State Management
+priority: MEDIUM
+description: Use produce for complex mutable-style store updates
+---
 
 ## Problem
 

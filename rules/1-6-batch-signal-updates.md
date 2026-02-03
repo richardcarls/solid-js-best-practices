@@ -1,6 +1,10 @@
-# Batch Signal Updates
-
-**Priority:** LOW
+---
+id: 1-6
+title: Batch Signal Updates
+category: Reactivity
+priority: LOW
+description: Use batch() for multiple synchronous signal updates
+---
 
 ## Problem
 

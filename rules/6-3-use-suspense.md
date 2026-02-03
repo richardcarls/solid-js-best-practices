@@ -1,6 +1,10 @@
-# Use Suspense
-
-**Priority:** MEDIUM
+---
+id: 6-3
+title: Use Suspense
+category: Performance
+priority: MEDIUM
+description: Use <Suspense> for async loading boundaries
+---
 
 ## Problem
 

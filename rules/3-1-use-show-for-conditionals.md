@@ -1,6 +1,10 @@
-# Use Show for Conditionals
-
-**Priority:** HIGH
+---
+id: 3-1
+title: Use Show for Conditionals
+category: Control Flow
+priority: HIGH
+description: Use <Show> instead of ternary operators
+---
 
 ## Problem
 

@@ -1,6 +1,10 @@
-# Use Untrack When Needed
-
-**Priority:** MEDIUM
+---
+id: 1-5
+title: Use Untrack When Needed
+category: Reactivity
+priority: MEDIUM
+description: Use untrack() to prevent unwanted reactive subscriptions
+---
 
 ## Problem
 

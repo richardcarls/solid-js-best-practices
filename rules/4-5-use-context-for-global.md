@@ -1,6 +1,10 @@
-# Use Context for Global State
-
-**Priority:** MEDIUM
+---
+id: 4-5
+title: Use Context for Global State
+category: State Management
+priority: MEDIUM
+description: Use Context API for cross-component shared state
+---
 
 ## Problem
 

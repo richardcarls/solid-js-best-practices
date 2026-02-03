@@ -1,6 +1,10 @@
-# Use For for Lists
-
-**Priority:** HIGH
+---
+id: 3-2
+title: Use For for Lists
+category: Control Flow
+priority: HIGH
+description: Use <For> for referentially-keyed list rendering
+---
 
 ## Problem
 

@@ -1,6 +1,10 @@
-# Use Lazy Components
-
-**Priority:** MEDIUM
+---
+id: 6-2
+title: Use Lazy Components
+category: Performance
+priority: MEDIUM
+description: Use lazy() for code splitting large components
+---
 
 ## Problem
 

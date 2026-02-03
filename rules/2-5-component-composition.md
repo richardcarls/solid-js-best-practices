@@ -1,6 +1,10 @@
-# Prefer Composition
-
-**Priority:** MEDIUM
+---
+id: 2-5
+title: Prefer Composition
+category: Components
+priority: MEDIUM
+description: Prefer composition and context over prop drilling
+---
 
 ## Problem
 

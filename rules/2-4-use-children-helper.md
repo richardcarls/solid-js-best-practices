@@ -1,6 +1,10 @@
-# Use children Helper
-
-**Priority:** MEDIUM
+---
+id: 2-4
+title: Use children Helper
+category: Components
+priority: MEDIUM
+description: Use children() helper for safe children access
+---
 
 ## Problem
 
