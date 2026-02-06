@@ -1,15 +1,15 @@
 ---
 name: solid-js-best-practices
-description: >
-  Solid.js best practices for AI-assisted code generation, code review, refactoring,
-  and debugging reactivity issues. Use when writing Solid.js components, auditing
-  SolidJS code, migrating from React to Solid, or fixing signals and fine-grained
-  reactivity bugs. 44 rules across 8 categories (reactivity, components, control flow,
-  state management, refs/DOM, performance, accessibility, testing) ranked by priority.
+description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when writing Solid.js components, auditing SolidJS code, migrating from React to Solid, or fixing signals and fine-grained reactivity bugs. 44 rules across 8 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing) ranked by priority."
+license: MIT
 allowed-tools:
   - Read
   - Grep
   - Glob
+metadata:
+  topics:
+    - claude-skills
+    - claude-code-skill
 ---
 
 # Solid.js Best Practices
