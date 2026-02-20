@@ -1,6 +1,6 @@
 ---
 name: solid-js-best-practices
-description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when writing Solid.js components, auditing SolidJS code, migrating from React to Solid, or fixing signals and fine-grained reactivity bugs. 44 rules across 8 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing) ranked by priority."
+description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when writing Solid.js components, auditing SolidJS code, migrating from React to Solid, or fixing signals and fine-grained reactivity bugs. 47 rules across 8 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing) ranked by priority."
 license: MIT
 allowed-tools:
   - Read
@@ -104,23 +104,25 @@ export default MyComponent;
 
 ## Rules by Category
 
-### 1. Reactivity (6 rules)
+### 1. Reactivity (7 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
 | [1-1](rules/1-1-use-signals-correctly.md) | Use Signals Correctly | CRITICAL | Always call signals as functions `count()` not `count` |
 | [1-2](rules/1-2-use-memo-for-derived.md) | Use Memo for Derived Values | HIGH | Use `createMemo` for computed values, not `createEffect` |
 | [1-3](rules/1-3-effects-for-side-effects.md) | Effects for Side Effects Only | HIGH | Use `createEffect` only for side effects, not derivations |
+| [1-7](rules/1-7-no-primitives-in-reactive-contexts.md) | No Primitives in Reactive Contexts | HIGH | Don't call hooks or create reactive primitives inside effects or memos |
 | [1-4](rules/1-4-avoid-signal-in-effect.md) | Avoid Setting Signals in Effects | MEDIUM | Setting signals in effects can cause infinite loops |
 | [1-5](rules/1-5-use-untrack-when-needed.md) | Use Untrack When Needed | MEDIUM | Use `untrack()` to prevent unwanted reactive subscriptions |
 | [1-6](rules/1-6-batch-signal-updates.md) | Batch Signal Updates | LOW | Use `batch()` for multiple synchronous signal updates |
 
-### 2. Components (8 rules)
+### 2. Components (9 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
 | [2-1](rules/2-1-never-destructure-props.md) | Never Destructure Props | CRITICAL | Destructuring props breaks reactivity |
 | [2-6](rules/2-6-components-return-once.md) | Components Return Once | CRITICAL | Never use early returns — use `<Show>`, `<Switch>`, etc. in JSX |
+| [2-9](rules/2-9-never-call-components-as-functions.md) | Never Call Components as Functions | CRITICAL | Always use JSX or `createComponent()` — direct calls leak reactive scope |
 | [2-2](rules/2-2-use-merge-props.md) | Use mergeProps | HIGH | Use `mergeProps` for default prop values |
 | [2-3](rules/2-3-use-split-props.md) | Use splitProps | HIGH | Use `splitProps` to separate prop groups safely |
 | [2-7](rules/2-7-no-react-specific-props.md) | No React-Specific Props | HIGH | Use `class` not `className`, `for` not `htmlFor` |
@@ -128,7 +130,7 @@ export default MyComponent;
 | [2-5](rules/2-5-component-composition.md) | Prefer Composition | MEDIUM | Prefer composition and context over prop drilling |
 | [2-8](rules/2-8-style-prop-conventions.md) | Style Prop Conventions | MEDIUM | Use object syntax with kebab-case properties for `style` |
 
-### 3. Control Flow (5 rules)
+### 3. Control Flow (6 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -136,6 +138,7 @@ export default MyComponent;
 | [3-2](rules/3-2-use-for-for-lists.md) | Use For for Lists | HIGH | Use `<For>` for referentially-keyed list rendering |
 | [3-3](rules/3-3-use-index-for-primitives.md) | Use Index for Primitives | MEDIUM | Use `<Index>` when array index matters more than identity |
 | [3-4](rules/3-4-use-switch-match.md) | Use Switch/Match | MEDIUM | Use `<Switch>`/`<Match>` for multiple conditions |
+| [3-6](rules/3-6-stable-component-mount.md) | Stable Component Mount | MEDIUM | Avoid rendering the same component in multiple Switch/Show branches |
 | [3-5](rules/3-5-provide-fallbacks.md) | Provide Fallbacks | LOW | Always provide `fallback` props for loading states |
 
 ### 4. State Management (5 rules)
@@ -199,6 +202,7 @@ Load these rules when creating new Solid.js components:
 | [1-1](rules/1-1-use-signals-correctly.md) | Ensure signals are called as functions |
 | [2-1](rules/2-1-never-destructure-props.md) | Prevent reactivity breakage |
 | [2-6](rules/2-6-components-return-once.md) | No early returns — use control flow in JSX |
+| [2-9](rules/2-9-never-call-components-as-functions.md) | Never call components as plain functions |
 | [2-2](rules/2-2-use-merge-props.md) | Handle default props correctly |
 | [2-3](rules/2-3-use-split-props.md) | Separate local and forwarded props |
 | [3-1](rules/3-1-use-show-for-conditionals.md) | Proper conditional rendering |
@@ -211,8 +215,8 @@ Focus on these rules during code review:
 
 | Priority | Rules |
 | -------- | ----- |
-| CRITICAL | [1-1](rules/1-1-use-signals-correctly.md), [2-1](rules/2-1-never-destructure-props.md), [2-6](rules/2-6-components-return-once.md) |
-| HIGH | [1-2](rules/1-2-use-memo-for-derived.md), [1-3](rules/1-3-effects-for-side-effects.md), [2-7](rules/2-7-no-react-specific-props.md), [5-2](rules/5-2-access-dom-in-onmount.md), [5-3](rules/5-3-cleanup-with-oncleanup.md), [5-5](rules/5-5-avoid-innerhtml.md) |
+| CRITICAL | [1-1](rules/1-1-use-signals-correctly.md), [2-1](rules/2-1-never-destructure-props.md), [2-6](rules/2-6-components-return-once.md), [2-9](rules/2-9-never-call-components-as-functions.md) |
+| HIGH | [1-2](rules/1-2-use-memo-for-derived.md), [1-3](rules/1-3-effects-for-side-effects.md), [1-7](rules/1-7-no-primitives-in-reactive-contexts.md), [2-7](rules/2-7-no-react-specific-props.md), [5-2](rules/5-2-access-dom-in-onmount.md), [5-3](rules/5-3-cleanup-with-oncleanup.md), [5-5](rules/5-5-avoid-innerhtml.md) |
 
 ### Performance Optimization
 
@@ -283,6 +287,9 @@ Load these rules when writing or reviewing tests:
 | `render(<Comp />)` without arrow | [8-2](rules/8-2-wrap-render-in-arrow.md) | Use `render(() => <Comp />)` |
 | Effects in tests without owner | [8-3](rules/8-3-test-primitives-in-root.md) | Wrap in `createRoot` or use `renderHook` |
 | `getBy` for async content | [8-4](rules/8-4-handle-async-in-tests.md) | Use `findBy` queries |
+| `MyComp(props)` instead of `<MyComp />` | [2-9](rules/2-9-never-call-components-as-functions.md) | Always use JSX syntax or `createComponent()` |
+| Calling `useMatch()`/`useQuery()` inside `createEffect`/`createComputed` | [1-7](rules/1-7-no-primitives-in-reactive-contexts.md) | Call hooks once at component init, not inside reactive computations |
+| Same component in Switch fallback and Match branch | [3-6](rules/3-6-stable-component-mount.md) | Keep component in one stable position; use CSS for layout changes |
 
 ## Solid.js vs React Mental Model
 
