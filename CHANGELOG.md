@@ -2,6 +2,25 @@
 
 All notable changes to this skill will be documented in this file.
 
+## [1.4.0] - Reactive scope and mount stability rules
+
+### Added
+
+- 3 new rules derived from real-world reactive scope bugs
+  - 2-9: Never Call Components as Functions (CRITICAL) - JSX/`createComponent()` only; direct calls leak reactive scope
+  - 1-7: No Primitives in Reactive Contexts (HIGH) - Don't call hooks or create reactive primitives inside effects/memos
+  - 3-6: Stable Component Mount (MEDIUM) - Avoid same component in multiple Switch/Show branches; use CSS for layout changes
+- 3 new entries in Common Mistakes table
+
+### Changed
+
+- Rule count updated from 44 to 47
+- Components category expanded from 8 to 9 rules
+- Reactivity category expanded from 6 to 7 rules
+- Control Flow category expanded from 5 to 6 rules
+- Updated Code Review task-based selection with new CRITICAL (2-9) and HIGH (1-7) rules
+- Updated Writing New Components task-based selection with 2-9
+
 ## [1.3.0] - ESLint plugin gap analysis
 
 ### Added
