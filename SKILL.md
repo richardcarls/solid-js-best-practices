@@ -1,6 +1,6 @@
 ---
 name: solid-js-best-practices
-description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when writing Solid.js components, auditing SolidJS code, migrating from React to Solid, or fixing signals and fine-grained reactivity bugs. 47 rules across 8 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing) ranked by priority."
+description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when writing Solid.js components, auditing SolidJS code, migrating from React to Solid, or fixing signals and fine-grained reactivity bugs. 52 rules across 8 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing) ranked by priority."
 license: MIT
 allowed-tools:
   - Read
@@ -180,7 +180,7 @@ export default MyComponent;
 | [7-2](rules/7-2-aria-attributes.md) | Use ARIA Attributes | MEDIUM | Apply appropriate ARIA attributes for custom controls |
 | [7-3](rules/7-3-keyboard-navigation.md) | Support Keyboard Navigation | MEDIUM | Ensure all interactive elements are keyboard accessible |
 
-### 8. Testing (6 rules)
+### 8. Testing (11 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -190,6 +190,11 @@ export default MyComponent;
 | [8-4](rules/8-4-handle-async-in-tests.md) | Handle Async in Tests | HIGH | Use `findBy` queries and proper timer config for async behavior |
 | [8-5](rules/8-5-use-accessible-queries.md) | Use Accessible Queries | MEDIUM | Prefer role and label queries over test IDs |
 | [8-6](rules/8-6-separate-logic-from-ui-tests.md) | Separate Logic from UI Tests | MEDIUM | Test primitives/hooks independently from component rendering |
+| [8-7](rules/8-7-browser-mode-for-web-components-and-pwa-apis.md) | Browser Mode for Web Components and PWA APIs | HIGH | Use Vitest browser mode (real Chromium) for custom elements, shadow DOM, and browser-native APIs |
+| [8-8](rules/8-8-testing-headless-ui-libraries.md) | Testing Headless UI Libraries with Non-Standard ARIA | MEDIUM | Headless UI libraries use non-obvious ARIA structures and portals — inspect the actual tree before querying |
+| [8-9](rules/8-9-browser-native-api-test-isolation.md) | Browser-Native API Test Isolation | HIGH | Clear IndexedDB and localStorage between tests — close connection before deleteDatabase |
+| [8-10](rules/8-10-router-integration-testing.md) | Router Integration Testing | HIGH | Use MemoryRouter `root` prop to provide router context to layout providers |
+| [8-11](rules/8-11-tanstack-query-test-setup.md) | TanStack Query Test Setup | HIGH | Create a fresh QueryClient per test with retry and caching disabled |
 
 ## Task-Based Rule Selection
 
@@ -265,6 +270,11 @@ Load these rules when writing or reviewing tests:
 | [8-4](rules/8-4-handle-async-in-tests.md) | Async queries and timers |
 | [8-5](rules/8-5-use-accessible-queries.md) | Accessible query selection |
 | [8-6](rules/8-6-separate-logic-from-ui-tests.md) | Test architecture |
+| [8-7](rules/8-7-browser-mode-for-web-components-and-pwa-apis.md) | When to use browser mode vs jsdom |
+| [8-8](rules/8-8-testing-headless-ui-libraries.md) | Portals and non-standard ARIA structures |
+| [8-9](rules/8-9-browser-native-api-test-isolation.md) | IDB and localStorage cleanup patterns |
+| [8-10](rules/8-10-router-integration-testing.md) | MemoryRouter setup for integration tests |
+| [8-11](rules/8-11-tanstack-query-test-setup.md) | QueryClient configuration for tests |
 
 ## Common Mistakes to Catch
 
@@ -290,6 +300,12 @@ Load these rules when writing or reviewing tests:
 | `MyComp(props)` instead of `<MyComp />` | [2-9](rules/2-9-never-call-components-as-functions.md) | Always use JSX syntax or `createComponent()` |
 | Calling `useMatch()`/`useQuery()` inside `createEffect`/`createComputed` | [1-7](rules/1-7-no-primitives-in-reactive-contexts.md) | Call hooks once at component init, not inside reactive computations |
 | Same component in Switch fallback and Match branch | [3-6](rules/3-6-stable-component-mount.md) | Keep component in one stable position; use CSS for layout changes |
+| Custom elements don't upgrade / lifecycle doesn't fire in tests | [8-7](rules/8-7-browser-mode-for-web-components-and-pwa-apis.md) | Use Vitest browser mode (real Chromium) instead of jsdom |
+| IDB state persists between tests causing order-dependent failures | [8-9](rules/8-9-browser-native-api-test-isolation.md) | Close connection before `deleteDatabase`; use `useCleanDb()` |
+| Router primitives throw "can only be used inside a Route" | [8-10](rules/8-10-router-integration-testing.md) | Use MemoryRouter `root` prop with a layout factory |
+| QueryClient retries mask errors / cache leaks between tests | [8-11](rules/8-11-tanstack-query-test-setup.md) | Use `makeTestQueryClient()` with `retry: false`, `gcTime: 0` |
+| `waitFor(length === 0)` passes before data loads | [8-4](rules/8-4-handle-async-in-tests.md) | Use a settled anchor with `findBy` before asserting absence |
+| `getByRole('form')` throws even though the form exists | [7-2](rules/7-2-aria-attributes.md) | Add `aria-label` or `aria-labelledby` to expose `role="form"` |
 
 ## Solid.js vs React Mental Model
 
