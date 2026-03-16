@@ -156,6 +156,36 @@ test("renders user list", async () => {
 });
 ```
 
+### Testing Empty and Absent States
+
+Testing that something is **not** present is subtle. The naive pattern fails silently:
+
+```tsx
+// ❌ WRONG: passes immediately before data even loads
+// Initial render (before fetch) is also empty — this assertion is vacuously true
+await waitFor(() =>
+  expect(screen.queryAllByRole("listitem")).toHaveLength(0),
+);
+```
+
+The problem: the component starts empty (no data yet), so the assertion passes before the query settles. You're not testing "loaded and found nothing" — you're testing "hasn't loaded yet."
+
+**Fix**: wait for a stable "settled anchor" — an element that only renders after queries resolve — then assert absence synchronously:
+
+```tsx
+// ✅ CORRECT: wait for a settled anchor, then assert absence
+// The categories filter renders once queries settle, even when the list is empty.
+// With <Suspense>, anything from the component tree indicates queries have settled.
+await screen.findByRole("group", { name: /categories/i }); // settled anchor
+expect(screen.queryAllByRole("listitem")).toHaveLength(0);  // synchronous
+```
+
+Choosing a settled anchor:
+
+1. A heading or control that **always renders** after the query settles (regardless of data)
+2. With `<Suspense>`: once any component content appears, all queries within the boundary have settled
+3. Avoid `setTimeout` hacks — they create implicit timing assumptions that break under slower environments
+
 ## Query Selection Guide
 
 | Scenario | Query | Why |
@@ -180,3 +210,5 @@ test("renders user list", async () => {
 - [6-3: Use Suspense](6-3-use-suspense.md) - Suspense boundaries affect async test timing
 - [8-2: Wrap Render in Arrow Functions](8-2-wrap-render-in-arrow.md) - Prerequisite for reactive rendering
 - [8-5: Use Accessible Queries](8-5-use-accessible-queries.md) - Query selection best practices
+- [8-8: Testing Headless UI Libraries](8-8-testing-headless-ui-libraries.md) - Portal content and non-standard ARIA
+- [8-11: TanStack Query Test Setup](8-11-tanstack-query-test-setup.md) - Configuring QueryClient for deterministic async behavior

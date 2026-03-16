@@ -215,6 +215,31 @@ function Alert(props) {
 }
 ```
 
+### Form Accessible Name
+
+A `<form>` element without an accessible name is **not exposed** as `role="form"` in the accessibility tree per the ARIA spec. This has two consequences:
+
+1. `screen.getByRole("form")` throws in tests — the form isn't queryable by role
+2. Screen readers don't announce the form as a landmark, making navigation harder
+
+```tsx
+// ❌ WRONG: not exposed as role="form" — getByRole('form') throws
+<form use:form>
+  {/* ... */}
+</form>
+
+// ✅ CORRECT: accessible name exposes it as role="form"
+<form aria-label="Recipe form" use:form>
+  {/* ... */}
+</form>
+
+// ✅ CORRECT: using aria-labelledby with a visible heading
+<h2 id="recipe-form-heading">New Recipe</h2>
+<form aria-labelledby="recipe-form-heading" use:form>
+  {/* ... */}
+</form>
+```
+
 ### Form Validation
 
 ```tsx
@@ -255,6 +280,7 @@ function FormField(props) {
 | Status | `role="status"`, `aria-live="polite"` |
 | Toggle | `aria-pressed` or `aria-checked` |
 | Loading | `aria-busy="true"` |
+| Form | `aria-label` or `aria-labelledby` (required for `role="form"` exposure) |
 
 ## ARIA Rules
 
