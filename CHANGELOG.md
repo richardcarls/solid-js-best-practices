@@ -2,6 +2,27 @@
 
 All notable changes to this skill will be documented in this file.
 
+## [1.6.0] - Web component integration rules
+
+### Added
+
+- 3 new library-agnostic rules for integrating web component / custom element libraries
+  - 2-10: Custom Element TypeScript Declarations (HIGH) - Extend `solid-js` JSX namespace; augment DOM types for `popover`/`popoverTarget`; `as unknown as JSX.CSSProperties` cast for experimental CSS; `prop:` prefix for JS properties
+  - 5-7: Web Component Controlled State (HIGH) - `createEffect` + ref + imperative API pattern; `<dialog>` and Popover API as primary examples; `prop:` for object/array values; `onCleanup` for manual listeners
+  - 6-6: Web Component CSS and Bundle Strategy (MEDIUM) - Per-component imports and side-effect registration file; `::part()` overrides must be in a non-module global stylesheet; CSS variables vs `::part()` trade-off; Workbox precache tuning
+- "Custom Element Event Typing" section in rule 5-6: `CustomEvent<T>` typing, `ToggleEvent`, `on:close`; React 18 vs 19 comparison note
+- "Experimental CSS Properties Not Yet in TypeScript's DOM Types" section in rule 2-8: `as unknown as JSX.CSSProperties` cast helper pattern
+- "Integrating Web Components / Custom Elements" task-based rule selection in SKILL.md
+- 8 new entries in Common Mistakes table
+
+### Changed
+
+- Rule count updated from 52 to 55
+- Components category expanded from 9 to 10 rules
+- Refs & DOM category expanded from 6 to 7 rules
+- Performance category expanded from 5 to 6 rules
+- React vs Solid comparison table updated with custom event handling row
+
 ## [1.5.0] - Integration testing rules
 
 ### Added
@@ -19,9 +40,28 @@ All notable changes to this skill will be documented in this file.
 
 ### Changed
 
-- Rule count updated from 44 to 49
+- Rule count updated from 47 to 52
 - Testing category expanded from 6 to 11 rules
 - "Writing Tests" task-based rule selection updated with 8-7 through 8-11
+
+## [1.4.0] - Reactive scope and mount stability rules
+
+### Added
+
+- 3 new rules derived from real-world reactive scope bugs
+  - 2-9: Never Call Components as Functions (CRITICAL) - JSX/`createComponent()` only; direct calls leak reactive scope
+  - 1-7: No Primitives in Reactive Contexts (HIGH) - Don't call hooks or create reactive primitives inside effects/memos
+  - 3-6: Stable Component Mount (MEDIUM) - Avoid same component in multiple Switch/Show branches; use CSS for layout changes
+- 3 new entries in Common Mistakes table
+
+### Changed
+
+- Rule count updated from 44 to 47
+- Components category expanded from 8 to 9 rules
+- Reactivity category expanded from 6 to 7 rules
+- Control Flow category expanded from 5 to 6 rules
+- Updated Code Review task-based selection with new CRITICAL (2-9) and HIGH (1-7) rules
+- Updated Writing New Components task-based selection with 2-9
 
 ## [1.3.0] - ESLint plugin gap analysis
 
