@@ -127,7 +127,47 @@ function Alert(props) {
 
 4. **Type Safety**: When using TypeScript with kebab-case properties, incorrect property names are caught at compile time.
 
+## Experimental CSS Properties Not Yet in TypeScript's DOM Types
+
+Some newer CSS features — CSS Anchor Positioning (`anchor-name`, `position-anchor`), `view-timeline-name`, and others — may not yet appear in TypeScript's `JSX.CSSProperties` type. Attempting to use them produces a type error.
+
+### Safe Cast Pattern
+
+Use `as unknown as JSX.CSSProperties` rather than `as never`. The `as never` cast removes all type checking on the object; the `unknown` cast is narrower and preserves checking on all other properties:
+
+```tsx
+// ❌ WRONG: as never disables type checking on the entire object
+<div style={{ "anchor-name": "--btn", color: "red" } as never} />
+
+// ✅ CORRECT: only the experimental property needs the cast
+<div
+  style={
+    { "anchor-name": "--btn", color: "red" } as unknown as JSX.CSSProperties
+  }
+/>
+```
+
+### Typed Helper for Repeated Use
+
+```tsx
+// ✅ CORRECT: a helper that accepts experimental props without losing safety elsewhere
+const experimentalCss = (props: Record<string, string>): JSX.CSSProperties =>
+  props as unknown as JSX.CSSProperties;
+
+// Usage
+<div
+  style={{
+    ...experimentalCss({ "anchor-name": "--my-anchor" }),
+    color: "red",  // still type-checked
+    "font-size": "16px",
+  }}
+/>
+```
+
+The same pattern applies to any CSS property ahead of TypeScript's DOM lib: `container-type`, `view-timeline-name`, `position-anchor`, `overlay`, etc.
+
 ## Related Rules
 
 - [2-7: No React-Specific Props](2-7-no-react-specific-props.md) - Other React prop name differences
 - [6-5: Prefer classList](6-5-prefer-classlist.md) - Conditional class toggling
+- [2-10: Custom Element TypeScript Declarations](2-10-custom-element-typescript-declarations.md) - Augmenting TS types for custom elements and newer HTML attributes

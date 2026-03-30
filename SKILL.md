@@ -1,6 +1,6 @@
 ---
 name: solid-js-best-practices
-description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when writing Solid.js components, auditing SolidJS code, migrating from React to Solid, or fixing signals and fine-grained reactivity bugs. 52 rules across 8 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing) ranked by priority."
+description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when writing Solid.js components, auditing SolidJS code, migrating from React to Solid, fixing signals and fine-grained reactivity bugs, or integrating web component libraries. 55 rules across 8 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing) ranked by priority."
 license: MIT
 allowed-tools:
   - Read
@@ -116,7 +116,7 @@ export default MyComponent;
 | [1-5](rules/1-5-use-untrack-when-needed.md) | Use Untrack When Needed | MEDIUM | Use `untrack()` to prevent unwanted reactive subscriptions |
 | [1-6](rules/1-6-batch-signal-updates.md) | Batch Signal Updates | LOW | Use `batch()` for multiple synchronous signal updates |
 
-### 2. Components (9 rules)
+### 2. Components (10 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -126,6 +126,7 @@ export default MyComponent;
 | [2-2](rules/2-2-use-merge-props.md) | Use mergeProps | HIGH | Use `mergeProps` for default prop values |
 | [2-3](rules/2-3-use-split-props.md) | Use splitProps | HIGH | Use `splitProps` to separate prop groups safely |
 | [2-7](rules/2-7-no-react-specific-props.md) | No React-Specific Props | HIGH | Use `class` not `className`, `for` not `htmlFor` |
+| [2-10](rules/2-10-custom-element-typescript-declarations.md) | Custom Element TypeScript Declarations | HIGH | Declare custom element tags in JSX namespace; augment DOM types for newer attributes |
 | [2-4](rules/2-4-use-children-helper.md) | Use children Helper | MEDIUM | Use `children()` helper for safe children access |
 | [2-5](rules/2-5-component-composition.md) | Prefer Composition | MEDIUM | Prefer composition and context over prop drilling |
 | [2-8](rules/2-8-style-prop-conventions.md) | Style Prop Conventions | MEDIUM | Use object syntax with kebab-case properties for `style` |
@@ -151,7 +152,7 @@ export default MyComponent;
 | [4-4](rules/4-4-use-reconcile-for-data.md) | Use reconcile for Server Data | MEDIUM | Use `reconcile` when integrating server/external data |
 | [4-5](rules/4-5-use-context-for-global.md) | Use Context for Global State | MEDIUM | Use Context API for cross-component shared state |
 
-### 5. Refs & DOM (6 rules)
+### 5. Refs & DOM (7 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -159,16 +160,18 @@ export default MyComponent;
 | [5-2](rules/5-2-access-dom-in-onmount.md) | Access DOM in onMount | HIGH | Access DOM elements in `onMount`, not during render |
 | [5-3](rules/5-3-cleanup-with-oncleanup.md) | Cleanup with onCleanup | HIGH | Always clean up subscriptions and timers |
 | [5-5](rules/5-5-avoid-innerhtml.md) | Avoid innerHTML | HIGH | Avoid `innerHTML` to prevent XSS — use JSX or `textContent` |
+| [5-7](rules/5-7-web-component-controlled-state.md) | Web Component Controlled State | HIGH | Use `createEffect` + ref + imperative calls to sync signals to web component APIs |
 | [5-4](rules/5-4-use-directives.md) | Use Directives | MEDIUM | Use `use:` directives for reusable element behaviors |
 | [5-6](rules/5-6-event-handler-patterns.md) | Event Handler Patterns | MEDIUM | Use `on:`/`oncapture:` namespaces and array handler syntax correctly |
 
-### 6. Performance (5 rules)
+### 6. Performance (6 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
 | [6-1](rules/6-1-avoid-unnecessary-tracking.md) | Avoid Unnecessary Tracking | HIGH | Don't access signals outside reactive contexts |
 | [6-2](rules/6-2-use-lazy-components.md) | Use Lazy Components | MEDIUM | Use `lazy()` for code splitting large components |
 | [6-3](rules/6-3-use-suspense.md) | Use Suspense | MEDIUM | Use `<Suspense>` for async loading boundaries |
+| [6-6](rules/6-6-web-component-css-and-bundle.md) | Web Component CSS and Bundle Strategy | MEDIUM | Import components individually; place `::part()` overrides in a global stylesheet |
 | [6-4](rules/6-4-optimize-store-access.md) | Optimize Store Access | LOW | Access only the store properties you need |
 | [6-5](rules/6-5-prefer-classlist.md) | Prefer classList | LOW | Use `classList` prop for conditional class toggling |
 
@@ -276,6 +279,17 @@ Load these rules when writing or reviewing tests:
 | [8-10](rules/8-10-router-integration-testing.md) | MemoryRouter setup for integration tests |
 | [8-11](rules/8-11-tanstack-query-test-setup.md) | QueryClient configuration for tests |
 
+### Integrating Web Components / Custom Elements
+
+Load these rules when using any custom element library (Shoelace, FAST, Lion, Material Web Components, etc.) or native browser APIs like `<dialog>` and the Popover API:
+
+| Rule | Why |
+| ---- | --- |
+| [2-10](rules/2-10-custom-element-typescript-declarations.md) | Declare custom element tags in JSX namespace; type newer HTML attributes and experimental CSS properties |
+| [5-6](rules/5-6-event-handler-patterns.md) | Use `on:` for all custom element events; type `CustomEvent` payloads correctly |
+| [5-7](rules/5-7-web-component-controlled-state.md) | Sync Solid signals to web component / native browser API imperative calls |
+| [6-6](rules/6-6-web-component-css-and-bundle.md) | Per-component imports for tree-shaking; `::part()` overrides in global CSS only |
+
 ## Common Mistakes to Catch
 
 | Mistake | Rule | Solution |
@@ -306,6 +320,13 @@ Load these rules when writing or reviewing tests:
 | QueryClient retries mask errors / cache leaks between tests | [8-11](rules/8-11-tanstack-query-test-setup.md) | Use `makeTestQueryClient()` with `retry: false`, `gcTime: 0` |
 | `waitFor(length === 0)` passes before data loads | [8-4](rules/8-4-handle-async-in-tests.md) | Use a settled anchor with `findBy` before asserting absence |
 | `getByRole('form')` throws even though the form exists | [7-2](rules/7-2-aria-attributes.md) | Add `aria-label` or `aria-labelledby` to expose `role="form"` |
+| `<my-element onMyChange={...}>` misses all events | [5-6](rules/5-6-event-handler-patterns.md) | Use `on:my-change` — `on:` prefix required for all web component custom events |
+| `my-element::part(...)` rule inside a `.module.css` is silently ignored | [6-6](rules/6-6-web-component-css-and-bundle.md) | Move `::part()` overrides to a non-module global stylesheet |
+| Barrel import of entire web component library | [6-6](rules/6-6-web-component-css-and-bundle.md) | Import individual components by path to enable tree-shaking |
+| `value={signal()}` on web component — no two-way sync | [5-7](rules/5-7-web-component-controlled-state.md) | Listen to change events; push value imperatively via `ref` + `createEffect` |
+| `<div popover>` or `<button popoverTarget="x">` TypeScript error | [2-10](rules/2-10-custom-element-typescript-declarations.md) | Augment `HTMLElement` / `HTMLButtonElement` in a `.d.ts` file |
+| Object/array prop on custom element becomes `"[object Object]"` | [5-7](rules/5-7-web-component-controlled-state.md) | Use `prop:myProp={value()}` to set a JS property, not an HTML attribute |
+| Experimental CSS property (`anchor-name`) produces a TypeScript error | [2-8](rules/2-8-style-prop-conventions.md) | Cast with `as unknown as JSX.CSSProperties` instead of `as never` |
 
 ## Solid.js vs React Mental Model
 
@@ -325,6 +346,7 @@ When helping users familiar with React, keep these differences in mind:
 | `htmlFor` | `for` |
 | `style={{ fontSize: 14 }}` | `style={{ "font-size": "14px" }}` |
 | Context requires `useContext` hook | Context works with `useContext` or direct access |
+| React 18: `ref` + `addEventListener` for custom element events; React 19: `onMyEvent={handler}` natively | `on:my-event={handler}` — always use `on:` prefix with web component events |
 
 ## Priority Levels
 

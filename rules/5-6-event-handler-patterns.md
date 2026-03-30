@@ -175,7 +175,61 @@ function handleClick(itemId: number, event: MouseEvent) {
 
 4. **Capture Phase**: `oncapture:` enables event interception patterns that aren't possible with delegated events.
 
+## Custom Element Event Typing
+
+Web components and native browser APIs dispatch `CustomEvent` instances or spec-defined event subclasses. Because Solid's delegated event system only knows about standard DOM events, the `on:` prefix is **required** for all custom element events.
+
+### Typing Custom Events
+
+```tsx
+// ✅ CORRECT: CustomEvent with a typed detail object
+<custom-select
+  on:my-change={(e: CustomEvent<{ value: string }>) => {
+    setSelected(e.detail.value);
+  }}
+/>
+
+// ✅ CORRECT: CustomEvent where value is on the target (not detail)
+<custom-input
+  on:my-input={(e: CustomEvent & { target: HTMLInputElement }) => {
+    setValue(e.target.value);
+  }}
+/>
+
+// ✅ CORRECT: native ToggleEvent for Popover API state changes
+<div
+  popover="auto"
+  on:toggle={(e: ToggleEvent) => {
+    setOpen(e.newState === "open");
+  }}
+/>
+
+// ✅ CORRECT: native close event for <dialog>
+<dialog
+  ref={dialogRef!}
+  on:close={() => onClose?.()}
+/>
+```
+
+### Extended Event System Reference
+
+| Syntax | Type | Use Case |
+| ------ | ---- | -------- |
+| `onClick={handler}` | Delegated | Common events (click, input, keydown, etc.) |
+| `on:click={handler}` | Native | Non-bubbling events, custom elements, Web Components |
+| `oncapture:click={handler}` | Capture | Intercept events before they reach target |
+| `onClick={[handler, data]}` | Delegated + data | Pass data without creating a closure |
+| `on:my-event={handler}` | Native `CustomEvent` | Any web component custom event |
+| `on:toggle={handler}` | Native `ToggleEvent` | Popover API open/close state sync |
+| `on:close={handler}` | Native `Event` | `<dialog>` close event |
+
+### React Comparison
+
+React 18 required manual `ref` + `addEventListener` for custom element events because its synthetic event system didn't handle them. React 19 added native support via `onMyEvent` convention. Solid never had this limitation — `on:` was already direct native binding.
+
 ## Related Rules
 
 - [5-4: Use Directives](5-4-use-directives.md) - Reusable event-based behaviors
 - [5-3: Cleanup with onCleanup](5-3-cleanup-with-oncleanup.md) - Cleaning up manual event listeners
+- [5-7: Web Component Controlled State](5-7-web-component-controlled-state.md) - Imperative state sync with web components
+- [2-10: Custom Element TypeScript Declarations](2-10-custom-element-typescript-declarations.md) - Typing custom element props and events
