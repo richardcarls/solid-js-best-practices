@@ -2,6 +2,29 @@
 
 All notable changes to this skill will be documented in this file.
 
+## [1.7.0] - Reactive and WC integration rules from post-mortem analysis
+
+### Added
+
+- 1 new rule for control flow
+  - 3-7: Use keyed for Stateful Children (HIGH) — `<Show>`/`<Match>` use boolean equality by default; stateful children (forms, subscriptions) silently retain stale state when the input value changes but stays truthy; `keyed` forces remount on reference change
+- 3 new rules for web component integration lifecycle (new category 9: Web Component Integration)
+  - 9-1: Register Custom Elements at App Entry (HIGH) — import `/define` side-effects at app entry before `render()`; late registration upgrades existing elements synchronously mid-frame inside the browser upgrade algorithm
+  - 9-2: Defer slotchange Handler Side Effects (HIGH) — `slotchange` fires inside SolidJS `runUpdates` on second+ navigation when shadow DOM already exists; defer all focus, state writes, and DOM mutations via `queueMicrotask`
+  - 9-3: Treat Custom Element and SolidJS Reactivity as Decoupled (MEDIUM) — custom element internal state and SolidJS signals are independent systems; one-way data flow (SolidJS → attributes/properties → custom events → SolidJS); never read element properties from `createEffect`
+- Debugging note in rule 1-4: SolidJS's infinite-loop guard watches `Updates` only, not `Effects`; silent tab freeze with zero console output indicates `Effects` accumulation; includes `Effects.push` diagnostic patch
+- `batch()` no-op section in rule 1-6: `batch()` calls `runUpdates` which short-circuits if `Updates` already exists; calling it inside an effect or reactive context is always a no-op
+- Reactive overhead section in rule 3-4: `<Switch>` creates 2N+4 memos vs `<Show>`'s 3; prefer `<Show>` for single-condition gates on heavy components
+- "Web Component Integration" task-based rule selection in SKILL.md
+- 6 new entries in Common Mistakes table
+
+### Changed
+
+- Rule count updated from 55 to 59
+- Control Flow category expanded from 6 to 7 rules
+- Added category 9: Web Component Integration (3 rules: 9-1, 9-2, 9-3)
+- Skill trigger description broadened to activate on any SolidJS project context, not only "best practices" mentions
+
 ## [1.6.0] - Web component integration rules
 
 ### Added

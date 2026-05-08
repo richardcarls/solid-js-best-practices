@@ -158,6 +158,42 @@ function AutoSave() {
 | Event handlers | Set signals from user interactions |
 | `onMount` | One-time initialization |
 
+## Debugging Infinite Loops: Effects vs Updates
+
+SolidJS has one overflow guard, in `writeSignal`:
+
+```typescript
+// SolidJS internals
+if (Updates.length > 1e6) {
+  Updates = [];
+  if (IS_DEV) throw new Error("Potential Infinite Loop Detected.");
+  throw new Error();
+}
+```
+
+This only fires when the **synchronous computation queue** (`Updates`) exceeds one million
+entries. It does **not** watch the separate `Effects` queue.
+
+A runaway accumulation in `Effects` — where each reactive cycle creates new effects faster than
+they are cleaned up — produces **no error, no warning, and no console output**. The browser tab
+freezes silently.
+
+If a navigation or user action causes a complete freeze with zero console errors, suspect
+`Effects` accumulation rather than an `Updates` overflow. A useful diagnostic patch:
+
+```javascript
+// Inject in DevTools Console to observe Effects growth
+const orig = Effects.push.bind(Effects);
+Effects.push = (...args) => {
+  if (Effects.length % 500 === 0) console.log("Effects.length:", Effects.length);
+  return orig(...args);
+};
+```
+
+This pattern is most likely to occur in dev mode, where `solid-refresh` HMR wrapping and
+`createRoot`-based subscriptions (as used in some form libraries) can create unbounded effects
+across repeated reactive cycles.
+
 ## Related Rules
 
 - [1-2: Use Memo for Derived Values](1-2-use-memo-for-derived.md) - Better alternative
