@@ -208,8 +208,40 @@ function AsyncContent(props: { state: State }) {
 | Two conditions (if/else) | `<Show>` with `fallback` |
 | Three or more conditions | `<Switch>/<Match>` |
 | Enum or union type matching | `<Switch>/<Match>` |
+| Gating a single heavy component | `<Show>` (see Reactive Overhead below) |
+
+## Reactive Overhead
+
+`<Switch>` creates significantly more reactive infrastructure than `<Show>`. For N `<Match>` arms,
+`<Switch>` creates **2N + 4 memos**: a `children` helper (2 memos), a `switchFunc` memo, N
+condition-value memos, N boolean-condition memos, and one "eval conditions" memo.
+
+`<Show>` creates **3 memos**: a `children` helper (2 memos) and one condition memo.
+
+This matters when gating a single, heavy component — especially one that creates many reactive
+primitives (form libraries, complex stores, rich editor components). Each memo is a reactive
+subscription that participates in SolidJS's Transition tracking during navigation. Unnecessary
+memos amplify the cost of every route change.
+
+```tsx
+// ✅ PREFER: <Show> for a single condition guarding one heavy component
+<Show when={viewMode() === "edit"}>
+  <RecipeForm recipe={props.recipe} />
+</Show>
+
+// ⚠️ AVOID: <Switch> with one arm just to use Match syntax
+<Switch>
+  <Match when={viewMode() === "edit"}>
+    <RecipeForm recipe={props.recipe} />
+  </Match>
+</Switch>
+```
+
+Reserve `<Switch>` for three or more mutually exclusive arms where its flat structure earns
+its memo cost.
 
 ## Related Rules
 
 - [3-1: Use Show for Conditionals](3-1-use-show-for-conditionals.md) - For simple conditions
 - [3-5: Provide Fallbacks](3-5-provide-fallbacks.md) - Always handle default case
+- [3-7: Use keyed for Stateful Children](3-7-use-keyed-for-stateful-children.md) - When the value (not just truthiness) determines identity
