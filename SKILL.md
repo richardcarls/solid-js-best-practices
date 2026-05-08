@@ -1,6 +1,6 @@
 ---
 name: solid-js-best-practices
-description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when writing Solid.js components, auditing SolidJS code, migrating from React to Solid, fixing signals and fine-grained reactivity bugs, or integrating web component libraries. 55 rules across 8 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing) ranked by priority."
+description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when working in any SolidJS project or codebase — writing components, auditing code, migrating from React, fixing signals and fine-grained reactivity bugs, or integrating web component libraries. 59 rules across 9 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing, web component integration) ranked by priority."
 license: MIT
 allowed-tools:
   - Read
@@ -131,14 +131,15 @@ export default MyComponent;
 | [2-5](rules/2-5-component-composition.md) | Prefer Composition | MEDIUM | Prefer composition and context over prop drilling |
 | [2-8](rules/2-8-style-prop-conventions.md) | Style Prop Conventions | MEDIUM | Use object syntax with kebab-case properties for `style` |
 
-### 3. Control Flow (6 rules)
+### 3. Control Flow (7 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
 | [3-1](rules/3-1-use-show-for-conditionals.md) | Use Show for Conditionals | HIGH | Use `<Show>` instead of ternary operators |
 | [3-2](rules/3-2-use-for-for-lists.md) | Use For for Lists | HIGH | Use `<For>` for referentially-keyed list rendering |
+| [3-7](rules/3-7-use-keyed-for-stateful-children.md) | Use keyed for Stateful Children | HIGH | Add `keyed` when child has internal state and value identity (not just truthiness) matters |
 | [3-3](rules/3-3-use-index-for-primitives.md) | Use Index for Primitives | MEDIUM | Use `<Index>` when array index matters more than identity |
-| [3-4](rules/3-4-use-switch-match.md) | Use Switch/Match | MEDIUM | Use `<Switch>`/`<Match>` for multiple conditions |
+| [3-4](rules/3-4-use-switch-match.md) | Use Switch/Match | MEDIUM | Use `<Switch>`/`<Match>` for multiple conditions; prefer `<Show>` for single gates |
 | [3-6](rules/3-6-stable-component-mount.md) | Stable Component Mount | MEDIUM | Avoid rendering the same component in multiple Switch/Show branches |
 | [3-5](rules/3-5-provide-fallbacks.md) | Provide Fallbacks | LOW | Always provide `fallback` props for loading states |
 
@@ -199,6 +200,14 @@ export default MyComponent;
 | [8-10](rules/8-10-router-integration-testing.md) | Router Integration Testing | HIGH | Use MemoryRouter `root` prop to provide router context to layout providers |
 | [8-11](rules/8-11-tanstack-query-test-setup.md) | TanStack Query Test Setup | HIGH | Create a fresh QueryClient per test with retry and caching disabled |
 
+### 9. Web Component Integration (3 rules)
+
+| # | Rule | Priority | Description |
+| - | ---- | -------- | ----------- |
+| [9-1](rules/9-1-register-custom-elements-early.md) | Register Custom Elements at App Entry | HIGH | Import `/define` side-effects before any SolidJS reactive context |
+| [9-2](rules/9-2-defer-slotchange-handlers.md) | Defer slotchange Handler Side Effects | HIGH | Always defer focus, state writes, and DOM mutations in `slotchange` via `queueMicrotask` |
+| [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | Treat Custom Element and SolidJS Reactivity as Decoupled | MEDIUM | Use one-way data flow (SolidJS → attributes/props → events → SolidJS); never read custom element internal state from SolidJS reactive contexts |
+
 ## Task-Based Rule Selection
 
 ### Writing New Components
@@ -214,8 +223,20 @@ Load these rules when creating new Solid.js components:
 | [2-2](rules/2-2-use-merge-props.md) | Handle default props correctly |
 | [2-3](rules/2-3-use-split-props.md) | Separate local and forwarded props |
 | [3-1](rules/3-1-use-show-for-conditionals.md) | Proper conditional rendering |
+| [3-7](rules/3-7-use-keyed-for-stateful-children.md) | `keyed` for forms and stateful children |
 | [3-2](rules/3-2-use-for-for-lists.md) | Efficient list rendering |
 | [5-3](rules/5-3-cleanup-with-oncleanup.md) | Prevent memory leaks |
+
+### Web Component Integration
+
+Load these rules when integrating Lit or other custom elements with SolidJS:
+
+| Rule | Why |
+| ---- | --- |
+| [9-1](rules/9-1-register-custom-elements-early.md) | Register before any SolidJS context mounts |
+| [9-2](rules/9-2-defer-slotchange-handlers.md) | Prevent synchronous side effects inside `runUpdates` |
+| [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | One-way data flow design |
+| [5-6](rules/5-6-event-handler-patterns.md) | Use `on:` namespace for custom element events |
 
 ### Code Review
 
@@ -327,6 +348,12 @@ Load these rules when using any custom element library (Shoelace, FAST, Lion, Ma
 | `<div popover>` or `<button popoverTarget="x">` TypeScript error | [2-10](rules/2-10-custom-element-typescript-declarations.md) | Augment `HTMLElement` / `HTMLButtonElement` in a `.d.ts` file |
 | Object/array prop on custom element becomes `"[object Object]"` | [5-7](rules/5-7-web-component-controlled-state.md) | Use `prop:myProp={value()}` to set a JS property, not an HTML attribute |
 | Experimental CSS property (`anchor-name`) produces a TypeScript error | [2-8](rules/2-8-style-prop-conventions.md) | Cast with `as unknown as JSX.CSSProperties` instead of `as never` |
+| `<Show when={record}>` without `keyed` for a form component | [3-7](rules/3-7-use-keyed-for-stateful-children.md) | Add `keyed` — without it, switching records silently reuses the old form state |
+| `<Switch><Match>` for a single condition gating one heavy component | [3-4](rules/3-4-use-switch-match.md) | Use `<Show>` — Switch creates 2N+4 memos vs Show's 3 |
+| `batch()` inside `createEffect` or reactive context | [1-6](rules/1-6-batch-signal-updates.md) | `batch()` is a no-op inside `runUpdates` — only use at top-level handlers |
+| Custom element `slotchange` handler calling `.focus()` or writing state synchronously | [9-2](rules/9-2-defer-slotchange-handlers.md) | Defer all side effects via `queueMicrotask` — fires inside `runUpdates` on second+ mount |
+| Custom element registered inside a component or lazy chunk | [9-1](rules/9-1-register-custom-elements-early.md) | Import `/define` side-effects at app entry before any SolidJS rendering |
+| Reading custom element internal state (e.g. `el.open`, `el.value`) from `createEffect` | [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | Element properties are not SolidJS signals — use `on:` events to propagate changes upward |
 
 ## Solid.js vs React Mental Model
 

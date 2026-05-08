@@ -167,6 +167,45 @@ You primarily need `batch()` for:
 - After `await` in async functions
 - Callbacks from external libraries
 
+## batch() Is a No-op Inside Reactive Contexts
+
+`batch(fn)` calls `runUpdates(fn, false)` internally. `runUpdates` has an early-exit guard:
+
+```typescript
+// SolidJS internals
+function runUpdates(fn, init) {
+  if (Updates) return fn(); // already inside runUpdates — just call fn directly
+  // ... otherwise set up the Updates queue
+}
+```
+
+If you call `batch()` inside an effect, memo, or any reactive computation, `Updates` is already
+set by the outer `runUpdates`. The `batch()` wrapper does nothing — `fn()` is called directly,
+and the signals written inside are deferred by the existing outer queue, not a new one you
+created.
+
+```tsx
+// ❌ POINTLESS: batch() inside createEffect is always a no-op
+createEffect(() => {
+  batch(() => {
+    setFirstName("Rick");
+    setLastName("Carls");
+  });
+  // Same behavior without batch() here — the outer runUpdates already batches these.
+});
+
+// ✅ CORRECT: batch() at the top of an event handler, outside any reactive context
+const handleSubmit = () => {
+  batch(() => {
+    setFirstName("Rick");
+    setLastName("Carls");
+  });
+};
+```
+
+`batch()` is only meaningful as the outermost call in a non-reactive context: event handlers,
+`setTimeout` callbacks, promise `.then()` callbacks, or calls from external libraries.
+
 ## Related Rules
 
 - [1-4: Avoid Signal in Effect](1-4-avoid-signal-in-effect.md) - Related update patterns
