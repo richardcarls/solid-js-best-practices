@@ -28,7 +28,7 @@ import { Router, Route } from "@solidjs/router";
 const RecipesPage = lazy(() => import("./routes/RecipesPage"));
 
 // Custom elements only registered when RecipesPage loads.
-// Existing <rc-toolbar> instances in the shell upgrade mid-navigation.
+// Existing <wc-toolbar> instances in the shell upgrade mid-navigation.
 export function App() {
   return (
     <Router>
@@ -45,10 +45,10 @@ import { onMount } from "solid-js";
 function Shell() {
   onMount(() => {
     // Fires after first render — upgrades existing elements inside runUpdates cleanup
-    import("@rcarls/rc-webcomponents/define");
+    import("@acme/wc-components/define");
   });
 
-  return <rc-toolbar />;
+  return <wc-toolbar />;
 }
 ```
 
@@ -57,7 +57,7 @@ function Shell() {
 ```typescript
 // site.tsx — ✅ CORRECT: side-effect import at the top of the entry module,
 // before createRoot or any SolidJS rendering begins.
-import "@rcarls/rc-webcomponents/define";
+import "@acme/wc-components/define";
 
 import { render } from "solid-js/web";
 import { App } from "./App";
@@ -68,9 +68,9 @@ render(() => <App />, document.getElementById("root")!);
 ```typescript
 // ✅ CORRECT: individual package define imports also work, as long as they're
 // at the module's top level and not inside async boundaries or lazy chunks.
-import "@rcarls/rc-toolbar/define";
-import "@rcarls/rc-splitter/define";
-import "@rcarls/rc-combobox/define";
+import "@acme/wc-toolbar/define";
+import "@acme/wc-splitter/define";
+import "@acme/wc-combobox/define";
 
 import { render } from "solid-js/web";
 import { App } from "./App";
@@ -84,10 +84,10 @@ Many web component packages export two entry points:
 
 ```typescript
 // Main export: just the class, no side effects
-import { RCToolbar } from "@rcarls/rc-toolbar";  // Does NOT call customElements.define()
+import { WcToolbar } from "@acme/wc-toolbar";  // Does NOT call customElements.define()
 
 // Define subpath: registers the element
-import "@rcarls/rc-toolbar/define";              // Calls customElements.define("rc-toolbar", RCToolbar)
+import "@acme/wc-toolbar/define";              // Calls customElements.define("wc-toolbar", WcToolbar)
 ```
 
 If your bundler or aggregator imports from the main entry rather than `/define`, no elements
@@ -113,5 +113,5 @@ which subpath you are importing.
 ## Related Rules
 
 - [9-2: Defer slotchange Handler Side Effects](9-2-defer-slotchange-handlers.md) - Safe slot handling
-- [9-3: Treat Lit and SolidJS Reactivity as Decoupled](9-3-decouple-lit-and-solid-reactivity.md) - Reactivity boundary design
+- [9-3: Treat Custom Element and SolidJS Reactivity as Decoupled](9-3-decouple-lit-and-solid-reactivity.md) - Reactivity boundary design
 - [5-6: Event Handler Patterns](5-6-event-handler-patterns.md) - Use `on:` for custom element events
