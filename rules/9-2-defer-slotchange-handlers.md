@@ -29,7 +29,7 @@ this pattern.
 ## Incorrect
 
 ```typescript
-// rc-toolbar.ts — ❌ WRONG: synchronous focus call in slotchange
+// wc-toolbar.ts — ❌ WRONG: synchronous focus call in slotchange
 protected _initItems(): void {
   const items = this._getItems();
 
@@ -46,7 +46,7 @@ protected _onSlotChange(_e: Event): void {
 ```
 
 ```typescript
-// rc-select.ts — ❌ WRONG: synchronous internal state writes and MutationObserver setup
+// wc-select.ts — ❌ WRONG: synchronous internal state writes and MutationObserver setup
 protected _handleSelectSlotChange(e: Event): void {
   const sel = this._getSlottedSelect(e);
 
@@ -66,7 +66,7 @@ protected _handleSelectSlotChange(e: Event): void {
 ## Correct
 
 ```typescript
-// rc-toolbar.ts — ✅ CORRECT: focus deferred via queueMicrotask
+// wc-toolbar.ts — ✅ CORRECT: focus deferred via queueMicrotask
 protected _initItems(): void {
   const items = this._getItems();
 
@@ -85,7 +85,7 @@ protected _onSlotChange(_e: Event): void {
 ```
 
 ```typescript
-// rc-select.ts — ✅ CORRECT: all side effects deferred together
+// wc-select.ts — ✅ CORRECT: all side effects deferred together
 protected _handleSelectSlotChange(e: Event): void {
   const sel = this._getSlottedSelect(e);
   if (!sel) return;
@@ -154,3 +154,8 @@ be instantaneous:
 - [9-1: Register Custom Elements at App Entry](9-1-register-custom-elements-early.md) - Registration timing
 - [9-3: Treat Custom Element and SolidJS Reactivity as Decoupled](9-3-decouple-lit-and-solid-reactivity.md) - Reactivity boundary design
 - [5-3: Cleanup with onCleanup](5-3-cleanup-with-oncleanup.md) - Disconnecting observers on cleanup
+
+
+## Wrapper Smell: Timers Fixing Slot Timing
+
+A Solid wrapper should not need `setTimeout`, `queueMicrotask`, or `onMount` glue just to make a custom element notice its slotted children. The custom element should read assigned nodes synchronously, defer its own DOM writes or focus work, and handle late child insertion/replacement itself. Wrapper-level timers are a sign that the custom element API or lifecycle handling needs improvement.

@@ -12,7 +12,7 @@ solid-js-best-practices/
 ├── AGENTS.md          # This file - contributor guidance
 ├── README.md          # Human documentation
 ├── CHANGELOG.md       # Version history
-└── rules/             # Individual rule files (each with YAML frontmatter)
+└── rules/             # Individual rule files
     ├── 1-*.md         # Reactivity rules
     ├── 2-*.md         # Component rules
     ├── 3-*.md         # Control flow rules
@@ -20,12 +20,11 @@ solid-js-best-practices/
     ├── 5-*.md         # Refs & DOM rules
     ├── 6-*.md         # Performance rules
     ├── 7-*.md         # Accessibility rules
-    └── 8-*.md         # Testing rules
+    ├── 8-*.md         # Testing rules
+    └── 9-*.md         # Web component integration rules
 ```
 
-## Rule File Naming
-
-Files follow the pattern: `[category]-[number]-[hyphenated-topic].md`
+## Rule Categories
 
 - Category 1: Reactivity
 - Category 2: Components
@@ -35,15 +34,21 @@ Files follow the pattern: `[category]-[number]-[hyphenated-topic].md`
 - Category 6: Performance
 - Category 7: Accessibility
 - Category 8: Testing
+- Category 9: Web Component Integration
+
+## Rule File Naming
+
+Files follow the pattern `[category]-[number]-[hyphenated-topic].md`.
 
 ## Rule File Structure
 
 Each rule file should contain:
 
-1. **YAML frontmatter** — id, title, category, priority, description
-2. **Problem Section** — explanation of what goes wrong
-3. **Incorrect Code Examples** — with `❌ WRONG` annotations
-4. **Correct Code Examples** — with `✅ CORRECT` annotations
-5. **Advanced Patterns** — multiple variations showing nuanced usage
-6. **Why It Matters** — performance, maintainability, and correctness context
-7. **Related Rules** — cross-references to similar or dependent rules
+1. YAML frontmatter with title, category, priority, and description when useful.
+1. Problem section explaining what goes wrong.
+1. Incorrect code examples.
+1. Correct code examples.
+1. Why-it-matters guidance.
+1. Related rules with cross-references.
+
+Examples should stay generic and publishable. Use hypothetical `<wc-*>` custom elements or native platform elements, not project-local components.
