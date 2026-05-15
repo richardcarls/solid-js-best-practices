@@ -1,14 +1,12 @@
 # Solid.js Best Practices - An Agent Skill
 
-An [Agent Skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) (for [Claude Code](https://claude.ai), but quietly becoming an industry standard), `solid-js-best-practices` enables the use of comprehensive best practices for building [Solid.js](https://www.solidjs.com/) applications and components. It is optimized for AI-assisted code generation, review, and refactoring.
-
-> **NOTE** Generative AI was used to create this skill, with information published in the resources listed at the bottom of this README. The rules have been expanded and refined from there, based on performance being used in a personal project of mine.
+`solid-js-best-practices` enables comprehensive best practices for building Solid.js applications and components. It is optimized for AI-assisted code generation, review, refactoring, and web component integration.
 
 ## Features
 
-- **44 actionable rules** organized into 8 categories
+- **61 actionable rules** organized into 9 categories
 - **Priority levels** (CRITICAL, HIGH, MEDIUM, LOW) for focused code review
-- **Before/after code examples** showing incorrect vs correct patterns
+- **Before/after code examples** showing incorrect vs. correct patterns
 - **Detailed explanations** of why each practice matters
 - **Cross-references** between related rules
 
@@ -16,45 +14,46 @@ An [Agent Skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skil
 
 | Category | Rules | Focus Area |
 | -------- | ----- | ---------- |
-| [Reactivity](rules/1-1-use-signals-correctly.md) | 6 | Signals, effects, memos, batching |
-| [Components](rules/2-1-never-destructure-props.md) | 8 | Props, composition, children, return-once, style |
-| [Control Flow](rules/3-1-use-show-for-conditionals.md) | 5 | Show, For, Switch, Index |
+| [Reactivity](rules/1-1-use-signals-correctly.md) | 7 | Signals, effects, memos, batching |
+| [Components](rules/2-1-never-destructure-props.md) | 10 | Props, composition, children, return-once, custom element types |
+| [Control Flow](rules/3-1-use-show-for-conditionals.md) | 7 | Show, For, Switch, Index, keyed stateful children |
 | [State Management](rules/4-1-signals-vs-stores.md) | 5 | Stores, context, reconcile |
-| [Refs & DOM](rules/5-1-use-refs-correctly.md) | 6 | Refs, lifecycle, directives, events, security |
-| [Performance](rules/6-1-avoid-unnecessary-tracking.md) | 5 | Lazy loading, Suspense, optimization, classList |
+| [Refs & DOM](rules/5-1-use-refs-correctly.md) | 7 | Refs, lifecycle, directives, events, security, custom elements |
+| [Performance](rules/6-1-avoid-unnecessary-tracking.md) | 6 | Lazy loading, Suspense, optimization, classList, web component bundles |
 | [Accessibility](rules/7-1-semantic-html.md) | 3 | Semantic HTML, ARIA, keyboard |
-| [Testing](rules/8-1-configure-vitest-for-solid.md) | 6 | Vitest setup, render patterns, async, queries |
+| [Testing](rules/8-1-configure-vitest-for-solid.md) | 11 | Vitest setup, browser mode, async, routers, native API isolation |
+| [Web Component Integration](rules/9-1-register-custom-elements-early.md) | 5 | Registration, slot timing, property bindings, thin wrappers |
 
 ## Installation
-
-### Claude Code CLI
 
 ```bash
 npx skills add richardcarls/solid-js-best-practices
 ```
 
-### Manual Integration
-
-1. Clone or download this repository
-2. Reference [SKILL.md](SKILL.md) for quick rule lookup
-3. Load specific rules from `rules/` directory as needed
-
 ## Usage
 
-The skill automatically activates when Claude detects tasks involving Solid.js.
+The skill activates for Solid.js work: components, reactivity bugs, tests, migrations from React, and custom element integration.
 
-### Priority Levels
+## Web Component Guidance
 
-Rules are categorized by impact:
+Use declarative custom element APIs when they exist:
 
-| Priority | Description | Action |
-| -------- | ----------- | ------ |
-| CRITICAL | Major performance or correctness issues | Fix immediately |
-| HIGH | Significant impact on maintainability/performance | Address in current PR |
-| MEDIUM | Best practice violations | Address when touching related code |
-| LOW | Style preferences and micro-optimizations | Consider during refactoring |
+```tsx
+<wc-select
+  prop:value={selectedIds()}
+  prop:options={options()}
+  on:wc-select-change={(event) => setSelectedIds(event.detail.selectedValues)}
+/>
 
-### For AI Agents
+<wc-dialog
+  prop:open={open()}
+  on:wc-dialog-toggle={(event) => setOpen(event.detail.open)}
+/>
+```
+
+Wrappers should own labels, layout, type adaptation, and form-library integration. The custom element should own default values, selection, slot timing, native fallback synchronization, focus internals, and event payloads.
+
+## For AI Agents
 
 [SKILL.md](SKILL.md) contains the complete rule index, task-based rule selection, common mistakes table, and React-to-Solid comparison. See [AGENTS.md](AGENTS.md) for contributor guidance on the skill file structure.
 
@@ -63,18 +62,15 @@ Rules are categorized by impact:
 ```text
 "Create a multiselect dropdown component"
 "Help me fix accessibility issues"
-"Help me refactor my app to follow best practices"
+"Refactor this Solid component to use fine-grained reactivity correctly"
+"Integrate this <wc-select> custom element with a Solid form"
 ```
-
-## Contributing
-
-Contributions are welcome! There is also a Fork button 😁.
 
 ## Resources
 
 - [Solid.js Documentation](https://docs.solidjs.com/)
 - [Solid.js Tutorial](https://www.solidjs.com/tutorial)
-- [eslint-plugin-solid](https://github.com/solidjs-community/eslint-plugin-solid) — Companion ESLint plugin for automated linting
+- [eslint-plugin-solid](https://github.com/solidjs-community/eslint-plugin-solid)
 
 ## License
 

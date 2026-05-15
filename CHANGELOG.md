@@ -2,6 +2,20 @@
 
 All notable changes to this skill will be documented in this file.
 
+## [1.8.0] - 2026-05-14 - Generic web component integration guidance
+
+### Added
+
+- 2 new rules for web component integration:
+  - 9-4: Thin Web Component Wrappers (HIGH) - wrappers own layout, labels, type adaptation, and form-library glue; custom elements own state timing, native fallback sync, and event payloads.
+  - 9-5: Property vs Attribute Binding (HIGH) - use `prop:*` for controlled state and rich data such as options, plugins, callbacks, and object arrays.
+
+### Changed
+
+- Rule 5-7 now recommends declarative `prop:value`, `prop:open`, `prop:defaultValue`, `prop:defaultOpen`, `prop:options`, and `prop:plugin` when custom elements expose framework-safe APIs.
+- Rule 9-2 now treats wrapper timers for slot timing as a custom element API smell rather than Solid wrapper responsibility.
+- Rule 9-3 examples now use generic `<wc-*>` components and `on:wc-*` custom event names.
+- `SKILL.md`, `README.md`, and `AGENTS.md` updated to 61 rules across 9 categories, with Web Component Integration expanded to 5 rules.
 ## [1.7.0] - Reactive and WC integration rules from post-mortem analysis
 
 ### Added

@@ -1,6 +1,6 @@
 ---
 name: solid-js-best-practices
-description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when working in any SolidJS project or codebase — writing components, auditing code, migrating from React, fixing signals and fine-grained reactivity bugs, or integrating web component libraries. 59 rules across 9 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing, web component integration) ranked by priority."
+description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when working in any SolidJS project or codebase — writing components, auditing code, migrating from React, fixing signals and fine-grained reactivity bugs, or integrating web component libraries. 61 rules across 9 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing, web component integration) ranked by priority."
 license: MIT
 allowed-tools:
   - Read
@@ -161,7 +161,7 @@ export default MyComponent;
 | [5-2](rules/5-2-access-dom-in-onmount.md) | Access DOM in onMount | HIGH | Access DOM elements in `onMount`, not during render |
 | [5-3](rules/5-3-cleanup-with-oncleanup.md) | Cleanup with onCleanup | HIGH | Always clean up subscriptions and timers |
 | [5-5](rules/5-5-avoid-innerhtml.md) | Avoid innerHTML | HIGH | Avoid `innerHTML` to prevent XSS — use JSX or `textContent` |
-| [5-7](rules/5-7-web-component-controlled-state.md) | Web Component Controlled State | HIGH | Use `createEffect` + ref + imperative calls to sync signals to web component APIs |
+| [5-7](rules/5-7-web-component-controlled-state.md) | Web Component Controlled State | HIGH | Use `prop:*` properties and `on:wc-*` events for modern custom elements; reserve refs/effects for native or legacy APIs |
 | [5-4](rules/5-4-use-directives.md) | Use Directives | MEDIUM | Use `use:` directives for reusable element behaviors |
 | [5-6](rules/5-6-event-handler-patterns.md) | Event Handler Patterns | MEDIUM | Use `on:`/`oncapture:` namespaces and array handler syntax correctly |
 
@@ -200,13 +200,15 @@ export default MyComponent;
 | [8-10](rules/8-10-router-integration-testing.md) | Router Integration Testing | HIGH | Use MemoryRouter `root` prop to provide router context to layout providers |
 | [8-11](rules/8-11-tanstack-query-test-setup.md) | TanStack Query Test Setup | HIGH | Create a fresh QueryClient per test with retry and caching disabled |
 
-### 9. Web Component Integration (3 rules)
+### 9. Web Component Integration (5 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
 | [9-1](rules/9-1-register-custom-elements-early.md) | Register Custom Elements at App Entry | HIGH | Import `/define` side-effects before any SolidJS reactive context |
 | [9-2](rules/9-2-defer-slotchange-handlers.md) | Defer slotchange Handler Side Effects | HIGH | Always defer focus, state writes, and DOM mutations in `slotchange` via `queueMicrotask` |
-| [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | Treat Custom Element and SolidJS Reactivity as Decoupled | MEDIUM | Use one-way data flow (SolidJS → attributes/props → events → SolidJS); never read custom element internal state from SolidJS reactive contexts |
+| [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | Treat Custom Element and SolidJS Reactivity as Decoupled | MEDIUM | Use one-way data flow (SolidJS -> attributes/props -> events -> SolidJS); never read custom element internal state from SolidJS reactive contexts |
+| [9-4](rules/9-4-thin-web-component-wrappers.md) | Thin Web Component Wrappers | HIGH | Wrappers own labels, layout, type adaptation, and form glue; custom elements own timing and native sync |
+| [9-5](rules/9-5-property-vs-attribute-binding.md) | Property vs Attribute Binding | HIGH | Use `prop:*` for controlled state and rich data; use attributes only for appropriate primitives |
 
 ## Task-Based Rule Selection
 
@@ -236,6 +238,8 @@ Load these rules when integrating Lit or other custom elements with SolidJS:
 | [9-1](rules/9-1-register-custom-elements-early.md) | Register before any SolidJS context mounts |
 | [9-2](rules/9-2-defer-slotchange-handlers.md) | Prevent synchronous side effects inside `runUpdates` |
 | [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | One-way data flow design |
+| [9-4](rules/9-4-thin-web-component-wrappers.md) | Keep wrappers focused on app concerns |
+| [9-5](rules/9-5-property-vs-attribute-binding.md) | Bind JS properties with `prop:*` |
 | [5-6](rules/5-6-event-handler-patterns.md) | Use `on:` namespace for custom element events |
 
 ### Code Review
@@ -308,7 +312,7 @@ Load these rules when using any custom element library (Shoelace, FAST, Lion, Ma
 | ---- | --- |
 | [2-10](rules/2-10-custom-element-typescript-declarations.md) | Declare custom element tags in JSX namespace; type newer HTML attributes and experimental CSS properties |
 | [5-6](rules/5-6-event-handler-patterns.md) | Use `on:` for all custom element events; type `CustomEvent` payloads correctly |
-| [5-7](rules/5-7-web-component-controlled-state.md) | Sync Solid signals to web component / native browser API imperative calls |
+| [5-7](rules/5-7-web-component-controlled-state.md) | Prefer declarative `prop:*`/`on:wc-*`; use refs for native or legacy APIs only |
 | [6-6](rules/6-6-web-component-css-and-bundle.md) | Per-component imports for tree-shaking; `::part()` overrides in global CSS only |
 
 ## Common Mistakes to Catch
@@ -344,16 +348,16 @@ Load these rules when using any custom element library (Shoelace, FAST, Lion, Ma
 | `<my-element onMyChange={...}>` misses all events | [5-6](rules/5-6-event-handler-patterns.md) | Use `on:my-change` — `on:` prefix required for all web component custom events |
 | `my-element::part(...)` rule inside a `.module.css` is silently ignored | [6-6](rules/6-6-web-component-css-and-bundle.md) | Move `::part()` overrides to a non-module global stylesheet |
 | Barrel import of entire web component library | [6-6](rules/6-6-web-component-css-and-bundle.md) | Import individual components by path to enable tree-shaking |
-| `value={signal()}` on web component — no two-way sync | [5-7](rules/5-7-web-component-controlled-state.md) | Listen to change events; push value imperatively via `ref` + `createEffect` |
+| `prop:value missing on custom element controlled state | [5-7](rules/5-7-web-component-controlled-state.md) | Use `prop:value={signal()}` plus `on:wc-*-change` |
 | `<div popover>` or `<button popoverTarget="x">` TypeScript error | [2-10](rules/2-10-custom-element-typescript-declarations.md) | Augment `HTMLElement` / `HTMLButtonElement` in a `.d.ts` file |
-| Object/array prop on custom element becomes `"[object Object]"` | [5-7](rules/5-7-web-component-controlled-state.md) | Use `prop:myProp={value()}` to set a JS property, not an HTML attribute |
+| Object/array prop on custom element becomes `"[object Object]"` | [9-5](rules/9-5-property-vs-attribute-binding.md) | Use `prop:options={options()}` or another `prop:*` binding |
 | Experimental CSS property (`anchor-name`) produces a TypeScript error | [2-8](rules/2-8-style-prop-conventions.md) | Cast with `as unknown as JSX.CSSProperties` instead of `as never` |
 | `<Show when={record}>` without `keyed` for a form component | [3-7](rules/3-7-use-keyed-for-stateful-children.md) | Add `keyed` — without it, switching records silently reuses the old form state |
 | `<Switch><Match>` for a single condition gating one heavy component | [3-4](rules/3-4-use-switch-match.md) | Use `<Show>` — Switch creates 2N+4 memos vs Show's 3 |
 | `batch()` inside `createEffect` or reactive context | [1-6](rules/1-6-batch-signal-updates.md) | `batch()` is a no-op inside `runUpdates` — only use at top-level handlers |
 | Custom element `slotchange` handler calling `.focus()` or writing state synchronously | [9-2](rules/9-2-defer-slotchange-handlers.md) | Defer all side effects via `queueMicrotask` — fires inside `runUpdates` on second+ mount |
 | Custom element registered inside a component or lazy chunk | [9-1](rules/9-1-register-custom-elements-early.md) | Import `/define` side-effects at app entry before any SolidJS rendering |
-| Reading custom element internal state (e.g. `el.open`, `el.value`) from `createEffect` | [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | Element properties are not SolidJS signals — use `on:` events to propagate changes upward |
+| Reading custom element internal state (for example `el.open` or `el.value`) from `createEffect` | [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | Element properties are not Solid signals; use `on:wc-*` events to propagate changes upward |
 
 ## Solid.js vs React Mental Model
 
