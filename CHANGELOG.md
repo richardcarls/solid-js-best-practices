@@ -2,7 +2,7 @@
 
 All notable changes to this skill will be documented in this file.
 
-## [1.8.0] - Generic web component integration guidance
+## [1.8.0] - 2026-05-14 - Generic web component integration guidance
 
 ### Added
 
