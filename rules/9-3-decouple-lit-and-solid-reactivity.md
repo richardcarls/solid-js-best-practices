@@ -71,11 +71,11 @@ import { createSignal } from "solid-js";
 // When selectedValue() changes, SolidJS updates the DOM attribute directly.
 function CategorySelector(props) {
   return (
-    <rc-combobox
+    <wc-combobox
       value={props.selectedValue}
       disabled={props.disabled}
       placeholder="Select category..."
-      on:rc-select-change={(e: CustomEvent) => props.onSelect(e.detail.value)}
+      on:wc-select-change={(e: CustomEvent) => props.onSelect(e.detail.value)}
     />
   );
 }
@@ -92,10 +92,10 @@ function SearchBar() {
   const [query, setQuery] = createSignal("");
 
   return (
-    <rc-search-input
+    <wc-search-input
       value={query()}
-      on:rc-input={(e: CustomEvent<string>) => setQuery(e.detail)}
-      on:rc-clear={() => setQuery("")}
+      on:wc-input={(e: CustomEvent<string>) => setQuery(e.detail)}
+      on:wc-clear={() => setQuery("")}
     />
   );
 }
@@ -110,14 +110,14 @@ function Combobox(props) {
   const [isOpen, setIsOpen] = createSignal(false);
 
   return (
-    <rc-combobox
-      on:rc-open={() => setIsOpen(true)}
-      on:rc-close={() => setIsOpen(false)}
+    <wc-combobox
+      on:wc-open={() => setIsOpen(true)}
+      on:wc-close={() => setIsOpen(false)}
     >
       <Show when={isOpen()}>
         <span class="combobox-indicator">▲</span>
       </Show>
-    </rc-combobox>
+    </wc-combobox>
   );
 }
 ```
