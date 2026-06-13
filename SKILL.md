@@ -1,6 +1,6 @@
 ---
 name: solid-js-best-practices
-description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when working in any SolidJS project or codebase — writing components, auditing code, migrating from React, fixing signals and fine-grained reactivity bugs, or integrating web component libraries. 61 rules across 9 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing, web component integration) ranked by priority."
+description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when working in any SolidJS project or codebase — writing components, auditing code, migrating from React, fixing signals and fine-grained reactivity bugs, or integrating web component libraries. 67 rules across 9 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing, web component integration) ranked by priority."
 license: MIT
 allowed-tools:
   - Read
@@ -143,7 +143,7 @@ export default MyComponent;
 | [3-6](rules/3-6-stable-component-mount.md) | Stable Component Mount | MEDIUM | Avoid rendering the same component in multiple Switch/Show branches |
 | [3-5](rules/3-5-provide-fallbacks.md) | Provide Fallbacks | LOW | Always provide `fallback` props for loading states |
 
-### 4. State Management (5 rules)
+### 4. State Management (7 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -152,6 +152,8 @@ export default MyComponent;
 | [4-3](rules/4-3-use-produce-for-mutations.md) | Use produce for Mutations | MEDIUM | Use `produce` for complex mutable-style store updates |
 | [4-4](rules/4-4-use-reconcile-for-data.md) | Use reconcile for Server Data | MEDIUM | Use `reconcile` when integrating server/external data |
 | [4-5](rules/4-5-use-context-for-global.md) | Use Context for Global State | MEDIUM | Use Context API for cross-component shared state |
+| [4-6](rules/4-6-store-functions-with-wrapper.md) | Store Functions with a Wrapper | HIGH | Wrap function values so setStore does not invoke them as updater functions |
+| [4-7](rules/4-7-cleanup-at-page-ownership-boundary.md) | Cleanup at the Page Ownership Boundary | HIGH | Use per-page cleanup when multiple routed panes remain mounted |
 
 ### 5. Refs & DOM (7 rules)
 
@@ -176,15 +178,16 @@ export default MyComponent;
 | [6-4](rules/6-4-optimize-store-access.md) | Optimize Store Access | LOW | Access only the store properties you need |
 | [6-5](rules/6-5-prefer-classlist.md) | Prefer classList | LOW | Use `classList` prop for conditional class toggling |
 
-### 7. Accessibility (3 rules)
+### 7. Accessibility (4 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
 | [7-1](rules/7-1-semantic-html.md) | Use Semantic HTML | HIGH | Use appropriate semantic HTML elements |
 | [7-2](rules/7-2-aria-attributes.md) | Use ARIA Attributes | MEDIUM | Apply appropriate ARIA attributes for custom controls |
 | [7-3](rules/7-3-keyboard-navigation.md) | Support Keyboard Navigation | MEDIUM | Ensure all interactive elements are keyboard accessible |
+| [7-4](rules/7-4-router-root-link-end.md) | End-Match Root Router Links | HIGH | Add end matching so the root link is not current on every route |
 
-### 8. Testing (11 rules)
+### 8. Testing (12 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -199,8 +202,9 @@ export default MyComponent;
 | [8-9](rules/8-9-browser-native-api-test-isolation.md) | Browser-Native API Test Isolation | HIGH | Clear IndexedDB and localStorage between tests — close connection before deleteDatabase |
 | [8-10](rules/8-10-router-integration-testing.md) | Router Integration Testing | HIGH | Use MemoryRouter `root` prop to provide router context to layout providers |
 | [8-11](rules/8-11-tanstack-query-test-setup.md) | TanStack Query Test Setup | HIGH | Create a fresh QueryClient per test with retry and caching disabled |
+| [8-12](rules/8-12-deproxy-before-structured-clone.md) | Deproxy Before Structured Clone | HIGH | Remove every reactive proxy before writing data to IndexedDB |
 
-### 9. Web Component Integration (5 rules)
+### 9. Web Component Integration (7 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -209,6 +213,8 @@ export default MyComponent;
 | [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | Treat Custom Element and SolidJS Reactivity as Decoupled | MEDIUM | Use one-way data flow (SolidJS -> attributes/props -> events -> SolidJS); never read custom element internal state from SolidJS reactive contexts |
 | [9-4](rules/9-4-thin-web-component-wrappers.md) | Thin Web Component Wrappers | HIGH | Wrappers own labels, layout, type adaptation, and form glue; custom elements own timing and native sync |
 | [9-5](rules/9-5-property-vs-attribute-binding.md) | Property vs Attribute Binding | HIGH | Use `prop:*` for controlled state and rich data; use attributes only for appropriate primitives |
+| [9-6](rules/9-6-register-custom-fields-with-form-libraries.md) | Register Custom Fields with Form Libraries | HIGH | Ensure property-bound custom fields enter lazy form-library registries |
+| [9-7](rules/9-7-store-state-for-web-component-heavy-forms.md) | Store State for Web-Component-Heavy Forms | MEDIUM | Prefer a Solid store when custom elements already own field interaction |
 
 ## Task-Based Rule Selection
 

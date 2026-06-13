@@ -146,6 +146,10 @@ Ternaries are acceptable for:
 
 But for component rendering, prefer `<Show>`.
 
+`<Show>` also works well for conditional slotted children of a custom element. It inserts and
+removes the child without adding a wrapper element, so the custom element's slot assignment and
+`slotchange` behavior continue to see the expected direct child.
+
 ## Related Rules
 
 - [3-4: Use Switch/Match](3-4-use-switch-match.md) - For multiple conditions

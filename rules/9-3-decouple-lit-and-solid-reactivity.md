@@ -35,6 +35,48 @@ SolidJS signal setters / event handlers
 SolidJS owns the data. Custom elements display it and report user interactions upward. The
 custom element never writes to a SolidJS signal directly.
 
+## Bridge at the Boundary
+
+Use declarative `prop:*` bindings for modern custom element property APIs. Use
+`createEffect` as an explicit bridge only when the element exposes an imperative API or a
+legacy property contract that cannot be expressed declaratively.
+
+```tsx
+// Legacy property bridge: SolidJS signal -> custom element property.
+let slider!: HTMLElement & { value: number; valueText: string };
+
+createEffect(() => {
+  slider.value = position();
+  slider.valueText = label();
+});
+
+<wc-slider
+  ref={slider}
+  on:wc-slider-change={(event: CustomEvent<{ value: number }>) => {
+    setPosition(event.detail.value);
+  }}
+/>;
+```
+
+Native platform APIs can also require imperative effects because their public API is
+method-based:
+
+```tsx
+let dialog!: HTMLDialogElement;
+
+createEffect(() => {
+  if (isOpen() && !dialog.open) dialog.showModal();
+  if (!isOpen() && dialog.open) dialog.close();
+});
+```
+
+Type refs as DOM-facing public contracts, not implementation classes. Avoid forcing consumers
+to import the custom element's framework type just to write a wrapper:
+
+```typescript
+let slider!: HTMLElement & { value: number; valueText: string };
+```
+
 ## Incorrect
 
 ```typescript
@@ -169,5 +211,7 @@ override disconnectedCallback(): void {
 
 - [9-1: Register Custom Elements at App Entry](9-1-register-custom-elements-early.md) - Registration timing
 - [9-2: Defer slotchange Handler Side Effects](9-2-defer-slotchange-handlers.md) - slotchange safety
+- [9-5: Property vs Attribute Binding](9-5-property-vs-attribute-binding.md) - Use `prop:*` for property APIs
+- [5-7: Web Component Controlled State](5-7-web-component-controlled-state.md) - Prefer property/event flow
 - [5-6: Event Handler Patterns](5-6-event-handler-patterns.md) - Use `on:` namespace for custom element events
 - [5-3: Cleanup with onCleanup](5-3-cleanup-with-oncleanup.md) - Cleaning up observers on SolidJS side
