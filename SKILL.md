@@ -1,6 +1,6 @@
 ---
 name: solid-js-best-practices
-description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when working in any SolidJS project or codebase — writing components, auditing code, migrating from React, fixing signals and fine-grained reactivity bugs, or integrating web component libraries. 67 rules across 9 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing, web component integration) ranked by priority."
+description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when working in any SolidJS project or codebase — writing components, auditing code, migrating from React, fixing signals and fine-grained reactivity bugs, or integrating web component libraries. 68 rules across 9 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing, web component integration) ranked by priority."
 license: MIT
 allowed-tools:
   - Read
@@ -204,7 +204,7 @@ export default MyComponent;
 | [8-11](rules/8-11-tanstack-query-test-setup.md) | TanStack Query Test Setup | HIGH | Create a fresh QueryClient per test with retry and caching disabled |
 | [8-12](rules/8-12-deproxy-before-structured-clone.md) | Deproxy Before Structured Clone | HIGH | Remove every reactive proxy before writing data to IndexedDB |
 
-### 9. Web Component Integration (7 rules)
+### 9. Web Component Integration (8 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -215,6 +215,7 @@ export default MyComponent;
 | [9-5](rules/9-5-property-vs-attribute-binding.md) | Property vs Attribute Binding | HIGH | Use `prop:*` for controlled state and rich data; use attributes only for appropriate primitives |
 | [9-6](rules/9-6-register-custom-fields-with-form-libraries.md) | Register Custom Fields with Form Libraries | HIGH | Ensure property-bound custom fields enter lazy form-library registries |
 | [9-7](rules/9-7-store-state-for-web-component-heavy-forms.md) | Store State for Web-Component-Heavy Forms | MEDIUM | Prefer a Solid store when custom elements already own field interaction |
+| [9-8](rules/9-8-wrapper-signal-for-controlled-only-wc.md) | Wrapper Signal for Controlled-Only WC | HIGH | When a WC has no `defaultValue`, use `createSignal` in the wrapper to own the uncontrolled → controlled bridge |
 
 ## Task-Based Rule Selection
 
@@ -320,6 +321,7 @@ Load these rules when using any custom element library (Shoelace, FAST, Lion, Ma
 | [5-6](rules/5-6-event-handler-patterns.md) | Use `on:` for all custom element events; type `CustomEvent` payloads correctly |
 | [5-7](rules/5-7-web-component-controlled-state.md) | Prefer declarative `prop:*`/`on:wc-*`; use refs for native or legacy APIs only |
 | [6-6](rules/6-6-web-component-css-and-bundle.md) | Per-component imports for tree-shaking; `::part()` overrides in global CSS only |
+| [9-8](rules/9-8-wrapper-signal-for-controlled-only-wc.md) | When the WC has no `defaultValue`, own the uncontrolled → controlled bridge with `createSignal` |
 
 ## Common Mistakes to Catch
 
