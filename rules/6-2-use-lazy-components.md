@@ -8,7 +8,8 @@ description: Use lazy() for code splitting large components
 
 ## Problem
 
-Large applications that load all components upfront have slow initial load times. The `lazy` function enables code splitting, loading components only when they're actually needed.
+Large applications that load all components upfront have slow initial load times. The `lazy`
+function enables code splitting, loading components only when they're actually needed.
 
 ## Incorrect
 
@@ -184,13 +185,13 @@ function UserArea(props) {
 
 1. **Route-Level Splitting**: Each major route should be lazy loaded.
 
-2. **Feature Splitting**: Large features (analytics, admin) should be separate chunks.
+1. **Feature Splitting**: Large features (analytics, admin) should be separate chunks.
 
-3. **Heavy Dependencies**: Components with large libraries (charts, editors) should be lazy.
+1. **Heavy Dependencies**: Components with large libraries (charts, editors) should be lazy.
 
-4. **Suspense Boundaries**: Wrap lazy components in Suspense with meaningful fallbacks.
+1. **Suspense Boundaries**: Wrap lazy components in Suspense with meaningful fallbacks.
 
-5. **Preloading**: Preload on hover/focus for perceived performance.
+1. **Preloading**: Preload on hover/focus for perceived performance.
 
 ## What to Lazy Load
 
@@ -208,11 +209,11 @@ function UserArea(props) {
 
 1. **Faster Initial Load**: Smaller initial bundle means faster Time to Interactive.
 
-2. **Reduced Bandwidth**: Users only download code for features they use.
+1. **Reduced Bandwidth**: Users only download code for features they use.
 
-3. **Better Caching**: Smaller chunks can be cached more effectively.
+1. **Better Caching**: Smaller chunks can be cached more effectively.
 
-4. **Mobile Performance**: Critical for slower networks and devices.
+1. **Mobile Performance**: Critical for slower networks and devices.
 
 ## Bundle Analysis
 

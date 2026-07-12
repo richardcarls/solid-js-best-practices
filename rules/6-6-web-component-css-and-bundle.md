@@ -8,11 +8,17 @@ description: Import web components individually for tree-shaking; place ::part()
 
 ## Problem
 
-Web component libraries bundle Shadow DOM templates and default styles per component. Two distinct issues arise when integrating them:
+Web component libraries bundle shadow DOM templates and default styles per component. Two distinct
+issues arise when integrating them:
 
-1. **Bundle size**: Importing an entire library in one statement pulls in all components, their templates, and their styles — even unused ones. This is especially problematic for PWAs with service worker precache limits.
+1. **Bundle size**: Importing an entire library in one statement pulls in all components, their
+   templates, and their styles; even unused ones. This is especially problematic for PWAs with
+   service worker precache limits.
 
-2. **CSS encapsulation**: Shadow DOM encapsulates styles by design. `::part()` selectors — the standard way to reach shadow internals — do **not** work inside CSS Modules files, because CSS Modules transforms class names but cannot generate valid `::part()` selectors. Any `::part()` rule inside a `.module.css` file is silently ignored.
+1. **CSS encapsulation**: shadow DOM encapsulates styles by design. `::part()` selectors (the
+   standard way to reach shadow internals) do **not** work inside CSS Modules files, because CSS
+   Modules transforms class names but cannot generate valid `::part()` selectors. Any `::part()`
+   rule inside a `.module.css` file is silently ignored.
 
 ## Incorrect
 
@@ -40,7 +46,7 @@ import "my-component-library";
 
 ## Correct
 
-### Part A — Bundle Size: Individual Component Imports
+### Part A; Bundle Size: Individual Component Imports
 
 Import only the components your app uses, from their specific module paths:
 
@@ -77,11 +83,12 @@ onMount(async () => {
 });
 ```
 
-### Part B — CSS Architecture: Global File for Shadow DOM Overrides
+### Part B; CSS Architecture: Global File for shadow DOM Overrides
 
-CSS Modules cannot generate `::part()` selectors. All shadow DOM overrides must live in a non-module global stylesheet:
+CSS Modules cannot generate `::part()` selectors. All shadow DOM overrides must live in a non-module
+global stylesheet:
 
-```
+```text
 src/
   styles/
     main.css           ← global stylesheet, imported once in main.tsx
@@ -133,7 +140,8 @@ custom-select {
 
 ### CSS Custom Properties vs `::part()`
 
-CSS custom properties (`--my-var`) cross shadow boundaries — they are the safer, more composable theming mechanism when the library exposes them:
+CSS custom properties (`--my-var`) cross shadow boundaries; they are the safer, more composable
+theming mechanism when the library exposes them:
 
 ```css
 /* ✅ PREFER: CSS variables cross the shadow boundary */
@@ -150,7 +158,9 @@ custom-button::part(base) {
 
 ### PWA / Service Worker Precache
 
-If your app uses a service worker with Workbox and precaches build assets, large web component bundles can exceed the default `maximumFileSizeToCacheInBytes` limit (2 MB). Per-component imports mitigate this, but you may still need to tune the limit for components you can't split further:
+If your app uses a service worker with Workbox and precaches build assets, large web component
+bundles can exceed the default `maximumFileSizeToCacheInBytes` limit (2 MB). Per-component imports
+mitigate this, but you may still need to tune the limit for components you can't split further:
 
 ```javascript
 // vite.config.ts (or workbox config)
@@ -161,20 +171,28 @@ VitePWA({
 });
 ```
 
-Document the trade-off: a higher limit means a larger initial precache, but full offline support for all components.
+Document the trade-off: a higher limit means a larger initial precache, but full offline support for
+all components.
 
 ## Why It Matters
 
-1. **Bundle size**: A library barrel import often includes hundreds of kilobytes of unused component code. Individual imports let Rollup/Vite eliminate what isn't used.
+1. **Bundle size**: A library barrel import often includes hundreds of kilobytes of unused component
+   code. Individual imports let Rollup/Vite eliminate what isn't used.
 
-2. **Silent CSS failures**: `::part()` inside a `.module.css` is not a build error — it compiles silently and simply never applies. This is one of the harder-to-diagnose styling issues in component integration.
+1. **Silent CSS failures**: `::part()` inside a `.module.css` is not a build error; it compiles
+   silently and simply never applies. This is one of the harder-to-diagnose styling issues in
+   component integration.
 
-3. **CSS variables are composable**: Unlike `::part()`, CSS variables defined at the host level cascade into all shadow roots in the subtree. They are the preferred theming mechanism when the library supports them.
+1. **CSS variables are composable**: Unlike `::part()`, CSS variables defined at the host level
+   cascade into all shadow roots in the subtree. They are the preferred theming mechanism when the
+   library supports them.
 
-4. **Separation of concerns**: Keeping shadow DOM overrides in a dedicated global file makes it easy to audit all third-party style customizations in one place.
+1. **Separation of concerns**: Keeping shadow DOM overrides in a dedicated global file makes it easy
+   to audit all third-party style customizations in one place.
 
 ## Related Rules
 
-- [2-10: Custom Element TypeScript Declarations](2-10-custom-element-typescript-declarations.md) — typing custom element props
-- [5-7: Web Component Controlled State](5-7-web-component-controlled-state.md) — imperative state sync
-- [6-2: Use Lazy Components](6-2-use-lazy-components.md) — code splitting with `lazy()`
+- [2-10: Custom Element TypeScript Declarations](2-10-custom-element-typescript-declarations.md);
+  typing custom element props
+- [5-7: Web Component Controlled State](5-7-web-component-controlled-state.md); imperative state sync
+- [6-2: Use Lazy Components](6-2-use-lazy-components.md); code splitting with `lazy()`

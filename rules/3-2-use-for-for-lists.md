@@ -1,14 +1,16 @@
 ---
 id: 3-2
-title: Use For for Lists
+title: Use `For` for Lists
 category: Control Flow
 priority: HIGH
-description: Use <For> for referentially-keyed list rendering
+description: Use <For> for referentially keyed list rendering
 ---
 
 ## Problem
 
-Using JavaScript's `.map()` method for rendering lists works, but it recreates all DOM nodes when the array changes. The `<For>` component is optimized for list rendering, updating only the items that actually changed.
+Using JavaScript's `.map()` method for rendering lists works, but it recreates all DOM nodes when
+the array changes. The `<For>` component is optimized for list rendering, updating only the items
+that actually changed.
 
 ## Incorrect
 
@@ -154,13 +156,14 @@ function EditableList() {
 
 ## Why It Matters
 
-1. **Referential Keying**: `<For>` tracks items by reference. When items move or change, only affected DOM nodes update.
+1. **Referential Keying**: `<For>` tracks items by reference. When items move or change, only
+   affected DOM nodes update.
 
-2. **Performance**: Adding/removing/reordering items doesn't recreate the entire list.
+1. **Performance**: Adding/removing/reordering items doesn't recreate the entire list.
 
-3. **State Preservation**: Component instances and their local state are preserved when items move.
+1. **State Preservation**: Component instances and their local state are preserved when items move.
 
-4. **Reactive Index**: The index accessor is reactive, updating only when position changes.
+1. **Reactive Index**: The index accessor is reactive, updating only when position changes.
 
 ## For vs Index
 

@@ -8,7 +8,9 @@ description: Setting signals in effects can cause infinite loops
 
 ## Problem
 
-Setting signals inside `createEffect` can lead to infinite loops, unexpected behavior, or inefficient update cycles. Effects run whenever their dependencies change, so setting a signal that the effect reads creates a cycle.
+Setting signals inside `createEffect` can lead to infinite loops, unexpected behavior, or
+inefficient update cycles. Effects run whenever their dependencies change, so setting a signal that
+the effect reads creates a cycle.
 
 ## Incorrect
 
@@ -140,13 +142,15 @@ function AutoSave() {
 
 ## Why It Matters
 
-1. **Infinite Loops**: Reading and writing the same signal in an effect creates an endless cycle that can crash your app.
+1. **Infinite Loops**: Reading and writing the same signal in an effect creates an endless cycle
+   that can crash your app.
 
-2. **Extra Render Cycles**: Even when not infinite, setting signals in effects causes additional updates after the initial render.
+1. **Extra Render Cycles**: Even when not infinite, setting signals in effects causes additional
+   updates after the initial render.
 
-3. **Hard to Debug**: The control flow becomes implicit and hard to trace.
+1. **Hard to Debug**: The control flow becomes implicit and hard to trace.
 
-4. **Performance**: Each signal set triggers a new reactive update cycle.
+1. **Performance**: Each signal set triggers a new reactive update cycle.
 
 ## Safe Patterns
 
@@ -174,8 +178,8 @@ if (Updates.length > 1e6) {
 This only fires when the **synchronous computation queue** (`Updates`) exceeds one million
 entries. It does **not** watch the separate `Effects` queue.
 
-A runaway accumulation in `Effects` — where each reactive cycle creates new effects faster than
-they are cleaned up — produces **no error, no warning, and no console output**. The browser tab
+A runaway accumulation in `Effects`; where each reactive cycle creates new effects faster than
+they are cleaned up; produces **no error, no warning, and no console output**. The browser tab
 freezes silently.
 
 If a navigation or user action causes a complete freeze with zero console errors, suspect

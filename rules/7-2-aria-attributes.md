@@ -8,7 +8,9 @@ description: Apply appropriate ARIA attributes for custom controls
 
 ## Problem
 
-Custom interactive components (dropdowns, modals, tabs) built with generic elements lack the semantic information screen readers need. ARIA (Accessible Rich Internet Applications) attributes bridge this gap by describing roles, states, and relationships.
+Custom interactive components (dropdowns, modals, tabs) built with generic elements lack the
+semantic information screen readers need. ARIA (Accessible Rich Internet Applications) attributes
+bridge this gap by describing roles, states, and relationships.
 
 ## Incorrect
 
@@ -217,10 +219,11 @@ function Alert(props) {
 
 ### Form Accessible Name
 
-A `<form>` element without an accessible name is **not exposed** as `role="form"` in the accessibility tree per the ARIA spec. This has two consequences:
+A `<form>` element without an accessible name is **not exposed** as `role="form"` in the
+accessibility tree per the ARIA spec. This has two consequences:
 
-1. `screen.getByRole("form")` throws in tests — the form isn't queryable by role
-2. Screen readers don't announce the form as a landmark, making navigation harder
+1. `screen.getByRole("form")` throws in tests; the form isn't queryable by role
+1. Screen readers don't announce the form as a landmark, making navigation harder
 
 ```tsx
 // ❌ WRONG: not exposed as role="form" — getByRole('form') throws
@@ -285,19 +288,19 @@ function FormField(props) {
 ## ARIA Rules
 
 1. **First Rule**: Don't use ARIA if native HTML works.
-2. **No Fake Roles**: ARIA changes announcements, not behavior.
-3. **Visible Labels**: `aria-label` or `aria-labelledby` for unnamed elements.
-4. **State Updates**: Keep `aria-*` attributes in sync with visual state.
+1. **No Fake Roles**: ARIA changes announcements, not behavior.
+1. **Visible Labels**: `aria-label` or `aria-labelledby` for unnamed elements.
+1. **State Updates**: Keep `aria-*` attributes in sync with visual state.
 
 ## Why It Matters
 
 1. **Screen Readers**: ARIA provides missing semantic information.
 
-2. **State Communication**: Announces changes (expanded/collapsed, selected).
+1. **State Communication**: Announces changes (expanded/collapsed, selected).
 
-3. **Relationships**: Connects labels, descriptions, and controls.
+1. **Relationships**: Connects labels, descriptions, and controls.
 
-4. **Interactive Patterns**: Standard patterns users expect.
+1. **Interactive Patterns**: Standard patterns users expect.
 
 ## Related Rules
 

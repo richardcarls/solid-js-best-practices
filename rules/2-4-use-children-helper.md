@@ -8,7 +8,9 @@ description: Use children() helper for safe children access
 
 ## Problem
 
-Accessing `props.children` multiple times can cause child components to be recreated or re-evaluated each time. The `children` helper resolves and memoizes children, making them safe to access multiple times or pass to multiple locations.
+Accessing `props.children` multiple times can cause child components to be recreated or re-evaluated
+each time. The `children` helper resolves and memoizes children, making them safe to access multiple
+times or pass to multiple locations.
 
 ## Incorrect
 
@@ -133,11 +135,11 @@ function Tabs(props) {
 
 1. **Memoization**: `children()` caches the resolved children, preventing unnecessary re-creation.
 
-2. **Flattening**: Automatically handles fragments and arrays, giving you a flat list of elements.
+1. **Flattening**: Automatically handles fragments and arrays, giving you a flat list of elements.
 
-3. **Safe Iteration**: Provides `toArray()` method for safely mapping over children.
+1. **Safe Iteration**: Provides `toArray()` method for safely mapping over children.
 
-4. **Reactivity**: Still reactive—updates when the actual children change.
+1. **Reactivity**: Still reactive: updates when the actual children change.
 
 ## The children Helper API
 

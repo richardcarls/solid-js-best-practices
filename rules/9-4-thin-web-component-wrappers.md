@@ -8,7 +8,9 @@ category: Web Component Integration
 
 ## Rule
 
-Solid wrappers around custom elements should adapt app concerns, not repair custom element behavior. Let the custom element own value/default handling, option synchronization, native fallback synchronization, slot timing, focus internals, and event emission.
+Solid wrappers around custom elements should adapt app concerns, not repair custom element behavior.
+Let the custom element own value/default handling, option synchronization, native fallback
+synchronization, slot timing, focus internals, and event emission.
 
 ## Incorrect
 
@@ -70,7 +72,9 @@ const CategorySelect: Component<Props> = (props) => {
 
 ## Why It Matters
 
-Wrappers that compensate for custom element timing become hard to reason about in Solid because render, slot assignment, and custom element updates are separate systems. Thin wrappers keep app code boring and push reusable integration guarantees into the web component library.
+Wrappers that compensate for custom element timing become hard to reason about in Solid because
+render, slot assignment, and custom element updates are separate systems. Thin wrappers keep app
+code boring and push reusable integration guarantees into the web component library.
 
 ## Related Rules
 

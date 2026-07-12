@@ -8,7 +8,9 @@ description: Always provide fallback props for loading states
 
 ## Problem
 
-When using conditional rendering or async data, failing to provide fallback content leads to empty UI states, confusing loading experiences, or jarring layout shifts. Always provide meaningful fallback content.
+When using conditional rendering or async data, failing to provide fallback content leads to empty
+UI states, confusing loading experiences, or jarring layout shifts. Always provide meaningful
+fallback content.
 
 ## Incorrect
 
@@ -196,11 +198,11 @@ function DataTable(props) {
 
 1. **User Experience**: Users see meaningful feedback instead of blank screens.
 
-2. **Layout Stability**: Skeleton fallbacks prevent content jumping.
+1. **Layout Stability**: Skeleton fallbacks prevent content jumping.
 
-3. **Error Recovery**: Error boundaries let users recover without page refresh.
+1. **Error Recovery**: Error boundaries let users recover without page refresh.
 
-4. **Accessibility**: Screen readers announce loading/empty states.
+1. **Accessibility**: Screen readers announce loading/empty states.
 
 ## Fallback Checklist
 
@@ -216,11 +218,11 @@ function DataTable(props) {
 
 1. **Match Structure**: Skeletons should match the loaded content's layout.
 
-2. **Be Informative**: Tell users what's happening ("Loading..." vs blank).
+1. **Be Informative**: Tell users what's happening ("Loading..." vs blank).
 
-3. **Provide Actions**: Error states should offer recovery options.
+1. **Provide Actions**: Error states should offer recovery options.
 
-4. **Use Transitions**: Smooth transitions between states when possible.
+1. **Use Transitions**: Smooth transitions between states when possible.
 
 ```tsx
 // ✅ CORRECT: Informative empty state with action
@@ -242,5 +244,5 @@ function DataTable(props) {
 ## Related Rules
 
 - [3-1: Use Show for Conditionals](3-1-use-show-for-conditionals.md) - Show's fallback prop
-- [3-2: Use For for Lists](3-2-use-for-for-lists.md) - For's fallback prop
+- [3-2: Use `For` for Lists](3-2-use-for-for-lists.md) - For's fallback prop
 - [6-3: Use Suspense](6-3-use-suspense.md) - Async loading boundaries

@@ -8,13 +8,17 @@ description: Use MemoryRouter with the root prop to provide router context to pr
 
 ## Problem
 
-`@solidjs/router` primitives (`useLocation`, `useSearchParams`, `useParams`, `<A>`) can only be called inside a component that is rendered within a router context. When you wrap a page component in test providers (QueryClientProvider, theme context, etc.) and render them as direct children of `<MemoryRouter>` without using `<Route>`, those providers are outside the router context and throw:
+`@solidjs/router` primitives (`useLocation`, `useSearchParams`, `useParams`, `<A>`) can only be
+called inside a component that is rendered within a router context. When you wrap a page component
+in test providers (QueryClientProvider, theme context, etc.) and render them as direct children of
+`<MemoryRouter>` without using `<Route>`, those providers are outside the router context and throw:
 
-```
+```text
 Error: <A> and router primitives can only be used inside a Route.
 ```
 
-Additionally, pages that read route params via `useParams()` require the URL to be set on the memory history **before** the component renders — not after.
+Additionally, pages that read route params via `useParams()` require the URL to be set on the memory
+history **before** the component renders; not after.
 
 ## Incorrect
 
@@ -42,7 +46,9 @@ render(<RecipesListPage />);
 
 ### Use the `root` Prop for Layout Providers
 
-`MemoryRouter`'s `root` prop accepts a `Component<RouteSectionProps>` that renders inside the router context. Use a factory function so each test gets fresh context instances — never share context across tests.
+`MemoryRouter`'s `root` prop accepts a `Component<RouteSectionProps>` that renders inside the router
+context. Use a factory function so each test gets fresh context instances; never share context
+across tests.
 
 ```tsx
 // src/test-helpers/renderHelpers.tsx
@@ -164,13 +170,17 @@ history.listen(callback)                // register navigation listener
 
 ## Why It Matters
 
-1. **Context errors**: Without the `root` prop, any provider that calls `useLocation()` or `useParams()` throws immediately — the test can't even render.
+1. **Context errors**: Without the `root` prop, any provider that calls `useLocation()` or
+   `useParams()` throws immediately; the test can't even render.
 
-2. **Stale URL on render**: Setting `history.set()` after render means the component reads the wrong initial path, causing `useParams()` to return empty params.
+1. **Stale URL on render**: Setting `history.set()` after render means the component reads the wrong
+   initial path, causing `useParams()` to return empty params.
 
-3. **Shared context leakage**: Reusing a `makeLayout()` instance across tests shares context state. The factory pattern ensures each test gets a clean slate.
+1. **Shared context leakage**: Reusing a `makeLayout()` instance across tests shares context state.
+   The factory pattern ensures each test gets a clean slate.
 
 ## Related Rules
 
 - [8-1: Configure Vitest for Solid](8-1-configure-vitest-for-solid.md) - Vitest workspace config prerequisite
-- [8-11: TanStack Query Test Setup](8-11-tanstack-query-test-setup.md) - makeTestQueryClient used inside renderHelpers
+- [8-11: TanStack Query Test Setup](8-11-tanstack-query-test-setup.md) - makeTestQueryClient used
+  inside renderHelpers

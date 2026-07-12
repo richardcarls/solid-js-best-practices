@@ -8,7 +8,9 @@ description: Use reconcile when integrating server/external data
 
 ## Problem
 
-When replacing store data with data from an external source (API, WebSocket, etc.), using direct assignment or spreading causes all subscribed components to re-render, even for unchanged values. The `reconcile` utility diffs the data and only updates what actually changed.
+When replacing store data with data from an external source (API, WebSocket, etc.), using direct
+assignment or spreading causes all subscribed components to re-render, even for unchanged values.
+The `reconcile` utility diffs the data and only updates what actually changed.
 
 ## Incorrect
 
@@ -194,14 +196,14 @@ setData("users", reconcile(new, { key: "id" }));
 
 1. **Performance**: Only changed properties trigger reactive updates.
 
-2. **DOM Stability**: List items aren't recreated if their data hasn't changed.
+1. **DOM Stability**: List items aren't recreated if their data hasn't changed.
 
-3. **State Preservation**: Component local state survives data refreshes for unchanged items.
+1. **State Preservation**: Component local state survives data refreshes for unchanged items.
 
-4. **Network Efficiency Pattern**: Encourages fetching full data without performance penalty.
+1. **Network Efficiency Pattern**: Encourages fetching full data without performance penalty.
 
 ## Related Rules
 
 - [4-2: Store Path Updates](4-2-store-path-updates.md) - For known changes
 - [4-3: Use produce for Mutations](4-3-use-produce-for-mutations.md) - For local mutations
-- [3-2: Use For for Lists](3-2-use-for-for-lists.md) - List rendering with reconciled data
+- [3-2: Use `For` for Lists](3-2-use-for-for-lists.md) - List rendering with reconciled data

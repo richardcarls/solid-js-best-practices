@@ -8,7 +8,9 @@ description: Use <Show> instead of ternary operators
 
 ## Problem
 
-Using JavaScript ternary operators or logical AND (`&&`) for conditional rendering works but bypasses Solid's optimizations. The `<Show>` component is optimized for conditional rendering and provides better performance and semantics.
+Using JavaScript ternary operators or logical AND (`&&`) for conditional rendering works but
+bypasses Solid's optimizations. The `<Show>` component is optimized for conditional rendering and
+provides better performance and semantics.
 
 ## Incorrect
 
@@ -110,15 +112,16 @@ function Dashboard(props) {
 
 ## Why It Matters
 
-1. **Optimization**: `<Show>` preserves DOM nodes and component instances when toggling. Ternaries may recreate elements.
+1. **Optimization**: `<Show>` preserves DOM nodes and component instances when toggling. Ternaries
+   may recreate elements.
 
-2. **Type Narrowing**: The callback form provides a narrowed, non-null accessor for the condition value.
+1. **Type Narrowing**: The callback form provides a narrowed, non-null accessor for the condition value.
 
-3. **Falsy Safety**: Properly handles `0`, `""`, and other falsy values that `&&` renders incorrectly.
+1. **Falsy Safety**: Properly handles `0`, `""`, and other falsy values that `&&` renders incorrectly.
 
-4. **Readability**: Explicit `fallback` prop is clearer than ternary's `:` alternative.
+1. **Readability**: Explicit `fallback` prop is clearer than ternary's `:` alternative.
 
-5. **Keyed Updates**: The `keyed` prop gives control over when to recreate content.
+1. **Keyed Updates**: The `keyed` prop gives control over when to recreate content.
 
 ## Show Props
 

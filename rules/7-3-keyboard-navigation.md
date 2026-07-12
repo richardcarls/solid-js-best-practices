@@ -8,7 +8,9 @@ description: Ensure all interactive elements are keyboard accessible
 
 ## Problem
 
-Interactive elements must be usable without a mouse. Users with motor disabilities, power users, and anyone with a broken mouse rely on keyboard navigation. Custom components built with non-interactive elements often lack keyboard support.
+Interactive elements must be usable without a mouse. Users with motor disabilities, power users, and
+anyone with a broken mouse rely on keyboard navigation. Custom components built with non-interactive
+elements often lack keyboard support.
 
 ## Incorrect
 
@@ -289,20 +291,20 @@ function Layout(props) {
 
 1. **Accessibility**: Required for users who can't use a mouse.
 
-2. **Power Users**: Many prefer keyboard for speed.
+1. **Power Users**: Many prefer keyboard for speed.
 
-3. **Assistive Tech**: Screen readers rely on keyboard navigation.
+1. **Assistive Tech**: Screen readers rely on keyboard navigation.
 
-4. **Legal**: Required by WCAG and accessibility laws.
+1. **Legal**: Required by WCAG and accessibility laws.
 
 ## Testing Keyboard Access
 
 1. Unplug your mouse
-2. Tab through the entire page
-3. Verify all interactive elements are reachable
-4. Check focus indicators are visible
-5. Test Escape closes modals/dropdowns
-6. Verify arrow key navigation in widgets
+1. Tab through the entire page
+1. Verify all interactive elements are reachable
+1. Check focus indicators are visible
+1. Test Escape closes modals/dropdowns
+1. Verify arrow key navigation in widgets
 
 ## Related Rules
 

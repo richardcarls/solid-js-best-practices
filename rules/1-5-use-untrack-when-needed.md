@@ -8,7 +8,9 @@ description: Use untrack() to prevent unwanted reactive subscriptions
 
 ## Problem
 
-Sometimes you need to read a signal's value without subscribing to its changes. By default, any signal accessed within a reactive context (effect, memo, JSX) creates a dependency. The `untrack` function lets you read values without creating subscriptions.
+Sometimes you need to read a signal's value without subscribing to its changes. By default, any
+signal accessed within a reactive context (effect, memo, JSX) creates a dependency. The `untrack`
+function lets you read values without creating subscriptions.
 
 ## Incorrect
 
@@ -140,13 +142,14 @@ function Logger() {
 
 ## Why It Matters
 
-1. **Control Over Dependencies**: Sometimes you need to read a value for reference without wanting updates when it changes.
+1. **Control Over Dependencies**: Sometimes you need to read a value for reference without wanting
+   updates when it changes.
 
-2. **Prevent Infinite Loops**: When an effect needs to read and potentially write to the same signal.
+1. **Prevent Infinite Loops**: When an effect needs to read and potentially write to the same signal.
 
-3. **Performance**: Reduce unnecessary effect re-runs by only tracking what you need.
+1. **Performance**: Reduce unnecessary effect re-runs by only tracking what you need.
 
-4. **Initial Values**: Read current state for comparison without subscribing.
+1. **Initial Values**: Read current state for comparison without subscribing.
 
 ## Common Use Cases
 

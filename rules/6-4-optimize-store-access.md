@@ -8,7 +8,9 @@ description: Access only the store properties you need
 
 ## Problem
 
-Solid stores provide fine-grained reactivity at the property level. When you access more properties than needed, components subscribe to all of them, causing unnecessary re-renders when any of those properties change.
+Solid stores provide fine-grained reactivity at the property level. When you access more properties
+than needed, components subscribe to all of them, causing unnecessary re-renders when any of those
+properties change.
 
 ## Incorrect
 
@@ -196,11 +198,11 @@ function Dashboard() {
 
 1. **Fewer Re-renders**: Components only update for properties they actually use.
 
-2. **Better Performance**: Less work for the reactive system to track.
+1. **Better Performance**: Less work for the reactive system to track.
 
-3. **Predictable Updates**: Easier to understand what triggers re-renders.
+1. **Predictable Updates**: Easier to understand what triggers re-renders.
 
-4. **Memory Efficiency**: Fewer subscriptions = less memory overhead.
+1. **Memory Efficiency**: Fewer subscriptions = less memory overhead.
 
 ## Debugging Store Access
 

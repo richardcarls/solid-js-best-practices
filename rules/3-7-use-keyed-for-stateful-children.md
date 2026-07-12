@@ -8,7 +8,10 @@ description: Add keyed prop when the child component has internal state and the 
 
 ## Problem
 
-`<Show>` and `<Match>` use boolean equality by default: the child is only remounted when the condition transitions between truthy and falsy. When the input value changes but stays truthy — for example, navigating from record A to record B — the child component is **not remounted**. Stateful children (forms, scroll position, focus state) silently retain their previous state.
+`<Show>` and `<Match>` use boolean equality by default: the child is only remounted when the
+condition transitions between truthy and falsy. When the input value changes but stays truthy; for
+example, navigating from record A to record B; the child component is **not remounted**. Stateful
+children (forms, scroll position, focus state) silently retain their previous state.
 
 This failure mode produces no error. The component renders, appears correct, and shows wrong data.
 

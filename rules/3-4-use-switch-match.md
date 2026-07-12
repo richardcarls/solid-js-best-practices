@@ -8,7 +8,9 @@ description: Use <Switch>/<Match> for multiple conditions
 
 ## Problem
 
-When rendering different content based on multiple conditions, nested `<Show>` components or chained ternaries become hard to read and maintain. The `<Switch>` and `<Match>` components provide a cleaner pattern for multiple mutually exclusive conditions.
+When rendering different content based on multiple conditions, nested `<Show>` components or chained
+ternaries become hard to read and maintain. The `<Switch>` and `<Match>` components provide a
+cleaner pattern for multiple mutually exclusive conditions.
 
 ## Incorrect
 
@@ -178,11 +180,11 @@ function AsyncContent(props: { state: State }) {
 
 1. **Readability**: Flat structure is easier to scan than nested conditionals.
 
-2. **Maintainability**: Adding or removing conditions is straightforward.
+1. **Maintainability**: Adding or removing conditions is straightforward.
 
-3. **Explicit Fallback**: The `fallback` prop makes the default case clear.
+1. **Explicit Fallback**: The `fallback` prop makes the default case clear.
 
-4. **First Match Wins**: Clear precedence when conditions might overlap.
+1. **First Match Wins**: Clear precedence when conditions might overlap.
 
 ## Switch/Match Props
 
@@ -218,7 +220,7 @@ condition-value memos, N boolean-condition memos, and one "eval conditions" memo
 
 `<Show>` creates **3 memos**: a `children` helper (2 memos) and one condition memo.
 
-This matters when gating a single, heavy component — especially one that creates many reactive
+This matters when gating a single, heavy component; especially one that creates many reactive
 primitives (form libraries, complex stores, rich editor components). Each memo is a reactive
 subscription that participates in SolidJS's Transition tracking during navigation. Unnecessary
 memos amplify the cost of every route change.
@@ -244,4 +246,5 @@ its memo cost.
 
 - [3-1: Use Show for Conditionals](3-1-use-show-for-conditionals.md) - For simple conditions
 - [3-5: Provide Fallbacks](3-5-provide-fallbacks.md) - Always handle default case
-- [3-7: Use keyed for Stateful Children](3-7-use-keyed-for-stateful-children.md) - When the value (not just truthiness) determines identity
+- [3-7: Use keyed for Stateful Children](3-7-use-keyed-for-stateful-children.md) - When the value
+  (not just truthiness) determines identity

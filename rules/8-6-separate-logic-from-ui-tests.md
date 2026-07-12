@@ -8,7 +8,12 @@ description: Test reactive primitives and hooks independently from component ren
 
 ## Problem
 
-Testing all behavior through rendered components is slow, fragile, and conflates logic bugs with rendering bugs. Solid's architecture naturally separates reactive logic (custom primitives/hooks) from presentation (components). Custom primitives can be tested with `renderHook()` without any DOM rendering. Directives can be tested with `renderDirective()` or by attaching to a bare DOM element. Reserving component-level `render()` tests for actual UI integration behavior keeps the test suite fast and pinpoints failures precisely.
+Testing all behavior through rendered components is slow, fragile, and conflates logic bugs with
+rendering bugs. Solid's architecture naturally separates reactive logic (custom primitives/hooks)
+from presentation (components). Custom primitives can be tested with `renderHook()` without any DOM
+rendering. Directives can be tested with `renderDirective()` or by attaching to a bare DOM element.
+Reserving component-level `render()` tests for actual UI integration behavior keeps the test suite
+fast and pinpoints failures precisely.
 
 ## Incorrect
 
@@ -183,16 +188,21 @@ test("shows username when logged in", async () => {
 
 ## Why It Matters
 
-1. **Speed**: Primitive/hook tests run in microseconds with no DOM overhead; component tests are 10-100x slower.
+1. **Speed**: Primitive/hook tests run in microseconds with no DOM overhead; component tests are
+   10-100x slower.
 
-2. **Precision**: When a primitive test fails, the bug is in logic. When a component test fails, the cause could be logic, rendering, or test setup.
+1. **Precision**: When a primitive test fails, the bug is in logic. When a component test fails, the
+   cause could be logic, rendering, or test setup.
 
-3. **Solid's Design**: Solid's reactive primitive pattern is built for extraction and reuse -- testing them independently validates that design.
+1. **Solid's Design**: Solid's reactive primitive pattern is built for extraction and reuse --
+   testing them independently validates that design.
 
-4. **Store Mocking**: Static mock values silently break reactivity. Getter-based mocks preserve signal tracking so components react to store changes in tests.
+1. **Store Mocking**: Static mock values silently break reactivity. Getter-based mocks preserve
+   signal tracking so components react to store changes in tests.
 
 ## Related Rules
 
 - [5-4: Use Directives](5-4-use-directives.md) - Directives are testable in isolation
 - [4-5: Use Context for Global State](4-5-use-context-for-global.md) - Context mocking patterns
-- [8-3: Test Primitives in a Root](8-3-test-primitives-in-root.md) - Reactive scope requirement for primitives
+- [8-3: Test Primitives in a Root](8-3-test-primitives-in-root.md) - Reactive scope requirement for
+  primitives

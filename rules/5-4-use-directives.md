@@ -3,12 +3,14 @@ id: 5-4
 title: Use Directives
 category: Refs & DOM
 priority: MEDIUM
-description: Use use: directives for reusable element behaviors
+description: "Use use: directives for reusable element behaviors"
 ---
 
 ## Problem
 
-When you need to apply the same DOM behavior to multiple elements (focus management, click outside detection, tooltips, etc.), duplicating the logic in each component leads to repetition. Directives provide a reusable, declarative way to attach behaviors to elements.
+When you need to apply the same DOM behavior to multiple elements (focus management, click outside
+detection, tooltips, etc.), duplicating the logic in each component leads to repetition. Directives
+provide a reusable, declarative way to attach behaviors to elements.
 
 ## Incorrect
 
@@ -234,11 +236,11 @@ function directiveName(
 
 1. **Reusability**: Write once, use across many elements.
 
-2. **Encapsulation**: Behavior logic is self-contained with cleanup.
+1. **Encapsulation**: Behavior logic is self-contained with cleanup.
 
-3. **Declarative**: `use:directiveName` clearly shows element behaviors.
+1. **Declarative**: `use:directiveName` clearly shows element behaviors.
 
-4. **Composable**: Multiple directives can be combined on one element.
+1. **Composable**: Multiple directives can be combined on one element.
 
 ## Related Rules
 

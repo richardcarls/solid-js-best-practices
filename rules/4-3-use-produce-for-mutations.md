@@ -8,7 +8,9 @@ description: Use produce for complex mutable-style store updates
 
 ## Problem
 
-When you need to make multiple changes to a store at once, or when mutable-style code is clearer, the path syntax can become verbose. The `produce` utility lets you write mutations in a mutable style that's automatically converted to immutable updates.
+When you need to make multiple changes to a store at once, or when mutable-style code is clearer,
+the path syntax can become verbose. The `produce` utility lets you write mutations in a mutable
+style that's automatically converted to immutable updates.
 
 ## Incorrect
 
@@ -185,17 +187,18 @@ setStore(updater);
 setStore("nested", "path", updater);
 ```
 
-The draft is a proxy that records your mutations and applies them as immutable updates to the actual store.
+The draft is a proxy that records your mutations and applies them as immutable updates to the actual
+store.
 
 ## Why It Matters
 
 1. **Readability**: Mutable-style code is often clearer for complex updates.
 
-2. **Atomicity**: All mutations in a produce block are batched into one update.
+1. **Atomicity**: All mutations in a produce block are batched into one update.
 
-3. **Array Operations**: Native array methods like `push`, `splice`, `sort` work naturally.
+1. **Array Operations**: Native array methods like `push`, `splice`, `sort` work naturally.
 
-4. **Loops and Conditions**: Easy to use control flow in mutations.
+1. **Loops and Conditions**: Easy to use control flow in mutations.
 
 ## Related Rules
 

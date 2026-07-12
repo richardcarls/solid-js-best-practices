@@ -10,7 +10,7 @@ category: Web Component Integration
 
 When a custom element exposes only a controlled `value` property and no `defaultValue` mechanism,
 initialize a `createSignal` from the wrapper's `defaultValue` prop and bind `prop:value` to that
-signal. The wrapper owns the uncontrolled → controlled bridge in this case — not the custom element.
+signal. The wrapper owns the uncontrolled → controlled bridge in this case; not the custom element.
 
 ## Why This Differs from Rule 9-4
 
@@ -39,7 +39,7 @@ export const Slider = (props: SliderProps) => {
 };
 ```
 
-## Incorrect — passing defaultValue to a WC that doesn't support it
+## Incorrect; passing defaultValue to a WC that doesn't support it
 
 ```tsx
 <rc-slider
@@ -51,7 +51,7 @@ export const Slider = (props: SliderProps) => {
 ## Why It Matters
 
 Without the internal signal, `prop:value` stays at its initial render value because Solid's JSX
-only reacts to signals — a plain `props.defaultValue` expression won't drive updates after the
+only reacts to signals; a plain `props.defaultValue` expression won't drive updates after the
 first render.
 
 ## Related Rules

@@ -8,7 +8,9 @@ description: Use splitProps to separate prop groups safely
 
 ## Problem
 
-When creating wrapper components, you often need to separate "local" props (consumed by your component) from props that should pass through to a child element. Destructuring or manual picking breaks reactivity. The `splitProps` function safely divides props while preserving reactivity.
+When creating wrapper components, you often need to separate "local" props (consumed by your
+component) from props that should pass through to a child element. Destructuring or manual picking
+breaks reactivity. The `splitProps` function safely divides props while preserving reactivity.
 
 ## Incorrect
 
@@ -159,11 +161,11 @@ const Button: Component<ButtonProps> = (props) => {
 
 1. **Reactivity Preserved**: Both the local props object and the rest object remain reactive.
 
-2. **Clean Separation**: Explicitly define which props your component consumes vs. passes through.
+1. **Clean Separation**: Explicitly define which props your component consumes vs. passes through.
 
-3. **Spread Safety**: The remaining props object is safe to spread onto child elements.
+1. **Spread Safety**: The remaining props object is safe to spread onto child elements.
 
-4. **Type Safety**: TypeScript correctly infers the types of split prop groups.
+1. **Type Safety**: TypeScript correctly infers the types of split prop groups.
 
 ## Pattern Comparison
 

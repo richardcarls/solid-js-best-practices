@@ -8,7 +8,9 @@ description: Use path syntax for granular, efficient store updates
 
 ## Problem
 
-Updating stores by replacing entire objects defeats the purpose of fine-grained reactivity. The path syntax allows targeted updates that only trigger re-renders for the specific properties that changed.
+Updating stores by replacing entire objects defeats the purpose of fine-grained reactivity. The path
+syntax allows targeted updates that only trigger re-renders for the specific properties that
+changed.
 
 ## Incorrect
 
@@ -198,14 +200,14 @@ setStore("key1", "key2", current => current + 1);
 
 1. **Fine-Grained Updates**: Only components subscribed to the changed property re-render.
 
-2. **Performance**: No need to clone and spread nested objects.
+1. **Performance**: No need to clone and spread nested objects.
 
-3. **Clarity**: Path syntax clearly shows what's being updated.
+1. **Clarity**: Path syntax clearly shows what's being updated.
 
-4. **Batch Updates**: Multiple path updates in one `setStore` call are batched.
+1. **Batch Updates**: Multiple path updates in one `setStore` call are batched.
 
 ## Related Rules
 
 - [4-1: Signals vs Stores](4-1-signals-vs-stores.md) - When to use stores
 - [4-3: Use produce for Mutations](4-3-use-produce-for-mutations.md) - Alternative mutation style
-- [3-2: Use For for Lists](3-2-use-for-for-lists.md) - Rendering store arrays
+- [3-2: Use `For` for Lists](3-2-use-for-for-lists.md) - Rendering store arrays

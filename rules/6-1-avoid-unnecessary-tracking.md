@@ -8,7 +8,8 @@ description: Don't access signals outside reactive contexts
 
 ## Problem
 
-Accessing signals in contexts where you don't need reactivity creates unnecessary subscriptions. This leads to re-renders, effect re-runs, and wasted computation when those signals change.
+Accessing signals in contexts where you don't need reactivity creates unnecessary subscriptions.
+This leads to re-renders, effect re-runs, and wasted computation when those signals change.
 
 ## Incorrect
 
@@ -182,13 +183,14 @@ function FilteredList() {
 
 ## Why It Matters
 
-1. **Excess Re-renders**: Unnecessary subscriptions cause components to update when unrelated signals change.
+1. **Excess Re-renders**: Unnecessary subscriptions cause components to update when unrelated
+   signals change.
 
-2. **Performance**: More subscriptions = more work for the reactive system.
+1. **Performance**: More subscriptions = more work for the reactive system.
 
-3. **Predictability**: Understanding what triggers updates makes debugging easier.
+1. **Predictability**: Understanding what triggers updates makes debugging easier.
 
-4. **Resource Efficiency**: Effects doing unnecessary work waste CPU and battery.
+1. **Resource Efficiency**: Effects doing unnecessary work waste CPU and battery.
 
 ## Related Rules
 

@@ -8,7 +8,9 @@ description: Use object syntax with kebab-case properties and string values for 
 
 ## Problem
 
-Solid.js requires the `style` prop to be an object (not a string) with **kebab-case** CSS property names and **string values** for dimensions. Using a string, React's camelCase property names, or bare numbers will produce broken or silently ignored styles.
+Solid.js requires the `style` prop to be an object (not a string) with **kebab-case** CSS property
+names and **string values** for dimensions. Using a string, React's camelCase property names, or
+bare numbers will produce broken or silently ignored styles.
 
 ## Incorrect
 
@@ -119,21 +121,29 @@ function Alert(props) {
 
 ## Why It Matters
 
-1. **Silent Failures**: String styles and camelCase properties are silently ignored — no error, just missing styles.
+1. **Silent Failures**: String styles and camelCase properties are silently ignored; no error, just
+   missing styles.
 
-2. **Solid Compiles Styles**: Solid compiles style objects to efficient `setProperty` calls. String styles bypass this optimization.
+1. **Solid Compiles Styles**: Solid compiles style objects to efficient `setProperty` calls. String
+   styles bypass this optimization.
 
-3. **Migration Pitfall**: React developers instinctively write camelCase style properties. This is a mechanical but frequent migration fix.
+1. **Migration Pitfall**: React developers instinctively write camelCase style properties. This is a
+   mechanical but frequent migration fix.
 
-4. **Type Safety**: When using TypeScript with kebab-case properties, incorrect property names are caught at compile time.
+1. **Type Safety**: When using TypeScript with kebab-case properties, incorrect property names are
+   caught at compile time.
 
 ## Experimental CSS Properties Not Yet in TypeScript's DOM Types
 
-Some newer CSS features — CSS Anchor Positioning (`anchor-name`, `position-anchor`), `view-timeline-name`, and others — may not yet appear in TypeScript's `JSX.CSSProperties` type. Attempting to use them produces a type error.
+Some newer CSS features, such as CSS Anchor Positioning (`anchor-name`, `position-anchor`) and
+`view-timeline-name`, may not yet appear in TypeScript's `JSX.CSSProperties` type. Attempting to use
+them produces a type error.
 
 ### Safe Cast Pattern
 
-Use `as unknown as JSX.CSSProperties` rather than `as never`. The `as never` cast removes all type checking on the object; the `unknown` cast is narrower and preserves checking on all other properties:
+Use `as unknown as JSX.CSSProperties` rather than `as never`. The `as never` cast removes all type
+checking on the object; the `unknown` cast is narrower and preserves checking on all other
+properties:
 
 ```tsx
 // ❌ WRONG: as never disables type checking on the entire object
@@ -164,10 +174,12 @@ const experimentalCss = (props: Record<string, string>): JSX.CSSProperties =>
 />
 ```
 
-The same pattern applies to any CSS property ahead of TypeScript's DOM lib: `container-type`, `view-timeline-name`, `position-anchor`, `overlay`, etc.
+The same pattern applies to any CSS property ahead of TypeScript's DOM lib: `container-type`,
+`view-timeline-name`, `position-anchor`, `overlay`, etc.
 
 ## Related Rules
 
 - [2-7: No React-Specific Props](2-7-no-react-specific-props.md) - Other React prop name differences
 - [6-5: Prefer classList](6-5-prefer-classlist.md) - Conditional class toggling
-- [2-10: Custom Element TypeScript Declarations](2-10-custom-element-typescript-declarations.md) - Augmenting TS types for custom elements and newer HTML attributes
+- [2-10: Custom Element TypeScript Declarations](2-10-custom-element-typescript-declarations.md) -
+  Augmenting TS types for custom elements and newer HTML attributes

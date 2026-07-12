@@ -8,7 +8,9 @@ description: Use Context API for cross-component shared state
 
 ## Problem
 
-Passing state through many component layers (prop drilling) creates tight coupling and maintenance burden. Solid's Context API provides a clean way to share state across component trees without explicit prop passing.
+Passing state through many component layers (prop drilling) creates tight coupling and maintenance
+burden. Solid's Context API provides a clean way to share state across component trees without
+explicit prop passing.
 
 ## Incorrect
 
@@ -228,13 +230,13 @@ function Component() {
 
 1. **Type Safety**: Always define context value types.
 
-2. **Custom Hooks**: Wrap `useContext` in a hook that throws if context is missing.
+1. **Custom Hooks**: Wrap `useContext` in a hook that throws if context is missing.
 
-3. **Stable Values**: Include signals/setters directly, not derived objects.
+1. **Stable Values**: Include signals/setters directly, not derived objects.
 
-4. **Split by Concern**: Separate auth, theme, i18n into different contexts.
+1. **Split by Concern**: Separate auth, theme, i18n into different contexts.
 
-5. **Colocate Provider**: Place provider at the lowest common ancestor.
+1. **Colocate Provider**: Place provider at the lowest common ancestor.
 
 ## When to Use Context
 

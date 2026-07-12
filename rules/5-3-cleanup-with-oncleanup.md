@@ -8,7 +8,9 @@ description: Always clean up subscriptions and timers
 
 ## Problem
 
-Components that create subscriptions, timers, event listeners, or other resources must clean them up when the component unmounts. Failing to do so causes memory leaks, stale callbacks, and unexpected behavior.
+Components that create subscriptions, timers, event listeners, or other resources must clean them up
+when the component unmounts. Failing to do so causes memory leaks, stale callbacks, and unexpected
+behavior.
 
 ## Incorrect
 
@@ -204,11 +206,11 @@ function DataFetcher(props) {
 
 1. **Memory Leaks**: Unreleased resources accumulate over time.
 
-2. **Stale Updates**: Old callbacks may try to update unmounted components.
+1. **Stale Updates**: Old callbacks may try to update unmounted components.
 
-3. **Resource Exhaustion**: Too many open connections or timers degrade performance.
+1. **Resource Exhaustion**: Too many open connections or timers degrade performance.
 
-4. **Correct Behavior**: Effects with reactive deps need cleanup before re-running.
+1. **Correct Behavior**: Effects with reactive deps need cleanup before re-running.
 
 ## onCleanup Timing
 

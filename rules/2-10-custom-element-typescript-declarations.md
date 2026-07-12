@@ -8,7 +8,10 @@ description: Declare custom element tags in the solid-js JSX namespace and augme
 
 ## Problem
 
-TypeScript has no knowledge of custom elements by default. Using any `<my-element>` tag in JSX produces LSP errors, and props have no type safety. Similarly, newer HTML attributes (`popover`, `popoverTarget`) and experimental CSS properties (`anchor-name`, `position-anchor`) may not yet exist in the TypeScript DOM lib, causing unnecessary `@ts-ignore` usage that hides real errors.
+TypeScript has no knowledge of custom elements by default. Using any `<my-element>` tag in JSX
+produces LSP errors, and props have no type safety. Similarly, newer HTML attributes (`popover`,
+`popoverTarget`) and experimental CSS properties (`anchor-name`, `position-anchor`) may not yet
+exist in the TypeScript DOM lib, causing unnecessary `@ts-ignore` usage that hides real errors.
 
 ## Incorrect
 
@@ -65,7 +68,8 @@ declare module "solid-js" {
 
 ### 2. Augment Newer HTML Attributes Missing from the DOM Lib
 
-Some recent HTML attributes (`popover`, `popoverTarget`, `popoverTargetAction`) may not yet be in the TypeScript DOM lib. Declare them in the same `.d.ts` file:
+Some recent HTML attributes (`popover`, `popoverTarget`, `popoverTargetAction`) may not yet be in
+the TypeScript DOM lib. Declare them in the same `.d.ts` file:
 
 ```typescript
 // src/custom-elements.d.ts (continued)
@@ -109,7 +113,8 @@ declare module "solid-js" {
 
 ### 3. Type Custom Events Correctly
 
-Solid's `on:` prefix binds directly to the native DOM event. Type the handler with `CustomEvent<T>` using the detail type:
+Solid's `on:` prefix binds directly to the native DOM event. Type the handler with `CustomEvent<T>`
+using the detail type:
 
 ```tsx
 // ✅ CORRECT: typed custom event handler
@@ -130,7 +135,8 @@ Solid's `on:` prefix binds directly to the native DOM event. Type the handler wi
 
 ### 4. Experimental CSS Properties
 
-Use `as unknown as JSX.CSSProperties` instead of `as never` — it preserves type checking on the rest of the object:
+Use `as unknown as JSX.CSSProperties` instead of `as never`; it preserves type checking on the rest
+of the object:
 
 ```tsx
 // ❌ WRONG: as never disables all type checking on the style object
@@ -157,7 +163,9 @@ const anchorStyle = (name: string): JSX.CSSProperties =>
 
 ### 5. The `prop:` Prefix for JS Properties (Not HTML Attributes)
 
-Custom elements often expose JavaScript properties that are not HTML attributes. HTML attributes are always strings; properties can be objects, arrays, or booleans. Use `prop:` so Solid sets the DOM property instead of calling `setAttribute`:
+Custom elements often expose JavaScript properties that are not HTML attributes. HTML attributes are
+always strings; properties can be objects, arrays, or booleans. Use `prop:` so Solid sets the DOM
+property instead of calling `setAttribute`:
 
 ```tsx
 // ❌ WRONG: sets the attribute — complex values become "[object Object]"
@@ -172,13 +180,19 @@ Custom elements often expose JavaScript properties that are not HTML attributes.
 
 ## Why It Matters
 
-1. **LSP noise**: Undeclared custom elements produce errors on every usage, making it hard to spot real mistakes.
-2. **Type safety**: Typed props and events catch mismatches at compile time — e.g., passing a string where a `boolean` is expected.
-3. **`@ts-ignore` debt**: Suppressing errors hides real bugs in adjacent lines; targeted declarations or casts are always preferable.
-4. **`prop:` correctness**: Passing arrays or objects without `prop:` silently coerces them to strings — no error, wrong behavior.
+1. **LSP noise**: Undeclared custom elements produce errors on every usage, making it hard to spot
+   real mistakes.
+1. **Type safety**: Typed props and events catch mismatches at compile time; for example, passing a
+   string where a `boolean` is expected.
+1. **`@ts-ignore` debt**: Suppressing errors hides real bugs in adjacent lines; targeted
+   declarations or casts are always preferable.
+1. **`prop:` correctness**: Passing arrays or objects without `prop:` silently coerces them to
+   strings; no error, wrong behavior.
 
 ## Related Rules
 
-- [5-6: Event Handler Patterns](5-6-event-handler-patterns.md) — `on:` syntax and custom event typing
-- [5-7: Web Component Controlled State](5-7-web-component-controlled-state.md) — imperative APIs and `prop:` for value sync
-- [2-8: Style Prop Conventions](2-8-style-prop-conventions.md) — CSS custom properties and style object format
+- [5-6: Event Handler Patterns](5-6-event-handler-patterns.md); `on:` syntax and custom event typing
+- [5-7: Web Component Controlled State](5-7-web-component-controlled-state.md); imperative APIs and
+  `prop:` for value sync
+- [2-8: Style Prop Conventions](2-8-style-prop-conventions.md); CSS custom properties and style
+  object format

@@ -9,14 +9,14 @@ description: Import custom element define side-effects at the app entry point, b
 ## Problem
 
 Custom element registration changes how the browser treats a tag fundamentally. An unregistered
-custom element is a plain `HTMLElement` — no shadow DOM, no lifecycle callbacks, no slot
+custom element is a plain `HTMLElement`; no shadow DOM, no lifecycle callbacks, no slot
 management. Once registered, the browser upgrades existing and future instances, firing
 `connectedCallback`, `adoptedCallback`, and slot assignment synchronously during the upgrade
 algorithm.
 
 If custom elements are registered **after** SolidJS components have mounted, the browser
 upgrades all existing DOM instances at that moment, firing their lifecycle hooks mid-frame inside
-whatever JavaScript is currently executing — which may be a SolidJS reactive update pass.
+whatever JavaScript is currently executing; which may be a SolidJS reactive update pass.
 
 ## Incorrect
 
@@ -99,19 +99,20 @@ which subpath you are importing.
 1. **Upgrade timing**: Elements upgrade synchronously when `customElements.define()` is called
    for a tag already present in the DOM. Calling `define()` after SolidJS mounts means upgrades
    fire inside the browser's upgrade algorithm, which runs at an indeterminate point during frame
-   processing — not at a safe SolidJS boundary.
+   processing; not at a safe SolidJS boundary.
 
-2. **Lifecycle predictability**: `connectedCallback`, `disconnectedCallback`, and `slotchange`
+1. **Lifecycle predictability**: `connectedCallback`, `disconnectedCallback`, and `slotchange`
    are all stable once an element is registered before first render. Late registration means the
-   first `connectedCallback` fires at upgrade time, not at insertion time — breaking assumptions
+   first `connectedCallback` fires at upgrade time, not at insertion time; breaking assumptions
    about when shadow DOM and slot assignments exist.
 
-3. **Event delegation**: SolidJS delegates common events (click, keydown, etc.) at the document
+1. **Event delegation**: SolidJS delegates common events (click, keydown, etc.) at the document
    root. Late-upgraded elements that add capture-phase listeners after delegation is set up can
    interfere with SolidJS's event processing order.
 
 ## Related Rules
 
 - [9-2: Defer slotchange Handler Side Effects](9-2-defer-slotchange-handlers.md) - Safe slot handling
-- [9-3: Treat Custom Element and SolidJS Reactivity as Decoupled](9-3-decouple-lit-and-solid-reactivity.md) - Reactivity boundary design
+- [9-3: Treat Custom Element and SolidJS Reactivity as
+  Decoupled](9-3-decouple-lit-and-solid-reactivity.md) - Reactivity boundary design
 - [5-6: Event Handler Patterns](5-6-event-handler-patterns.md) - Use `on:` for custom element events

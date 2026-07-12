@@ -8,7 +8,11 @@ description: Use the classList prop for conditional class toggling instead of st
 
 ## Problem
 
-When toggling CSS classes conditionally, developers often resort to string concatenation or template literals. Solid.js provides a `classList` prop that maps class names to boolean expressions, producing cleaner code and more efficient DOM updates. The `classList` prop calls `element.classList.toggle()` under the hood, which is more efficient than replacing the entire `className` string.
+When toggling CSS classes conditionally, developers often resort to string concatenation or template
+literals. Solid.js provides a `classList` prop that maps class names to boolean expressions,
+producing cleaner code and more efficient DOM updates. The `classList` prop calls
+`element.classList.toggle()` under the hood, which is more efficient than replacing the entire
+`className` string.
 
 ## Incorrect
 
@@ -175,13 +179,14 @@ function PasswordStrength(props) {
 
 ## Why It Matters
 
-1. **Readability**: `classList` is declarative — you see each class and its condition at a glance.
+1. **Readability**: `classList` is declarative; you see each class and its condition at a glance.
 
-2. **Efficiency**: `classList.toggle()` is faster than rebuilding and setting the entire class string.
+1. **Efficiency**: `classList.toggle()` is faster than rebuilding and setting the entire class string.
 
-3. **Fine-Grained Updates**: Each class is toggled independently, so changing one condition doesn't touch the others.
+1. **Fine-Grained Updates**: Each class is toggled independently, so changing one condition doesn't
+   touch the others.
 
-4. **No Dependencies**: Eliminates the need for `classnames`/`clsx` helper libraries.
+1. **No Dependencies**: Eliminates the need for `classnames`/`clsx` helper libraries.
 
 ## Related Rules
 

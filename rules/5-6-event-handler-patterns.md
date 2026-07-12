@@ -3,12 +3,16 @@ id: 5-6
 title: Event Handler Patterns
 category: Refs & DOM
 priority: MEDIUM
-description: Understand delegated vs native events, on:/oncapture: namespaces, and array handler syntax
+description: "Understand delegated vs native events, on:/oncapture: namespaces, and array handler syntax"
 ---
 
 ## Problem
 
-Solid.js has a unique event system that differs from both React and vanilla DOM. It uses **event delegation** for common events (`onClick`, `onInput`, etc.) and supports **native event binding** via `on:` and `oncapture:` namespaces. It also provides an array handler syntax `[handler, data]` for passing data without creating closures. Misunderstanding these patterns leads to missed events, incorrect behavior, or performance issues.
+Solid.js has a unique event system that differs from both React and vanilla DOM. It uses **event
+delegation** for common events (`onClick`, `onInput`, etc.) and supports **native event binding**
+via `on:` and `oncapture:` namespaces. It also provides an array handler syntax `[handler, data]`
+for passing data without creating closures. Misunderstanding these patterns leads to missed events,
+incorrect behavior, or performance issues.
 
 ## Incorrect
 
@@ -146,9 +150,12 @@ function EventExample() {
 
 Solid delegates these common events to the document root for performance:
 
-`beforeinput`, `click`, `dblclick`, `focusin`, `focusout`, `input`, `keydown`, `keyup`, `mousedown`, `mousemove`, `mouseout`, `mouseover`, `mouseup`, `pointerdown`, `pointermove`, `pointerout`, `pointerover`, `pointerup`, `touchend`, `touchmove`, `touchstart`
+`beforeinput`, `click`, `dblclick`, `focusin`, `focusout`, `input`, `keydown`, `keyup`, `mousedown`,
+`mousemove`, `mouseout`, `mouseover`, `mouseup`, `pointerdown`, `pointermove`, `pointerout`,
+`pointerover`, `pointerup`, `touchend`, `touchmove`, `touchstart`
 
-All other events (e.g., `scroll`, `resize`, `animationend`, custom events) are always bound natively regardless of syntax.
+All other events (for example, `scroll`, `resize`, `animationend`, custom events) are always bound
+natively regardless of syntax.
 
 ## Array Handler Details
 
@@ -167,17 +174,23 @@ function handleClick(itemId: number, event: MouseEvent) {
 
 ## Why It Matters
 
-1. **Performance**: Event delegation reduces the number of event listeners. Array handlers avoid closure allocation inside loops.
+1. **Performance**: Event delegation reduces the number of event listeners. Array handlers avoid
+   closure allocation inside loops.
 
-2. **Correctness**: Non-bubbling events like `scroll` and `focus` don't work with delegation. Use `on:` for these.
+1. **Correctness**: Non-bubbling events like `scroll` and `focus` don't work with delegation. Use
+   `on:` for these.
 
-3. **Web Components**: Custom element events require `on:` syntax since Solid cannot delegate events it doesn't know about.
+1. **Web Components**: Custom element events require `on:` syntax since Solid cannot delegate events
+   it doesn't know about.
 
-4. **Capture Phase**: `oncapture:` enables event interception patterns that aren't possible with delegated events.
+1. **Capture Phase**: `oncapture:` enables event interception patterns that aren't possible with
+   delegated events.
 
 ## Custom Element Event Typing
 
-Web components and native browser APIs dispatch `CustomEvent` instances or spec-defined event subclasses. Because Solid's delegated event system only knows about standard DOM events, the `on:` prefix is **required** for all custom element events.
+web components and native browser APIs dispatch `CustomEvent` instances or spec-defined event
+subclasses. Because Solid's delegated event system only knows about standard DOM events, the `on:`
+prefix is **required** for all custom element events.
 
 ### Typing Custom Events
 
@@ -225,11 +238,15 @@ Web components and native browser APIs dispatch `CustomEvent` instances or spec-
 
 ### React Comparison
 
-React 18 required manual `ref` + `addEventListener` for custom element events because its synthetic event system didn't handle them. React 19 added native support via `onMyEvent` convention. Solid never had this limitation — `on:` was already direct native binding.
+React 18 required manual `ref` + `addEventListener` for custom element events because its synthetic
+event system didn't handle them. React 19 added native support via `onMyEvent` convention. Solid
+never had this limitation; `on:` was already direct native binding.
 
 ## Related Rules
 
 - [5-4: Use Directives](5-4-use-directives.md) - Reusable event-based behaviors
 - [5-3: Cleanup with onCleanup](5-3-cleanup-with-oncleanup.md) - Cleaning up manual event listeners
-- [5-7: Web Component Controlled State](5-7-web-component-controlled-state.md) - Imperative state sync with web components
-- [2-10: Custom Element TypeScript Declarations](2-10-custom-element-typescript-declarations.md) - Typing custom element props and events
+- [5-7: Web Component Controlled State](5-7-web-component-controlled-state.md) - Imperative state
+  sync with web components
+- [2-10: Custom Element TypeScript Declarations](2-10-custom-element-typescript-declarations.md) -
+  Typing custom element props and events

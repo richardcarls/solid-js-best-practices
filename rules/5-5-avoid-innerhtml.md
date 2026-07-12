@@ -3,12 +3,15 @@ id: 5-5
 title: Avoid innerHTML
 category: Refs & DOM
 priority: HIGH
-description: Avoid innerHTML to prevent XSS vulnerabilities — use JSX or textContent instead
+description: Avoid innerHTML to prevent XSS vulnerabilities; use JSX or textContent instead
 ---
 
 ## Problem
 
-Solid.js exposes `innerHTML` as a JSX prop for convenience, but using it introduces **cross-site scripting (XSS)** vulnerabilities. Any unsanitized user input injected via `innerHTML` can execute arbitrary JavaScript. In most cases, the same result can be achieved safely with JSX or `textContent`.
+Solid.js exposes `innerHTML` as a JSX prop for convenience, but using it introduces **cross-site
+scripting (XSS)** vulnerabilities. Any unsanitized user input injected via `innerHTML` can execute
+arbitrary JavaScript. In most cases, the same result can be achieved safely with JSX or
+`textContent`.
 
 ## Incorrect
 
@@ -72,7 +75,7 @@ function UserBio(props) {
 
 ### When HTML Rendering Is Required
 
-If you genuinely need to render HTML (e.g., from a CMS or Markdown renderer), sanitize it first:
+If you genuinely need to render HTML (for example, from a CMS or Markdown renderer), sanitize it first:
 
 ```tsx
 import DOMPurify from "dompurify";
@@ -131,13 +134,18 @@ function SafeHtml(props: { html: string; class?: string }) {
 
 ## Why It Matters
 
-1. **Security**: XSS is a critical vulnerability. Injected scripts can steal cookies, redirect users, or perform actions on their behalf.
+1. **Security**: XSS is a critical vulnerability. Injected scripts can steal cookies, redirect
+   users, or perform actions on their behalf.
 
-2. **Solid-Specific Risk**: Unlike React (which escapes by default and requires `dangerouslySetInnerHTML`), Solid provides `innerHTML` as a regular prop with no warning name. It's easier to use accidentally.
+1. **Solid-Specific Risk**: Unlike React (which escapes by default and requires
+   `dangerouslySetInnerHTML`), Solid provides `innerHTML` as a regular prop with no warning name.
+   It's easier to use accidentally.
 
-3. **Defense in Depth**: Even if you trust your data source, sanitizing HTML provides a safety net against upstream compromises.
+1. **Defense in Depth**: Even if you trust your data source, sanitizing HTML provides a safety net
+   against upstream compromises.
 
-4. **OWASP Top 10**: Cross-site scripting is consistently in the OWASP Top 10 web application security risks.
+1. **OWASP Top 10**: Cross-site scripting is consistently in the OWASP Top 10 web application
+   security risks.
 
 ## Related Rules
 

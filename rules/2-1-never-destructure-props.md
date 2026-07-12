@@ -8,7 +8,9 @@ description: Destructuring props breaks reactivity
 
 ## Problem
 
-In Solid.js, components render once. Unlike React, components are not re-executed when props change. Destructuring props captures their values at render time, breaking reactivity because subsequent prop changes won't be reflected.
+In Solid.js, components render once. Unlike React, components are not re-executed when props change.
+Destructuring props captures their values at render time, breaking reactivity because subsequent
+prop changes won't be reflected.
 
 ## Incorrect
 
@@ -106,15 +108,18 @@ function Button(props) {
 
 ## Why It Matters
 
-Solid.js achieves its performance by running component functions only once. Reactivity happens at the signal/prop access level, not the component level. When you destructure:
+Solid.js achieves its performance by running component functions only once. Reactivity happens at
+the signal/prop access level, not the component level. When you destructure:
 
 ```tsx
 const { name } = props;  // 'name' is now a static string value
 ```
 
-The variable `name` holds the value at render time. If the parent component updates the `name` prop, your component won't see the change because it never runs again.
+The variable `name` holds the value at render time. If the parent component updates the `name` prop,
+your component won't see the change because it never runs again.
 
-By accessing `props.name` directly in JSX, Solid can track that dependency and update just that DOM node when the prop changes.
+By accessing `props.name` directly in JSX, Solid can track that dependency and update just that DOM
+node when the prop changes.
 
 ## Common Patterns
 

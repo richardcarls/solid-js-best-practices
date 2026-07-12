@@ -8,7 +8,9 @@ description: Use callback refs for conditional elements
 
 ## Problem
 
-Refs provide direct access to DOM elements, but accessing them incorrectly can lead to undefined references, especially with conditional rendering. Use callback refs or signals when elements may not exist immediately.
+Refs provide direct access to DOM elements, but accessing them incorrectly can lead to undefined
+references, especially with conditional rendering. Use callback refs or signals when elements may
+not exist immediately.
 
 ## Incorrect
 
@@ -171,9 +173,9 @@ function DynamicInputs() {
 
 1. **Timing**: DOM elements don't exist until after render. Accessing refs too early causes errors.
 
-2. **Conditional Elements**: Elements in `<Show>` may not exist. Signal refs handle this gracefully.
+1. **Conditional Elements**: Elements in `<Show>` may not exist. Signal refs handle this gracefully.
 
-3. **TypeScript**: Proper typing prevents accessing potentially undefined refs.
+1. **TypeScript**: Proper typing prevents accessing potentially undefined refs.
 
 ## Common Ref Use Cases
 

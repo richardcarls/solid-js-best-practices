@@ -8,7 +8,9 @@ description: Use createEffect only for side effects, not derivations
 
 ## Problem
 
-`createEffect` is designed for side effects—operations that interact with the outside world like API calls, DOM manipulation, logging, or subscriptions. Using effects to derive or synchronize state is an anti-pattern that leads to unnecessary updates and potential bugs.
+`createEffect` is designed for side effects: operations that interact with the outside world like
+API calls, DOM manipulation, logging, or subscriptions. Using effects to derive or synchronize state
+is an anti-pattern that leads to unnecessary updates and potential bugs.
 
 ## Incorrect
 
@@ -127,13 +129,16 @@ function Dashboard() {
 
 ## Why It Matters
 
-1. **Double Updates**: Using effects to sync state causes an extra render cycle. The effect runs after the initial render, then sets state, causing another update.
+1. **Double Updates**: Using effects to sync state causes an extra render cycle. The effect runs
+   after the initial render, then sets state, causing another update.
 
-2. **Glitches**: There's a brief moment where the derived value is stale or uninitialized.
+1. **Glitches**: There's a brief moment where the derived value is stale or uninitialized.
 
-3. **Complexity**: Managing synchronized state through effects requires more code and is harder to reason about.
+1. **Complexity**: Managing synchronized state through effects requires more code and is harder to
+   reason about.
 
-4. **Performance**: Memos are synchronous and computed during the reactive graph update. Effects are deferred and create additional work.
+1. **Performance**: Memos are synchronous and computed during the reactive graph update. Effects are
+   deferred and create additional work.
 
 ## Decision Tree
 

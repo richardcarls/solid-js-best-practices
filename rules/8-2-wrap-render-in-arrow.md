@@ -8,7 +8,12 @@ description: Always use render(() => <Component />) not render(<Component />)
 
 ## Problem
 
-Solid components are functions that execute once to set up their reactive graph. When you pass JSX directly to `render()` as `render(<MyComponent />)`, the component executes immediately in the caller's scope, outside the testing library's reactive root. The rendered output becomes static: signals never update the DOM, effects never register, and assertions on reactive behavior silently pass or fail for the wrong reasons. The arrow wrapper `render(() => <MyComponent />)` ensures the component runs inside the testing library's managed reactive scope.
+Solid components are functions that execute once to set up their reactive graph. When you pass JSX
+directly to `render()` as `render(<MyComponent />)`, the component executes immediately in the
+caller's scope, outside the testing library's reactive root. The rendered output becomes static:
+signals never update the DOM, effects never register, and assertions on reactive behavior silently
+pass or fail for the wrong reasons. The arrow wrapper `render(() => <MyComponent />)` ensures the
+component runs inside the testing library's managed reactive scope.
 
 ## Incorrect
 
@@ -123,16 +128,21 @@ test("renders with theme", () => {
 
 ## Why It Matters
 
-1. **Reactive Ownership**: Without the arrow wrapper, the component runs with no reactive owner -- identical to calling the function directly in a plain script.
+1. **Reactive Ownership**: Without the arrow wrapper, the component runs with no reactive owner --
+   identical to calling the function directly in a plain script.
 
-2. **Signal Updates**: Signal changes never propagate to the DOM because the component was never registered in a reactive scope.
+1. **Signal Updates**: Signal changes never propagate to the DOM because the component was never
+   registered in a reactive scope.
 
-3. **False Positives**: Tests that check initial render pass, but tests that verify updates after interactions silently fail or give misleading results.
+1. **False Positives**: Tests that check initial render pass, but tests that verify updates after
+   interactions silently fail or give misleading results.
 
-4. **React Migration Pitfall**: This is the most common mistake when porting React Testing Library patterns, where `render(<Component />)` is standard.
+1. **React Migration Pitfall**: This is the most common mistake when porting React Testing Library
+   patterns, where `render(<Component />)` is standard.
 
 ## Related Rules
 
 - [1-1: Use Signals Correctly](1-1-use-signals-correctly.md) - Signals must be called in reactive contexts
 - [8-1: Configure Vitest for Solid](8-1-configure-vitest-for-solid.md) - Correct config is a prerequisite
-- [8-3: Test Primitives in a Root](8-3-test-primitives-in-root.md) - Same reactive ownership requirement for primitives
+- [8-3: Test Primitives in a Root](8-3-test-primitives-in-root.md) - Same reactive ownership
+  requirement for primitives

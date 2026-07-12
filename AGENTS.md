@@ -1,6 +1,7 @@
 # Solid.js Best Practices - Contributor Guide
 
-> **For AI agents:** The primary skill content is in [SKILL.md](SKILL.md), which includes the rule index, task-based rule selection, common mistakes, and React comparison tables.
+> **For AI agents:** The primary skill content is in [SKILL.md](SKILL.md), which includes the rule
+  index, task-based rule selection, common mistakes, and React comparison tables.
 
 This document is for contributors working on the skill itself.
 
@@ -51,4 +52,5 @@ Each rule file should contain:
 1. Why-it-matters guidance.
 1. Related rules with cross-references.
 
-Examples should stay generic and publishable. Use hypothetical `<wc-*>` custom elements or native platform elements, not project-local components.
+Examples should stay generic and publishable. Use hypothetical `<wc-*>` custom elements or native
+platform elements, not project-local components.

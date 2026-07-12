@@ -1,6 +1,8 @@
 # Solid.js Best Practices - An Agent Skill
 
-`solid-js-best-practices` enables comprehensive best practices for building Solid.js applications and components. It is optimized for AI-assisted code generation, review, refactoring, and web component integration.
+`solid-js-best-practices` enables comprehensive best practices for building Solid.js applications
+and components. It is optimized for AI-assisted code generation, review, refactoring, and web
+component integration.
 
 ## Features
 
@@ -32,7 +34,8 @@ npx skills add richardcarls/solid-js-best-practices
 
 ## Usage
 
-The skill activates for Solid.js work: components, reactivity bugs, tests, migrations from React, and custom element integration.
+The skill activates for Solid.js work: components, reactivity bugs, tests, migrations from React,
+and custom element integration.
 
 ## Web Component Guidance
 
@@ -51,11 +54,15 @@ Use declarative custom element APIs when they exist:
 />
 ```
 
-Wrappers should own labels, layout, type adaptation, and form-library integration. The custom element should own default values, selection, slot timing, native fallback synchronization, focus internals, and event payloads.
+Wrappers should own labels, layout, type adaptation, and form-library integration. The custom
+element should own default values, selection, slot timing, native fallback synchronization, focus
+internals, and event payloads.
 
 ## For AI Agents
 
-[SKILL.md](SKILL.md) contains the complete rule index, task-based rule selection, common mistakes table, and React-to-Solid comparison. See [AGENTS.md](AGENTS.md) for contributor guidance on the skill file structure.
+[SKILL.md](SKILL.md) contains the complete rule index, task-based rule selection, common mistakes
+table, and React-to-Solid comparison. See [AGENTS.md](AGENTS.md) for contributor guidance on the
+skill file structure.
 
 ## Example Prompts
 

@@ -8,7 +8,11 @@ description: Configure Vitest with Solid-specific resolve conditions and plugin 
 
 ## Problem
 
-Vitest does not understand Solid's compilation model out of the box. Without the correct `resolve.conditions`, `vite-plugin-solid`, jsdom environment, and dependency optimization settings, tests silently import the server or production build of Solid instead of the development/browser build. This causes effects to never run, reactivity to break, and hydration-mode behavior in what should be client-side tests -- all with no error message.
+Vitest does not understand Solid's compilation model out of the box. Without the correct
+`resolve.conditions`, `vite-plugin-solid`, jsdom environment, and dependency optimization settings,
+tests silently import the server or production build of Solid instead of the development/browser
+build. This causes effects to never run, reactivity to break, and hydration-mode behavior in what
+should be client-side tests -- all with no error message.
 
 ## Incorrect
 
@@ -124,7 +128,8 @@ export default defineConfig({
 
 ### Browser Mode: Workspace Config for Unit + Integration Split
 
-When a project has both fast unit tests (jsdom) and real-browser integration tests, use `defineWorkspace` to run them in separate projects with disjoint file globs.
+When a project has both fast unit tests (jsdom) and real-browser integration tests, use
+`defineWorkspace` to run them in separate projects with disjoint file globs.
 
 ```ts
 // vitest.workspace.ts
@@ -187,10 +192,12 @@ Additional devDependencies for browser mode:
 
 Key notes:
 
-- The `as any` cast on `solidPlugin()` is needed when the project's Vite version differs from Vitest's bundled Vite — without it you get a type error on `plugins`
-- `include` globs must be disjoint — each test file should run in exactly one project
+- The `as any` cast on `solidPlugin()` is needed when the project's Vite version differs from
+  Vitest's bundled Vite; without it you get a type error on `plugins`
+- `include` globs must be disjoint; each test file should run in exactly one project
 - `headless: true` is required for CI/CD; omitting it opens a visible browser window during tests
-- Adding `@testing-library/jest-dom/vitest` to `optimizeDeps.include` prevents Vite from triggering a full server restart the first time it is imported in a test
+- Adding `@testing-library/jest-dom/vitest` to `optimizeDeps.include` prevents Vite from triggering
+  a full server restart the first time it is imported in a test
 
 ## Symptom Diagnosis
 
@@ -206,16 +213,23 @@ Key notes:
 
 ## Why It Matters
 
-1. **Silent Failures**: The wrong Solid build causes tests to pass with broken reactivity -- you're testing static HTML, not a reactive app.
+1. **Silent Failures**: The wrong Solid build causes tests to pass with broken reactivity -- you're
+   testing static HTML, not a reactive app.
 
-2. **Effects and Memos**: The development/browser build is required for `createEffect` and `createMemo` to register reactive tracking.
+1. **Effects and Memos**: The development/browser build is required for `createEffect` and
+   `createMemo` to register reactive tracking.
 
-3. **Root Cause Confusion**: Configuration bugs look like component bugs. Developers waste hours debugging "broken" components when the test setup is at fault.
+1. **Root Cause Confusion**: Configuration bugs look like component bugs. Developers waste hours
+   debugging "broken" components when the test setup is at fault.
 
-4. **CI Reliability**: Tests that pass locally but use the wrong build produce meaningless coverage and green CI pipelines that miss real bugs.
+1. **CI Reliability**: Tests that pass locally but use the wrong build produce meaningless coverage
+   and green CI pipelines that miss real bugs.
 
 ## Related Rules
 
-- [8-2: Wrap Render in Arrow Functions](8-2-wrap-render-in-arrow.md) - Correct config is a prerequisite for reactive rendering
-- [8-3: Test Primitives in a Root](8-3-test-primitives-in-root.md) - Effects need both config and reactive owners
-- [8-7: Browser Mode for Web Components and PWA APIs](8-7-browser-mode-for-web-components-and-pwa-apis.md) - When to use browser mode vs jsdom
+- [8-2: Wrap Render in Arrow Functions](8-2-wrap-render-in-arrow.md) - Correct config is a
+  prerequisite for reactive rendering
+- [8-3: Test Primitives in a Root](8-3-test-primitives-in-root.md) - Effects need both config and
+  reactive owners
+- [8-7: Browser Mode for Web Components and PWA
+  APIs](8-7-browser-mode-for-web-components-and-pwa-apis.md) - When to use browser mode vs jsdom

@@ -8,7 +8,9 @@ description: Use appropriate semantic HTML elements
 
 ## Problem
 
-Using generic elements (`<div>`, `<span>`) where semantic elements exist harms accessibility. Screen readers, search engines, and assistive technologies rely on proper HTML semantics to understand and navigate content.
+Using generic elements (`<div>`, `<span>`) where semantic elements exist harms accessibility. Screen
+readers, search engines, and assistive technologies rely on proper HTML semantics to understand and
+navigate content.
 
 ## Incorrect
 
@@ -227,13 +229,13 @@ function ClickableCard(props) {
 
 1. **Screen Readers**: Announce elements by type, enabling efficient navigation.
 
-2. **Keyboard Navigation**: Native elements have built-in keyboard support.
+1. **Keyboard Navigation**: Native elements have built-in keyboard support.
 
-3. **SEO**: Search engines understand semantic content better.
+1. **SEO**: Search engines understand semantic content better.
 
-4. **Maintainability**: Semantic code is self-documenting.
+1. **Maintainability**: Semantic code is self-documenting.
 
-5. **Future-Proof**: Works with new assistive technologies automatically.
+1. **Future-Proof**: Works with new assistive technologies automatically.
 
 ## Heading Hierarchy
 

@@ -3,18 +3,21 @@ id: 2-9
 title: Never Call Components as Functions
 category: Components
 priority: CRITICAL
-description: Always use JSX or createComponent() — calling components as plain functions leaks reactive scope
+description: Always use JSX or createComponent(); calling components as plain functions leaks reactive scope
 ---
 
 ## Problem
 
-Calling a component as a plain function (`MyComp(props)`) instead of using JSX (`<MyComp />`) runs the component body inside the **parent's** reactive tracking scope instead of its own isolated reactive owner. This causes:
+Calling a component as a plain function (`MyComp(props)`) instead of using JSX (`<MyComp />`) runs
+the component body inside the **parent's** reactive tracking scope instead of its own isolated
+reactive owner. This causes:
 
-- Signals created inside the called component are owned by the parent — destroyed when the parent re-runs
+- Signals created inside the called component are owned by the parent; destroyed when the parent re-runs
 - Any signal reads during initialization are tracked as parent dependencies
 - When those signals change, the parent re-runs, effectively unmounting and remounting the "component"
 
-This bug is subtle: the component appears to work on first render but silently resets state whenever the parent re-runs.
+This bug is subtle: the component appears to work on first render but silently resets state whenever
+the parent re-runs.
 
 ## Incorrect
 
@@ -49,15 +52,22 @@ const Comp = override.component;
 
 ## Why It Matters
 
-JSX `<MyComp />` compiles to `createComponent(MyComp, props)`, which establishes an isolated reactive owner for the component. A plain function call `MyComp(props)` has no such isolation — the callee inherits the caller's reactive context.
+JSX `<MyComp />` compiles to `createComponent(MyComp, props)`, which establishes an isolated
+reactive owner for the component. A plain function call `MyComp(props)` has no such isolation; the
+callee inherits the caller's reactive context.
 
 Consequences of calling a component as a function:
 
-1. **Silent state resets** — local signals inside the called component are owned by the parent and destroyed on every parent re-run
-2. **Unexpected dependency tracking** — library hooks that eagerly read signals during init (e.g., TanStack Query's `queryOptions`) register those reads as parent-scope dependencies
-3. **Cascading re-renders** — when the leaked dependencies change, the parent invalidates, causing a full unmount/remount cycle instead of a targeted update
+1. **Silent state resets**; local signals inside the called component are owned by the parent and
+   destroyed on every parent re-run
+1. **Unexpected dependency tracking**; library hooks that eagerly read signals during init (for
+   example, TanStack Query's `queryOptions`) register those reads as parent-scope dependencies
+1. **Cascading re-renders**; when the leaked dependencies change, the parent invalidates, causing a
+   full unmount/remount cycle instead of a targeted update
 
 ## Related Rules
 
-- [2-1: Never Destructure Props](2-1-never-destructure-props.md) - Another pattern that silently breaks reactive ownership
-- [1-5: Use Untrack When Needed](1-5-use-untrack-when-needed.md) - Controlling what gets tracked in a reactive scope
+- [2-1: Never Destructure Props](2-1-never-destructure-props.md) - Another pattern that silently
+  breaks reactive ownership
+- [1-5: Use Untrack When Needed](1-5-use-untrack-when-needed.md) - Controlling what gets tracked in
+  a reactive scope

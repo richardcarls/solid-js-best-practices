@@ -8,7 +8,9 @@ description: Use <Suspense> for async loading boundaries
 
 ## Problem
 
-Async operations (lazy components, data fetching with `createResource`) need loading states. Without `Suspense`, you must manually track loading states for each async operation. `Suspense` provides a declarative way to show fallback content while async children resolve.
+Async operations (lazy components, data fetching with `createResource`) need loading states. Without
+`Suspense`, you must manually track loading states for each async operation. `Suspense` provides a
+declarative way to show fallback content while async children resolve.
 
 ## Incorrect
 
@@ -208,11 +210,11 @@ refetch()       // Re-run the fetcher
 
 1. **Declarative Loading**: Define fallbacks once, don't track loading states manually.
 
-2. **Automatic Coordination**: Suspense knows when all children are ready.
+1. **Automatic Coordination**: Suspense knows when all children are ready.
 
-3. **Progressive Loading**: Nested boundaries enable progressive content reveal.
+1. **Progressive Loading**: Nested boundaries enable progressive content reveal.
 
-4. **Required for lazy()**: Lazy components need a Suspense boundary.
+1. **Required for lazy()**: Lazy components need a Suspense boundary.
 
 ## Related Rules
 

@@ -8,7 +8,10 @@ description: Use class instead of className, for instead of htmlFor, and other S
 
 ## Problem
 
-Solid.js uses standard HTML attribute names, not React's camelCase alternatives. Using React-specific props like `className`, `htmlFor`, or `onChange` (for input tracking) results in broken styling, broken form associations, or unexpected behavior. This is one of the most common mistakes when migrating from React.
+Solid.js uses standard HTML attribute names, not React's camelCase alternatives. Using
+React-specific props like `className`, `htmlFor`, or `onChange` (for input tracking) results in
+broken styling, broken form associations, or unexpected behavior. This is one of the most common
+mistakes when migrating from React.
 
 ## Incorrect
 
@@ -104,17 +107,21 @@ function LoginForm() {
 <input onInput={(e) => setValue(e.currentTarget.value)} />
 ```
 
-In Solid, `e.currentTarget` is typed to the element the handler is attached to, while `e.target` is typed as `EventTarget` and requires casting.
+In Solid, `e.currentTarget` is typed to the element the handler is attached to, while `e.target` is
+typed as `EventTarget` and requires casting.
 
 ## Why It Matters
 
-1. **Broken Styling**: `className` is silently ignored — no class is applied, so styles break with no error.
+1. **Broken Styling**: `className` is silently ignored; no class is applied, so styles break with no
+   error.
 
-2. **Broken Forms**: `htmlFor` doesn't associate labels with inputs, hurting both UX and accessibility.
+1. **Broken Forms**: `htmlFor` doesn't associate labels with inputs, hurting both UX and accessibility.
 
-3. **Wrong Event Timing**: `onChange` fires on blur in Solid (native behavior), not on every keystroke like React. Use `onInput` for live updates.
+1. **Wrong Event Timing**: `onChange` fires on blur in Solid (native behavior), not on every
+   keystroke like React. Use `onInput` for live updates.
 
-4. **Migration Speed**: These are mechanical find-and-replace fixes, but they're easy to miss without a rule.
+1. **Migration Speed**: These are mechanical find-and-replace fixes, but they're easy to miss
+   without a rule.
 
 ## Related Rules
 

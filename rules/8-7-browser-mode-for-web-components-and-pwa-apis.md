@@ -8,9 +8,13 @@ description: Use Vitest browser mode (real Chromium) when testing custom element
 
 ## Problem
 
-jsdom is a Node.js DOM simulation. It covers most standard HTML/CSS APIs well enough for component testing, but it does not faithfully implement the Web Components spec or browser-native APIs used by PWAs. Tests that pass in jsdom can silently fail or behave incorrectly when those features are involved.
+jsdom is a Node.js DOM simulation. It covers most standard HTML/CSS APIs well enough for component
+testing, but it does not faithfully implement the Web Components spec or browser-native APIs used by
+PWAs. Tests that pass in jsdom can silently fail or behave incorrectly when those features are
+involved.
 
-Vitest browser mode runs tests inside a real Chromium instance via Playwright, giving you the same environment your users have.
+Vitest browser mode runs tests inside a real Chromium instance via Playwright, giving you the same
+environment your users have.
 
 ## When to Use Browser Mode vs jsdom
 
@@ -19,7 +23,7 @@ Vitest browser mode runs tests inside a real Chromium instance via Playwright, g
 | Standard Solid components | ✅ | ✅ |
 | TanStack Query / async data | ✅ | ✅ |
 | Custom elements / Web Components | ❌ | ✅ |
-| Shadow DOM | ❌ | ✅ |
+| shadow DOM | ❌ | ✅ |
 | IndexedDB (real, not shimmed) | ❌ | ✅ |
 | `crypto.subtle` / SubtleCrypto | ❌ | ✅ |
 | ServiceWorker registration | ❌ | ✅ |
@@ -49,7 +53,8 @@ import userEvent from "@testing-library/user-event";
 
 ### Custom Elements / Web Components
 
-Run tests that depend on custom elements in Vitest browser mode (see rule 8-1 for workspace config). The element's full lifecycle runs correctly in Chromium:
+Run tests that depend on custom elements in Vitest browser mode (see rule 8-1 for workspace config).
+The element's full lifecycle runs correctly in Chromium:
 
 - `connectedCallback` fires when the element is inserted into the DOM
 - `disconnectedCallback` fires on removal
@@ -84,7 +89,9 @@ test("clicks button", async () => {
 });
 ```
 
-`@testing-library/user-event` simulates events programmatically via JavaScript. Vitest's `userEvent` dispatches real browser events (pointer events, focus/blur sequences, etc.). They have similar APIs but are not interchangeable in browser mode.
+`@testing-library/user-event` simulates events programmatically via JavaScript. Vitest's `userEvent`
+dispatches real browser events (pointer events, focus/blur sequences, etc.). They have similar APIs
+but are not interchangeable in browser mode.
 
 ### No Fakes Needed for Browser-Native APIs
 
@@ -100,10 +107,10 @@ const db = await openDB("my-app", 1, { upgrade(db) { ... } });
 
 APIs available natively in browser mode (no polyfills needed):
 
-- `indexedDB` — real IndexedDB with full transaction support
-- `crypto.subtle` — real SubtleCrypto
-- `localStorage` / `sessionStorage` — real storage (must clear between tests — see rule 8-9)
-- `fetch` — real network fetch (mock at the service layer for unit tests)
+- `indexedDB`; real IndexedDB with full transaction support
+- `crypto.subtle`; real SubtleCrypto
+- `localStorage` / `sessionStorage`; real storage (must clear between tests; see rule 8-9)
+- `fetch`; real network fetch (mock at the service layer for unit tests)
 
 ## jsdom Limitations for Custom Elements (Detail)
 
@@ -112,18 +119,23 @@ APIs available natively in browser mode (no polyfills needed):
 | `connectedCallback` not called | jsdom doesn't trigger lifecycle callbacks on insert |
 | Element stays `HTMLUnknownElement` | Custom element upgrade doesn't run on existing nodes |
 | `shadowRoot` is null | `attachShadow()` creates a node but it doesn't participate in rendering |
-| Slot assignment doesn't work | Light DOM / slot distribution not implemented |
+| Slot assignment doesn't work | light DOM / slot distribution not implemented |
 | CSS custom properties not resolved | jsdom doesn't compute layout or cascade |
 
 ## Why It Matters
 
-1. **Silent failures**: jsdom doesn't throw when custom element lifecycle methods don't run — tests pass while testing nothing.
+1. **Silent failures**: jsdom doesn't throw when custom element lifecycle methods don't run; tests
+   pass while testing nothing.
 
-2. **Real behavior**: Browser mode catches bugs that only appear in a real rendering environment (slot distribution, focus management, pointer events on shadow roots).
+1. **Real behavior**: Browser mode catches bugs that only appear in a real rendering environment
+   (slot distribution, focus management, pointer events on shadow roots).
 
-3. **No shim drift**: Shims like `fake-indexeddb` diverge from real browser behavior over time. Browser mode eliminates an entire class of shim-vs-reality bugs.
+1. **No shim drift**: Shims like `fake-indexeddb` diverge from real browser behavior over time.
+   Browser mode eliminates an entire class of shim-vs-reality bugs.
 
 ## Related Rules
 
-- [8-1: Configure Vitest for Solid](8-1-configure-vitest-for-solid.md) - Workspace config for browser mode projects
-- [8-9: Browser-Native API Test Isolation](8-9-browser-native-api-test-isolation.md) - Clearing IDB and localStorage between tests
+- [8-1: Configure Vitest for Solid](8-1-configure-vitest-for-solid.md) - Workspace config for
+  browser mode projects
+- [8-9: Browser-Native API Test Isolation](8-9-browser-native-api-test-isolation.md) - Clearing IDB
+  and localStorage between tests

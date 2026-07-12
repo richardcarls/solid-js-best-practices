@@ -8,7 +8,9 @@ category: Refs & DOM
 
 ## Rule
 
-When a custom element exposes framework-safe properties, bind Solid state declaratively with `prop:*` and listen for composed custom events with `on:*`. Use imperative refs and effects only for native browser APIs or legacy custom elements that do not expose declarative property contracts.
+When a custom element exposes framework-safe properties, bind Solid state declaratively with
+`prop:*` and listen for composed custom events with `on:*`. Use imperative refs and effects only for
+native browser APIs or legacy custom elements that do not expose declarative property contracts.
 
 ## Incorrect
 
@@ -66,7 +68,8 @@ createEffect(() => {
 
 ## Native API Exception
 
-Native platform APIs may still require imperative refs because their public API is method-based, not property-based.
+Native platform APIs may still require imperative refs because their public API is method-based, not
+property-based.
 
 ```tsx
 let dialog!: HTMLDialogElement;
@@ -81,7 +84,10 @@ createEffect(() => {
 
 ## Why It Matters
 
-Solid runs components once and updates DOM bindings through fine-grained effects. `prop:*` writes JavaScript properties, which is the right channel for custom element state, object arrays, plugins, and callbacks. Declarative property/event flow avoids wrapper-level timers, manual mount ordering, duplicated default-selection state, and reactivity loops.
+Solid runs components once and updates DOM bindings through fine-grained effects. `prop:*` writes
+JavaScript properties, which is the right channel for custom element state, object arrays, plugins,
+and callbacks. Declarative property/event flow avoids wrapper-level timers, manual mount ordering,
+duplicated default-selection state, and reactivity loops.
 
 ## Related Rules
 

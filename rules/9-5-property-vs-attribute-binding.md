@@ -8,7 +8,9 @@ category: Web Component Integration
 
 ## Rule
 
-Use `prop:*` for custom element public APIs that are property-based, especially controlled state and all rich data. Use attributes for static strings, booleans that the element explicitly reflects, and HTML-only progressive enhancement.
+Use `prop:*` for custom element public APIs that are property-based, especially controlled state and
+all rich data. Use attributes for static strings, booleans that the element explicitly reflects, and
+HTML-only progressive enhancement.
 
 ## Incorrect
 
@@ -50,7 +52,10 @@ This writes attributes, so arrays and objects become strings such as `"[object O
 
 ## Why It Matters
 
-Solid treats normal JSX attributes as HTML attributes unless a binding uses the `prop:` namespace. Custom elements commonly expose JavaScript properties for `value`, `open`, `options`, callbacks, and plugin objects. Binding those through attributes loses identity, breaks updates, and can hide bugs until real browser integration.
+Solid treats normal JSX attributes as HTML attributes unless a binding uses the `prop:` namespace.
+Custom elements commonly expose JavaScript properties for `value`, `open`, `options`, callbacks, and
+plugin objects. Binding those through attributes loses identity, breaks updates, and can hide bugs
+until real browser integration.
 
 ## Related Rules
 

@@ -8,7 +8,11 @@ description: Wrap signal, effect, and memo tests in createRoot or use renderHook
 
 ## Problem
 
-Solid's reactive primitives (signals, effects, memos, stores) require an owning reactive scope to function. In a test file, top-level code has no reactive owner. Creating signals works (they are just getter/setter pairs), but `createEffect`, `createMemo` with side effects, and `onCleanup` all silently fail or warn when executed without an owner. The `renderHook` utility from `@solidjs/testing-library` or manual `createRoot` wrapping provides this scope.
+Solid's reactive primitives (signals, effects, memos, stores) require an owning reactive scope to
+function. In a test file, top-level code has no reactive owner. Creating signals works (they are
+just getter/setter pairs), but `createEffect`, `createMemo` with side effects, and `onCleanup` all
+silently fail or warn when executed without an owner. The `renderHook` utility from
+`@solidjs/testing-library` or manual `createRoot` wrapping provides this scope.
 
 ## Incorrect
 
@@ -163,16 +167,22 @@ test("memo computes derived value", () => {
 
 ## Why It Matters
 
-1. **Silent Failures**: Without an owner, `createEffect` logs a warning and does nothing -- tests pass without running assertions inside effects.
+1. **Silent Failures**: Without an owner, `createEffect` logs a warning and does nothing -- tests
+   pass without running assertions inside effects.
 
-2. **Memory Leaks**: Reactive roots that are not disposed leak subscriptions between tests, causing flaky behavior and degraded test runner performance.
+1. **Memory Leaks**: Reactive roots that are not disposed leak subscriptions between tests, causing
+   flaky behavior and degraded test runner performance.
 
-3. **Escape Conditions**: Effect-based tests without a `done` callback or run counter cause test timeouts or infinite loops.
+1. **Escape Conditions**: Effect-based tests without a `done` callback or run counter cause test
+   timeouts or infinite loops.
 
-4. **Cleanup Parity**: `renderHook` automatically handles disposal, matching how `render` handles component cleanup.
+1. **Cleanup Parity**: `renderHook` automatically handles disposal, matching how `render` handles
+   component cleanup.
 
 ## Related Rules
 
-- [1-3: Effects for Side Effects](1-3-effects-for-side-effects.md) - Effects need reactive owners in production too
-- [5-3: Cleanup with onCleanup](5-3-cleanup-with-oncleanup.md) - Cleanup requires a reactive owner to register
+- [1-3: Effects for Side Effects](1-3-effects-for-side-effects.md) - Effects need reactive owners in
+  production too
+- [5-3: Cleanup with onCleanup](5-3-cleanup-with-oncleanup.md) - Cleanup requires a reactive owner
+  to register
 - [8-2: Wrap Render in Arrow Functions](8-2-wrap-render-in-arrow.md) - Same ownership concept for components

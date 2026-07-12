@@ -8,7 +8,9 @@ description: Use <Index> when array index matters more than identity
 
 ## Problem
 
-`<For>` tracks items by reference, which works well for objects. But for primitive arrays (numbers, strings), values don't have stable references. `<Index>` tracks by array index instead, which is more appropriate when the position matters more than the value's identity.
+`<For>` tracks items by reference, which works well for objects. But for primitive arrays (numbers,
+strings), values don't have stable references. `<Index>` tracks by array index instead, which is
+more appropriate when the position matters more than the value's identity.
 
 ## Incorrect
 
@@ -181,5 +183,5 @@ function EditableGrid() {
 
 ## Related Rules
 
-- [3-2: Use For for Lists](3-2-use-for-for-lists.md) - When to use For instead
+- [3-2: Use `For` for Lists](3-2-use-for-for-lists.md) - When to use For instead
 - [4-2: Store Path Updates](4-2-store-path-updates.md) - Efficient list updates

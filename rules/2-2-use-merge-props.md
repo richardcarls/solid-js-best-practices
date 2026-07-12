@@ -8,7 +8,9 @@ description: Use mergeProps for default prop values
 
 ## Problem
 
-When setting default values for props, you can't use destructuring with defaults (e.g., `{ name = "Guest" }`) because destructuring breaks reactivity. The `mergeProps` function lets you provide defaults while preserving reactivity.
+When setting default values for props, you can't use destructuring with defaults (for example, `{
+name = "Guest" }`) because destructuring breaks reactivity. The `mergeProps` function lets you
+provide defaults while preserving reactivity.
 
 ## Incorrect
 
@@ -125,11 +127,11 @@ function Input(props) {
 
 1. **Reactivity Preserved**: `mergeProps` returns a reactive object that updates when source props change.
 
-2. **Proper Defaults**: You get the default value when the prop is `undefined`, but still react to updates.
+1. **Proper Defaults**: You get the default value when the prop is `undefined`, but still react to updates.
 
-3. **Type Safety**: Works well with TypeScript—optional props with defaults are properly typed.
+1. **Type Safety**: Works well with TypeScript: optional props with defaults are properly typed.
 
-4. **Composability**: Can merge multiple sources (defaults, theme, props) in order.
+1. **Composability**: Can merge multiple sources (defaults, theme, props) in order.
 
 ## How mergeProps Works
 
@@ -145,7 +147,8 @@ const merged = new Proxy({}, {
 });
 ```
 
-The returned object is reactive because property access goes through the proxy, which accesses the original reactive props.
+The returned object is reactive because property access goes through the proxy, which accesses the
+original reactive props.
 
 ## Related Rules
 

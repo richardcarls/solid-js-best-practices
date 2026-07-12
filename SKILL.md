@@ -1,6 +1,6 @@
 ---
 name: solid-js-best-practices
-description: "Solid.js best practices for AI-assisted code generation, code review, refactoring, and debugging reactivity issues. Use when working in any SolidJS project or codebase — writing components, auditing code, migrating from React, fixing signals and fine-grained reactivity bugs, or integrating web component libraries. 68 rules across 9 categories (reactivity, components, control flow, state management, refs/DOM, performance, accessibility, testing, web component integration) ranked by priority."
+description: "Solid.js best practices for AI-assisted coding, review, refactoring, and debugging. Use for Solid components, signals, control flow, state, refs and DOM work, performance, accessibility, tests, React migration, and web component integration."
 license: MIT
 allowed-tools:
   - Read
@@ -14,7 +14,10 @@ metadata:
 
 # Solid.js Best Practices
 
-Comprehensive best practices for building Solid.js applications and components, optimized for AI-assisted code generation, review, and refactoring.
+> **Managed skill; do not edit this installed copy.** Changes may be overwritten.
+
+Comprehensive best practices for building Solid.js applications and components, optimized for
+AI-assisted code generation, review, and refactoring.
 
 ## Quick Reference
 
@@ -121,8 +124,8 @@ export default MyComponent;
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
 | [2-1](rules/2-1-never-destructure-props.md) | Never Destructure Props | CRITICAL | Destructuring props breaks reactivity |
-| [2-6](rules/2-6-components-return-once.md) | Components Return Once | CRITICAL | Never use early returns — use `<Show>`, `<Switch>`, etc. in JSX |
-| [2-9](rules/2-9-never-call-components-as-functions.md) | Never Call Components as Functions | CRITICAL | Always use JSX or `createComponent()` — direct calls leak reactive scope |
+| [2-6](rules/2-6-components-return-once.md) | Components Return Once | CRITICAL | Never use early returns; use `<Show>`, `<Switch>`, etc. in JSX |
+| [2-9](rules/2-9-never-call-components-as-functions.md) | Never Call Components as Functions | CRITICAL | Always use JSX or `createComponent()`; direct calls leak reactive scope |
 | [2-2](rules/2-2-use-merge-props.md) | Use mergeProps | HIGH | Use `mergeProps` for default prop values |
 | [2-3](rules/2-3-use-split-props.md) | Use splitProps | HIGH | Use `splitProps` to separate prop groups safely |
 | [2-7](rules/2-7-no-react-specific-props.md) | No React-Specific Props | HIGH | Use `class` not `className`, `for` not `htmlFor` |
@@ -136,7 +139,7 @@ export default MyComponent;
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
 | [3-1](rules/3-1-use-show-for-conditionals.md) | Use Show for Conditionals | HIGH | Use `<Show>` instead of ternary operators |
-| [3-2](rules/3-2-use-for-for-lists.md) | Use For for Lists | HIGH | Use `<For>` for referentially-keyed list rendering |
+| [3-2](rules/3-2-use-for-for-lists.md) | Use `For` for Lists | HIGH | Use `<For>` for referentially keyed list rendering |
 | [3-7](rules/3-7-use-keyed-for-stateful-children.md) | Use keyed for Stateful Children | HIGH | Add `keyed` when child has internal state and value identity (not just truthiness) matters |
 | [3-3](rules/3-3-use-index-for-primitives.md) | Use Index for Primitives | MEDIUM | Use `<Index>` when array index matters more than identity |
 | [3-4](rules/3-4-use-switch-match.md) | Use Switch/Match | MEDIUM | Use `<Switch>`/`<Match>` for multiple conditions; prefer `<Show>` for single gates |
@@ -162,7 +165,7 @@ export default MyComponent;
 | [5-1](rules/5-1-use-refs-correctly.md) | Use Refs Correctly | HIGH | Use callback refs for conditional elements |
 | [5-2](rules/5-2-access-dom-in-onmount.md) | Access DOM in onMount | HIGH | Access DOM elements in `onMount`, not during render |
 | [5-3](rules/5-3-cleanup-with-oncleanup.md) | Cleanup with onCleanup | HIGH | Always clean up subscriptions and timers |
-| [5-5](rules/5-5-avoid-innerhtml.md) | Avoid innerHTML | HIGH | Avoid `innerHTML` to prevent XSS — use JSX or `textContent` |
+| [5-5](rules/5-5-avoid-innerhtml.md) | Avoid innerHTML | HIGH | Avoid `innerHTML` to prevent XSS; use JSX or `textContent` |
 | [5-7](rules/5-7-web-component-controlled-state.md) | Web Component Controlled State | HIGH | Use `prop:*` properties and `on:wc-*` events for modern custom elements; reserve refs/effects for native or legacy APIs |
 | [5-4](rules/5-4-use-directives.md) | Use Directives | MEDIUM | Use `use:` directives for reusable element behaviors |
 | [5-6](rules/5-6-event-handler-patterns.md) | Event Handler Patterns | MEDIUM | Use `on:`/`oncapture:` namespaces and array handler syntax correctly |
@@ -198,8 +201,8 @@ export default MyComponent;
 | [8-5](rules/8-5-use-accessible-queries.md) | Use Accessible Queries | MEDIUM | Prefer role and label queries over test IDs |
 | [8-6](rules/8-6-separate-logic-from-ui-tests.md) | Separate Logic from UI Tests | MEDIUM | Test primitives/hooks independently from component rendering |
 | [8-7](rules/8-7-browser-mode-for-web-components-and-pwa-apis.md) | Browser Mode for Web Components and PWA APIs | HIGH | Use Vitest browser mode (real Chromium) for custom elements, shadow DOM, and browser-native APIs |
-| [8-8](rules/8-8-testing-headless-ui-libraries.md) | Testing Headless UI Libraries with Non-Standard ARIA | MEDIUM | Headless UI libraries use non-obvious ARIA structures and portals — inspect the actual tree before querying |
-| [8-9](rules/8-9-browser-native-api-test-isolation.md) | Browser-Native API Test Isolation | HIGH | Clear IndexedDB and localStorage between tests — close connection before deleteDatabase |
+| [8-8](rules/8-8-testing-headless-ui-libraries.md) | Testing Headless UI Libraries with Non-Standard ARIA | MEDIUM | Headless UI libraries use non-obvious ARIA structures and portals; inspect the actual tree before querying |
+| [8-9](rules/8-9-browser-native-api-test-isolation.md) | Browser-Native API Test Isolation | HIGH | Clear IndexedDB and localStorage between tests; close connection before deleteDatabase |
 | [8-10](rules/8-10-router-integration-testing.md) | Router Integration Testing | HIGH | Use MemoryRouter `root` prop to provide router context to layout providers |
 | [8-11](rules/8-11-tanstack-query-test-setup.md) | TanStack Query Test Setup | HIGH | Create a fresh QueryClient per test with retry and caching disabled |
 | [8-12](rules/8-12-deproxy-before-structured-clone.md) | Deproxy Before Structured Clone | HIGH | Remove every reactive proxy before writing data to IndexedDB |
@@ -227,7 +230,7 @@ Load these rules when creating new Solid.js components:
 | ---- | --- |
 | [1-1](rules/1-1-use-signals-correctly.md) | Ensure signals are called as functions |
 | [2-1](rules/2-1-never-destructure-props.md) | Prevent reactivity breakage |
-| [2-6](rules/2-6-components-return-once.md) | No early returns — use control flow in JSX |
+| [2-6](rules/2-6-components-return-once.md) | No early returns; use control flow in JSX |
 | [2-9](rules/2-9-never-call-components-as-functions.md) | Never call components as plain functions |
 | [2-2](rules/2-2-use-merge-props.md) | Handle default props correctly |
 | [2-3](rules/2-3-use-split-props.md) | Separate local and forwarded props |
@@ -313,7 +316,8 @@ Load these rules when writing or reviewing tests:
 
 ### Integrating Web Components / Custom Elements
 
-Load these rules when using any custom element library (Shoelace, FAST, Lion, Material Web Components, etc.) or native browser APIs like `<dialog>` and the Popover API:
+Load these rules when using any custom element library (Shoelace, FAST, Lion, Material Web
+Components, etc.) or native browser APIs like `<dialog>` and the Popover API:
 
 | Rule | Why |
 | ---- | --- |
@@ -353,17 +357,17 @@ Load these rules when using any custom element library (Shoelace, FAST, Lion, Ma
 | QueryClient retries mask errors / cache leaks between tests | [8-11](rules/8-11-tanstack-query-test-setup.md) | Use `makeTestQueryClient()` with `retry: false`, `gcTime: 0` |
 | `waitFor(length === 0)` passes before data loads | [8-4](rules/8-4-handle-async-in-tests.md) | Use a settled anchor with `findBy` before asserting absence |
 | `getByRole('form')` throws even though the form exists | [7-2](rules/7-2-aria-attributes.md) | Add `aria-label` or `aria-labelledby` to expose `role="form"` |
-| `<my-element onMyChange={...}>` misses all events | [5-6](rules/5-6-event-handler-patterns.md) | Use `on:my-change` — `on:` prefix required for all web component custom events |
+| `<my-element onMyChange={...}>` misses all events | [5-6](rules/5-6-event-handler-patterns.md) | Use `on:my-change`; `on:` prefix required for all web component custom events |
 | `my-element::part(...)` rule inside a `.module.css` is silently ignored | [6-6](rules/6-6-web-component-css-and-bundle.md) | Move `::part()` overrides to a non-module global stylesheet |
 | Barrel import of entire web component library | [6-6](rules/6-6-web-component-css-and-bundle.md) | Import individual components by path to enable tree-shaking |
 | `prop:value missing on custom element controlled state | [5-7](rules/5-7-web-component-controlled-state.md) | Use `prop:value={signal()}` plus `on:wc-*-change` |
 | `<div popover>` or `<button popoverTarget="x">` TypeScript error | [2-10](rules/2-10-custom-element-typescript-declarations.md) | Augment `HTMLElement` / `HTMLButtonElement` in a `.d.ts` file |
 | Object/array prop on custom element becomes `"[object Object]"` | [9-5](rules/9-5-property-vs-attribute-binding.md) | Use `prop:options={options()}` or another `prop:*` binding |
 | Experimental CSS property (`anchor-name`) produces a TypeScript error | [2-8](rules/2-8-style-prop-conventions.md) | Cast with `as unknown as JSX.CSSProperties` instead of `as never` |
-| `<Show when={record}>` without `keyed` for a form component | [3-7](rules/3-7-use-keyed-for-stateful-children.md) | Add `keyed` — without it, switching records silently reuses the old form state |
-| `<Switch><Match>` for a single condition gating one heavy component | [3-4](rules/3-4-use-switch-match.md) | Use `<Show>` — Switch creates 2N+4 memos vs Show's 3 |
-| `batch()` inside `createEffect` or reactive context | [1-6](rules/1-6-batch-signal-updates.md) | `batch()` is a no-op inside `runUpdates` — only use at top-level handlers |
-| Custom element `slotchange` handler calling `.focus()` or writing state synchronously | [9-2](rules/9-2-defer-slotchange-handlers.md) | Defer all side effects via `queueMicrotask` — fires inside `runUpdates` on second+ mount |
+| `<Show when={record}>` without `keyed` for a form component | [3-7](rules/3-7-use-keyed-for-stateful-children.md) | Add `keyed`; without it, switching records silently reuses the old form state |
+| `<Switch><Match>` for a single condition gating one heavy component | [3-4](rules/3-4-use-switch-match.md) | Use `<Show>`; Switch creates 2N+4 memos vs Show's 3 |
+| `batch()` inside `createEffect` or reactive context | [1-6](rules/1-6-batch-signal-updates.md) | `batch()` is a no-op inside `runUpdates`; only use at top-level handlers |
+| Custom element `slotchange` handler calling `.focus()` or writing state synchronously | [9-2](rules/9-2-defer-slotchange-handlers.md) | Defer all side effects via `queueMicrotask`; fires inside `runUpdates` on second+ mount |
 | Custom element registered inside a component or lazy chunk | [9-1](rules/9-1-register-custom-elements-early.md) | Import `/define` side-effects at app entry before any SolidJS rendering |
 | Reading custom element internal state (for example `el.open` or `el.value`) from `createEffect` | [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | Element properties are not Solid signals; use `on:wc-*` events to propagate changes upward |
 
@@ -376,7 +380,7 @@ When helping users familiar with React, keep these differences in mind:
 | Components re-render on state change | Components run once, signals update DOM directly |
 | `useState` returns `[value, setter]` | `createSignal` returns `[getter, setter]` |
 | `useMemo` with deps array | `createMemo` with automatic tracking |
-| `useEffect(fn, [deps])` | `createEffect(fn)` (no deps array — automatic tracking) |
+| `useEffect(fn, [deps])` | `createEffect(fn)` (no deps array; automatic tracking) |
 | Destructure props freely | Never destructure props |
 | Early returns (`if (!x) return null`) | `<Show>` / `<Switch>` in JSX (components return once) |
 | `{condition && <Component />}` | `<Show when={condition}><Component /></Show>` |
@@ -385,7 +389,7 @@ When helping users familiar with React, keep these differences in mind:
 | `htmlFor` | `for` |
 | `style={{ fontSize: 14 }}` | `style={{ "font-size": "14px" }}` |
 | Context requires `useContext` hook | Context works with `useContext` or direct access |
-| React 18: `ref` + `addEventListener` for custom element events; React 19: `onMyEvent={handler}` natively | `on:my-event={handler}` — always use `on:` prefix with web component events |
+| React 18: `ref` + `addEventListener` for custom element events; React 19: `onMyEvent={handler}` natively | `on:my-event={handler}`; always use `on:` prefix with web component events |
 
 ## Priority Levels
 
@@ -398,7 +402,8 @@ When helping users familiar with React, keep these differences in mind:
 
 ### Fine-Grained Reactivity
 
-Solid.js updates only the specific DOM elements that depend on changed data, not entire component trees. This is achieved through:
+Solid.js updates only the specific DOM elements that depend on changed data, not entire component
+trees. This is achieved through:
 
 - **Signals**: Reactive primitives that track dependencies
 - **Effects**: Side effects that automatically re-run when dependencies change
@@ -406,7 +411,8 @@ Solid.js updates only the specific DOM elements that depend on changed data, not
 
 ### Components Render Once
 
-Unlike React, Solid components are functions that run once during initial render. Reactivity happens at the signal level, not the component level. This is why:
+Unlike React, Solid components are functions that run once during initial render. Reactivity happens
+at the signal level, not the component level. This is why:
 
 - Props must not be destructured (would capture static values)
 - Signals must be called as functions (to maintain reactive tracking)
@@ -422,7 +428,10 @@ For nested objects and arrays, Solid provides stores with:
 
 ## Tooling
 
-For automated linting alongside these best practices, use [eslint-plugin-solid](https://github.com/solidjs-community/eslint-plugin-solid). The plugin catches many of the same issues this skill covers (destructured props, early returns, React-specific props, innerHTML usage, style prop format, etc.) and provides auto-fixable rules.
+For automated linting alongside these best practices, use
+[eslint-plugin-solid](https://github.com/solidjs-community/eslint-plugin-solid). The plugin catches
+many of the same issues this skill covers (destructured props, early returns, React-specific props,
+innerHTML usage, style prop format, etc.) and provides auto-fixable rules.
 
 ## Resources
 

@@ -8,7 +8,9 @@ description: Use batch() for multiple synchronous signal updates
 
 ## Problem
 
-By default, each signal update triggers an immediate reactive update. When updating multiple signals in sequence, this causes multiple update cycles. The `batch` function groups updates together so the reactive system only runs once.
+By default, each signal update triggers an immediate reactive update. When updating multiple signals
+in sequence, this causes multiple update cycles. The `batch` function groups updates together so the
+reactive system only runs once.
 
 ## Incorrect
 
@@ -139,9 +141,11 @@ function Form() {
 
 1. **Performance**: Multiple reactive updates mean multiple DOM updates, effect runs, and memo recalculations.
 
-2. **Consistency**: Without batching, intermediate states are visible. Components might render with `firstName=""` but old `lastName` values.
+1. **Consistency**: Without batching, intermediate states are visible. Components might render with
+   `firstName=""` but old `lastName` values.
 
-3. **Predictability**: Effects see all changes at once rather than being called multiple times with partial updates.
+1. **Predictability**: Effects see all changes at once rather than being called multiple times with
+   partial updates.
 
 ## When to Use Batch
 
@@ -169,7 +173,7 @@ You primarily need `batch()` for:
 
 ## batch() Is a No-op Inside Reactive Contexts
 
-`batch(fn)` calls `runUpdates(fn, false)` internally. `runUpdates` has an early-exit guard:
+`batch(fn)` calls `runUpdates(fn, false)` internally. `runUpdates` has an early exit guard:
 
 ```typescript
 // SolidJS internals
@@ -180,7 +184,7 @@ function runUpdates(fn, init) {
 ```
 
 If you call `batch()` inside an effect, memo, or any reactive computation, `Updates` is already
-set by the outer `runUpdates`. The `batch()` wrapper does nothing — `fn()` is called directly,
+set by the outer `runUpdates`. The `batch()` wrapper does nothing; `fn()` is called directly,
 and the signals written inside are deferred by the existing outer queue, not a new one you
 created.
 

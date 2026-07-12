@@ -9,17 +9,17 @@ description: Always defer synchronous DOM mutations, focus changes, and state wr
 ## Problem
 
 `slotchange` fires synchronously when the browser assigns or removes a slotted element. On the
-**first** mount of a custom element that defers shadow root creation (e.g. via an async update
+**first** mount of a custom element that defers shadow root creation (for example, via an async update
 queue), the shadow DOM doesn't yet exist when SolidJS inserts the slotted child. There is no
 shadow `<slot>` to assign it to, so `slotchange` does **not** fire synchronously.
 
 On every **subsequent** mount (the user navigates away and back), the shadow DOM persists across
 `disconnectedCallback`/`connectedCallback`. When SolidJS re-inserts the slotted child during its
 reactive update pass (`runUpdates`), the shadow `<slot>` already exists and the browser
-immediately assigns the element — firing `slotchange` **synchronously inside `runUpdates`**.
+immediately assigns the element; firing `slotchange` **synchronously inside `runUpdates`**.
 
-Any synchronous work in the handler — calling `.focus()`, writing internal component state,
-traversing the DOM, dispatching events — runs inside SolidJS's active reactive cycle. This can
+Any synchronous work in the handler; calling `.focus()`, writing internal component state,
+traversing the DOM, dispatching events; runs inside SolidJS's active reactive cycle. This can
 corrupt the update pass, trigger unintended reactive subscriptions, or cascade into further
 mutations.
 
@@ -130,10 +130,10 @@ requestAnimationFrame(() => this._updateLayout());
 
 ## The First-vs-Second Mount Asymmetry
 
-| Mount | Shadow DOM state | slotchange timing |
+| Mount | shadow DOM state | slotchange timing |
 | ----- | ---------------- | ----------------- |
-| First visit to route | Shadow DOM not yet rendered (element defers shadow root creation) | Deferred — fires after the element's first async render |
-| Second+ visit to route | Shadow DOM persists from previous visit | **Synchronous** — fires inside SolidJS `runUpdates` |
+| First visit to route | shadow DOM not yet rendered (element defers shadow root creation) | Deferred; fires after the element's first async render |
+| Second+ visit to route | shadow DOM persists from previous visit | **Synchronous**; fires inside SolidJS `runUpdates` |
 
 This asymmetry makes the bug hard to catch in initial development. It only manifests after the
 user has visited a route, navigated away, and returned. Integration tests that only test initial
@@ -151,11 +151,16 @@ be instantaneous:
 
 ## Related Rules
 
-- [9-1: Register Custom Elements at App Entry](9-1-register-custom-elements-early.md) - Registration timing
-- [9-3: Treat Custom Element and SolidJS Reactivity as Decoupled](9-3-decouple-lit-and-solid-reactivity.md) - Reactivity boundary design
+- [9-1: Register Custom Elements at App Entry](9-1-register-custom-elements-early.md) - Registration
+  timing
+- [9-3: Treat Custom Element and SolidJS Reactivity as
+  Decoupled](9-3-decouple-lit-and-solid-reactivity.md) - Reactivity boundary design
 - [5-3: Cleanup with onCleanup](5-3-cleanup-with-oncleanup.md) - Disconnecting observers on cleanup
-
 
 ## Wrapper Smell: Timers Fixing Slot Timing
 
-A Solid wrapper should not need `setTimeout`, `queueMicrotask`, or `onMount` glue just to make a custom element notice its slotted children. The custom element should read assigned nodes synchronously, defer its own DOM writes or focus work, and handle late child insertion/replacement itself. Wrapper-level timers are a sign that the custom element API or lifecycle handling needs improvement.
+A Solid wrapper should not need `setTimeout`, `queueMicrotask`, or `onMount` glue just to make a
+custom element notice its slotted children. The custom element should read assigned nodes
+synchronously, defer its own DOM writes or focus work, and handle late child insertion/replacement
+itself. Wrapper-level timers are a sign that the custom element API or lifecycle handling needs
+improvement.

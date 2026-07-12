@@ -8,7 +8,9 @@ description: Prefer composition and context over prop drilling
 
 ## Problem
 
-Passing data through many component layers (prop drilling) creates tight coupling, makes refactoring difficult, and clutters intermediate components with props they don't use. Prefer composition patterns and context for sharing data across component trees.
+Passing data through many component layers (prop drilling) creates tight coupling, makes refactoring
+difficult, and clutters intermediate components with props they don't use. Prefer composition
+patterns and context for sharing data across component trees.
 
 ## Incorrect
 
@@ -209,11 +211,11 @@ const value = {
 
 1. **Decoupling**: Components don't need to know about intermediate layers.
 
-2. **Maintenance**: Changing data flow doesn't require updating every component in the chain.
+1. **Maintenance**: Changing data flow doesn't require updating every component in the chain.
 
-3. **Reusability**: Components without drilling dependencies are more reusable.
+1. **Reusability**: Components without drilling dependencies are more reusable.
 
-4. **Clarity**: Each component only receives props it actually uses.
+1. **Clarity**: Each component only receives props it actually uses.
 
 ## Related Rules
 

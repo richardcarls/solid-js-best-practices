@@ -8,7 +8,9 @@ description: Use signals for primitives, stores for nested objects
 
 ## Problem
 
-Choosing the wrong state primitive leads to either verbosity (using stores for simple values) or lost reactivity (using signals for nested objects). Signals are for primitive values and simple objects; stores are for nested, complex state that needs granular updates.
+Choosing the wrong state primitive leads to either verbosity (using stores for simple values) or
+lost reactivity (using signals for nested objects). Signals are for primitive values and simple
+objects; stores are for nested, complex state that needs granular updates.
 
 ## Incorrect
 
@@ -180,11 +182,12 @@ setForm("fields", "name", "value", "John");
 
 ## Why It Matters
 
-1. **Performance**: Stores provide fine-grained reactivity. Changing a nested value only updates subscribers to that specific property.
+1. **Performance**: Stores provide fine-grained reactivity. Changing a nested value only updates
+   subscribers to that specific property.
 
-2. **Simplicity**: Signals are simpler for simple values. Don't add complexity where it's not needed.
+1. **Simplicity**: Signals are simpler for simple values. Don't add complexity where it's not needed.
 
-3. **Update Ergonomics**: Stores have path-based updates. Signals require spreading nested objects.
+1. **Update Ergonomics**: Stores have path-based updates. Signals require spreading nested objects.
 
 ## Related Rules
 

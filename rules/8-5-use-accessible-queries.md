@@ -8,7 +8,12 @@ description: Prefer role and label queries over test IDs for resilient, accessib
 
 ## Problem
 
-Tests that query by test ID (`getByTestId`) or raw DOM structure (`querySelector`) are brittle -- they break when markup changes and they do not verify that the UI is accessible. The Testing Library query priority (Role > LabelText > Text > TestId) is designed so that tests simultaneously verify accessibility. In Solid apps, this is especially important because control flow components (`<Show>`, `<For>`, `<Switch>`) change DOM structure; accessible queries are resilient to those structural changes.
+Tests that query by test ID (`getByTestId`) or raw DOM structure (`querySelector`) are brittle --
+they break when markup changes and they do not verify that the UI is accessible. The Testing Library
+query priority (Role > LabelText > Text > TestId) is designed so that tests simultaneously verify
+accessibility. In Solid apps, this is especially important because control flow components
+(`<Show>`, `<For>`, `<Switch>`) change DOM structure; accessible queries are resilient to those
+structural changes.
 
 ## Incorrect
 
@@ -117,13 +122,18 @@ test("renders chart", () => {
 
 ## Why It Matters
 
-1. **Accessibility Verification**: Role-based queries ensure your components are screen-reader navigable as a side effect of testing.
+1. **Accessibility Verification**: Role-based queries ensure your components are screen-reader
+   navigable as a side effect of testing.
 
-2. **Structural Resilience**: Solid's control flow components (`<Show>`, `<For>`, `<Switch>`) restructure the DOM differently than static HTML. Semantic queries target meaning, not DOM position.
+1. **Structural Resilience**: Solid's control flow components (`<Show>`, `<For>`, `<Switch>`)
+   restructure the DOM differently than static HTML. Semantic queries target meaning, not DOM
+   position.
 
-3. **Maintenance**: Test IDs add noise to production markup and create a parallel naming system that drifts from the actual UI.
+1. **Maintenance**: Test IDs add noise to production markup and create a parallel naming system that
+   drifts from the actual UI.
 
-4. **User Perspective**: Role and label queries mirror how real users (including assistive technology users) interact with the UI.
+1. **User Perspective**: Role and label queries mirror how real users (including assistive
+   technology users) interact with the UI.
 
 ## Related Rules
 

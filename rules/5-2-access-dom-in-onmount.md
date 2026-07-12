@@ -8,7 +8,9 @@ description: Access DOM elements in onMount, not during render
 
 ## Problem
 
-DOM elements don't exist during the component's initial execution—they're created after the JSX is processed. Accessing refs or performing DOM operations during render leads to undefined errors or incorrect behavior.
+DOM elements don't exist during the component's initial execution; they're created after the JSX is
+processed. Accessing refs or performing DOM operations during render leads to undefined errors or
+incorrect behavior.
 
 ## Incorrect
 
@@ -201,11 +203,11 @@ createEffect(() => {
 
 1. **Element Existence**: DOM elements are created after component function runs.
 
-2. **Error Prevention**: Accessing undefined refs throws runtime errors.
+1. **Error Prevention**: Accessing undefined refs throws runtime errors.
 
-3. **Correct Timing**: `onMount` guarantees the DOM is ready.
+1. **Correct Timing**: `onMount` guarantees the DOM is ready.
 
-4. **Cleanup Pairing**: `onCleanup` inside `onMount` ensures proper resource cleanup.
+1. **Cleanup Pairing**: `onCleanup` inside `onMount` ensures proper resource cleanup.
 
 ## Related Rules
 
