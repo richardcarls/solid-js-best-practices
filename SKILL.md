@@ -138,11 +138,11 @@ export default MyComponent;
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
-| [3-1](rules/3-1-use-show-for-conditionals.md) | Use Show for Conditionals | HIGH | Use `<Show>` instead of ternary operators |
+| [3-1](rules/3-1-use-show-for-conditionals.md) | Use Show for Conditionals | HIGH | Use `<Show>` for conditional rendering and its function child when callers need a narrowed value |
 | [3-2](rules/3-2-use-for-for-lists.md) | Use `For` for Lists | HIGH | Use `<For>` for referentially keyed list rendering |
 | [3-7](rules/3-7-use-keyed-for-stateful-children.md) | Use keyed for Stateful Children | HIGH | Add `keyed` when child has internal state and value identity (not just truthiness) matters |
 | [3-3](rules/3-3-use-index-for-primitives.md) | Use Index for Primitives | MEDIUM | Use `<Index>` when array index matters more than identity |
-| [3-4](rules/3-4-use-switch-match.md) | Use Switch/Match | MEDIUM | Use `<Switch>`/`<Match>` for multiple conditions; prefer `<Show>` for single gates |
+| [3-4](rules/3-4-use-switch-match.md) | Use Switch/Match | MEDIUM | Use `<Switch>`/`<Match>` for multiple conditions and function children to consume matched values without assertions |
 | [3-6](rules/3-6-stable-component-mount.md) | Stable Component Mount | MEDIUM | Avoid rendering the same component in multiple Switch/Show branches |
 | [3-5](rules/3-5-provide-fallbacks.md) | Provide Fallbacks | LOW | Always provide `fallback` props for loading states |
 
@@ -365,6 +365,7 @@ Components, etc.) or native browser APIs like `<dialog>` and the Popover API:
 | Object/array prop on custom element becomes `"[object Object]"` | [9-5](rules/9-5-property-vs-attribute-binding.md) | Use `prop:options={options()}` or another `prop:*` binding |
 | Experimental CSS property (`anchor-name`) produces a TypeScript error | [2-8](rules/2-8-style-prop-conventions.md) | Cast with `as unknown as JSX.CSSProperties` instead of `as never` |
 | `<Show when={record}>` without `keyed` for a form component | [3-7](rules/3-7-use-keyed-for-stateful-children.md) | Add `keyed`; without it, switching records silently reuses the old form state |
+| Re-reading an optional value inside plain `<Show>` or `<Match>` children | [3-1](rules/3-1-use-show-for-conditionals.md) | Use the function-child accessor; plain JSX children do not narrow later reads |
 | `<Switch><Match>` for a single condition gating one heavy component | [3-4](rules/3-4-use-switch-match.md) | Use `<Show>`; Switch creates 2N+4 memos vs Show's 3 |
 | `batch()` inside `createEffect` or reactive context | [1-6](rules/1-6-batch-signal-updates.md) | `batch()` is a no-op inside `runUpdates`; only use at top-level handlers |
 | Custom element `slotchange` handler calling `.focus()` or writing state synchronously | [9-2](rules/9-2-defer-slotchange-handlers.md) | Defer all side effects via `queueMicrotask`; fires inside `runUpdates` on second+ mount |

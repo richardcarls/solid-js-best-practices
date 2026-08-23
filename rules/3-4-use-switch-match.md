@@ -3,7 +3,7 @@ id: 3-4
 title: Use Switch/Match
 category: Control Flow
 priority: MEDIUM
-description: Use <Switch>/<Match> for multiple conditions
+description: Use <Switch>/<Match> for multiple conditions and function children to consume matched values without assertions
 ---
 
 ## Problem
@@ -96,6 +96,9 @@ function UserStatus(props) {
 }
 ```
 
+As with `<Show>`, only the function-child form narrows the matched value for the caller. Plain JSX
+children do not narrow later reads of the original prop or accessor.
+
 ### Order Matters
 
 ```tsx
@@ -157,16 +160,28 @@ type State =
   | { status: "error"; error: Error };
 
 function AsyncContent(props: { state: State }) {
+  const errorState = () => {
+    const state = props.state;
+
+    return state.status === "error" ? state : undefined;
+  };
+
+  const successState = () => {
+    const state = props.state;
+
+    return state.status === "success" ? state : undefined;
+  };
+
   return (
     <Switch>
       <Match when={props.state.status === "loading"}>
         <Spinner />
       </Match>
-      <Match when={props.state.status === "error" && props.state}>
-        {(state) => <Error message={(state() as { error: Error }).error.message} />}
+      <Match when={errorState()}>
+        {(state) => <Error message={state().error.message} />}
       </Match>
-      <Match when={props.state.status === "success" && props.state}>
-        {(state) => <Content data={(state() as { data: string }).data} />}
+      <Match when={successState()}>
+        {(state) => <Content data={state().data} />}
       </Match>
       <Match when={props.state.status === "idle"}>
         <Placeholder />
@@ -185,6 +200,9 @@ function AsyncContent(props: { state: State }) {
 1. **Explicit Fallback**: The `fallback` prop makes the default case clear.
 
 1. **First Match Wins**: Clear precedence when conditions might overlap.
+
+1. **Type Narrowing**: Function children expose the matched value; derived accessors can preserve
+   discriminated-union narrowing without assertions.
 
 ## Switch/Match Props
 
