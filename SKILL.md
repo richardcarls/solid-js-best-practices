@@ -158,7 +158,7 @@ export default MyComponent;
 | [4-6](rules/4-6-store-functions-with-wrapper.md) | Store Functions with a Wrapper | HIGH | Wrap function values so setStore does not invoke them as updater functions |
 | [4-7](rules/4-7-cleanup-at-page-ownership-boundary.md) | Cleanup at the Page Ownership Boundary | HIGH | Use per-page cleanup when multiple routed panes remain mounted |
 
-### 5. Refs & DOM (7 rules)
+### 5. Refs & DOM (8 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -167,6 +167,7 @@ export default MyComponent;
 | [5-3](rules/5-3-cleanup-with-oncleanup.md) | Cleanup with onCleanup | HIGH | Always clean up subscriptions and timers |
 | [5-5](rules/5-5-avoid-innerhtml.md) | Avoid innerHTML | HIGH | Avoid `innerHTML` to prevent XSS; use JSX or `textContent` |
 | [5-7](rules/5-7-web-component-controlled-state.md) | Web Component Controlled State | HIGH | Use `prop:*` properties and `on:wc-*` events for modern custom elements; reserve refs/effects for native or legacy APIs |
+| [5-8](rules/5-8-view-transition-wraps-signal-mutation.md) | Wrap Signal Mutation in View Transition | HIGH | Call the Solid setter inside `startViewTransition()` so the browser captures the old DOM before applying the new reactive state |
 | [5-4](rules/5-4-use-directives.md) | Use Directives | MEDIUM | Use `use:` directives for reusable element behaviors |
 | [5-6](rules/5-6-event-handler-patterns.md) | Event Handler Patterns | MEDIUM | Use `on:`/`oncapture:` namespaces and array handler syntax correctly |
 
@@ -326,6 +327,7 @@ Components, etc.) or native browser APIs like `<dialog>` and the Popover API:
 | [5-7](rules/5-7-web-component-controlled-state.md) | Prefer declarative `prop:*`/`on:wc-*`; use refs for native or legacy APIs only |
 | [6-6](rules/6-6-web-component-css-and-bundle.md) | Per-component imports for tree-shaking; `::part()` overrides in global CSS only |
 | [9-8](rules/9-8-wrapper-signal-for-controlled-only-wc.md) | When the WC has no `defaultValue`, own the uncontrolled → controlled bridge with `createSignal` |
+| [5-8](rules/5-8-view-transition-wraps-signal-mutation.md) | Keep Solid's DOM update inside the View Transition snapshot callback |
 
 ## Common Mistakes to Catch
 
@@ -371,6 +373,7 @@ Components, etc.) or native browser APIs like `<dialog>` and the Popover API:
 | Custom element `slotchange` handler calling `.focus()` or writing state synchronously | [9-2](rules/9-2-defer-slotchange-handlers.md) | Defer all side effects via `queueMicrotask`; fires inside `runUpdates` on second+ mount |
 | Custom element registered inside a component or lazy chunk | [9-1](rules/9-1-register-custom-elements-early.md) | Import `/define` side-effects at app entry before any SolidJS rendering |
 | Reading custom element internal state (for example `el.open` or `el.value`) from `createEffect` | [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | Element properties are not Solid signals; use `on:wc-*` events to propagate changes upward |
+| Calling a Solid setter before `startViewTransition()` | [5-8](rules/5-8-view-transition-wraps-signal-mutation.md) | Move the setter into the callback so the browser captures old and new states |
 
 ## Solid.js vs React Mental Model
 
