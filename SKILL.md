@@ -167,6 +167,8 @@ Load these rules when integrating Lit or other custom elements with SolidJS:
 | [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | One-way data flow design |
 | [9-4](rules/9-4-thin-web-component-wrappers.md) | Keep wrappers focused on app concerns |
 | [9-5](rules/9-5-property-vs-attribute-binding.md) | `prop:*` for properties, `attr:*` for attributes CSS or ARIA must see |
+| [9-6](rules/9-6-register-custom-fields-with-form-libraries.md) | Property-bound fields in form-library registries |
+| [9-7](rules/9-7-store-state-for-web-component-heavy-forms.md) | Store state for custom-element-heavy forms |
 | [5-6](rules/5-6-event-handler-patterns.md) | Use `on:` namespace for custom element events |
 
 ### Code Review
@@ -202,6 +204,8 @@ Load these rules when working with application state:
 | [4-3](rules/4-3-use-produce-for-mutations.md) | Complex mutations |
 | [4-4](rules/4-4-use-reconcile-for-data.md) | External data integration |
 | [4-5](rules/4-5-use-context-for-global.md) | Cross-component state |
+| [4-6](rules/4-6-store-functions-with-wrapper.md) | Function values in stores |
+| [4-7](rules/4-7-cleanup-at-page-ownership-boundary.md) | Several mounted panes sharing context |
 
 ### Accessibility Audit
 
@@ -212,6 +216,7 @@ Load these rules when auditing accessibility:
 | [7-1](rules/7-1-semantic-html.md) | Semantic structure |
 | [7-2](rules/7-2-aria-attributes.md) | Screen reader support |
 | [7-3](rules/7-3-keyboard-navigation.md) | Keyboard users |
+| [7-4](rules/7-4-router-root-link-end.md) | Current-page state on router links |
 
 ### Writing Tests
 
@@ -230,6 +235,7 @@ Load these rules when writing or reviewing tests:
 | [8-9](rules/8-9-browser-native-api-test-isolation.md) | IDB and localStorage cleanup patterns |
 | [8-10](rules/8-10-router-integration-testing.md) | MemoryRouter setup for integration tests |
 | [8-11](rules/8-11-tanstack-query-test-setup.md) | QueryClient configuration for tests |
+| [8-12](rules/8-12-deproxy-before-structured-clone.md) | Store proxies written to IndexedDB |
 
 ### Integrating Web Components / Custom Elements
 
