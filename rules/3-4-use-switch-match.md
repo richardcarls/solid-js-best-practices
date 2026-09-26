@@ -99,6 +99,43 @@ function UserStatus(props) {
 As with `<Show>`, only the function-child form narrows the matched value for the caller. Plain JSX
 children do not narrow later reads of the original prop or accessor.
 
+### Narrowed Accessors Expire With Their Branch
+
+The accessor a `<Match>` or `<Show>` function child receives is guarded: calling it after its
+branch stops being active throws Solid's stale-value error ("Attempting to access a stale value
+from `<Match>`..."). A read in the callback body runs once, while the branch is active, so it is
+safe. Reads that run later are not: component props compile to getters, and a nested `<Show>`
+re-evaluates its `children` and `fallback` whenever its own `when` changes. If that happens in the
+same flush that deactivates the outer branch, the read throws.
+
+The window is timing-dependent. In the observed case it opened only on a cold first load, when
+async data resolved in the same flush as another condition change; a warm cache mounted with data
+already present and never reproduced it.
+
+```tsx
+// ❌ RISKY: the narrowed accessor escapes into lazily read slots of a nested conditional
+<Match when={query.data}>
+  {(data) => (
+    <Show when={mode() === "edit"} fallback={<ItemView item={data()} />}>
+      <ItemForm item={data()} />
+    </Show>
+  )}
+</Match>
+
+// ✅ SAFER: the outer branch already guarantees the value; the source accessor has no expiry
+<Match when={query.data}>
+  <Show when={mode() === "edit"} fallback={<ItemView item={query.data!} />}>
+    <ItemForm item={query.data!} />
+  </Show>
+</Match>
+```
+
+The fix trades narrowing for an assertion, so reserve it for accessors that would otherwise
+escape into nested conditionals keyed on other signals. Alternatives: `keyed`, which passes a
+plain value with no expiry but remounts the subtree when the value's identity changes
+([3-7](3-7-use-keyed-for-stateful-children.md)), or restructuring so the nested condition sits
+outside the narrowed branch.
+
 ### Order Matters
 
 ```tsx

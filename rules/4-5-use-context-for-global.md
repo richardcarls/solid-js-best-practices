@@ -238,6 +238,11 @@ function Component() {
 
 1. **Colocate Provider**: Place provider at the lowest common ancestor.
 
+1. **Reactive Accessors Only**: Build every exposed accessor from a signal, memo, or store.
+   `isLocked = () => locked` over a plain `let` type-checks and reads correctly at first render,
+   then never updates a consumer such as `disabled={task.isLocked()}`. Derive it from state the
+   provider already tracks instead: `isLocked = () => driver() !== null`.
+
 ## When to Use Context
 
 | Scenario | Use Context? |

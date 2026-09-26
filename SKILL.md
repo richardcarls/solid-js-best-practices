@@ -56,7 +56,7 @@ AI-assisted code generation, review, and refactoring.
 | [3-2](rules/3-2-use-for-for-lists.md) | Use `For` for Lists | HIGH | Use `<For>` for referentially keyed list rendering |
 | [3-7](rules/3-7-use-keyed-for-stateful-children.md) | Use keyed for Stateful Children | HIGH | Add `keyed` when child has internal state and value identity (not just truthiness) matters |
 | [3-3](rules/3-3-use-index-for-primitives.md) | Use Index for Primitives | MEDIUM | Use `<Index>` when array index matters more than identity |
-| [3-4](rules/3-4-use-switch-match.md) | Use Switch/Match | MEDIUM | Use `<Switch>`/`<Match>` for multiple conditions and function children to consume matched values without assertions |
+| [3-4](rules/3-4-use-switch-match.md) | Use Switch/Match | MEDIUM | Use `<Switch>`/`<Match>` for multiple conditions; narrowed accessors throw once their branch deactivates |
 | [3-6](rules/3-6-stable-component-mount.md) | Stable Component Mount | MEDIUM | Avoid rendering the same component in multiple Switch/Show branches |
 | [3-5](rules/3-5-provide-fallbacks.md) | Provide Fallbacks | LOW | Always provide `fallback` props for loading states |
 
@@ -70,9 +70,9 @@ AI-assisted code generation, review, and refactoring.
 | [4-4](rules/4-4-use-reconcile-for-data.md) | Use reconcile for Server Data | MEDIUM | Use `reconcile` when integrating server/external data |
 | [4-5](rules/4-5-use-context-for-global.md) | Use Context for Global State | MEDIUM | Use Context API for cross-component shared state |
 | [4-6](rules/4-6-store-functions-with-wrapper.md) | Store Functions with a Wrapper | HIGH | Wrap function values so setStore does not invoke them as updater functions |
-| [4-7](rules/4-7-cleanup-at-page-ownership-boundary.md) | Cleanup at the Page Ownership Boundary | HIGH | Use per-page cleanup when multiple routed panes remain mounted |
+| [4-7](rules/4-7-cleanup-at-page-ownership-boundary.md) | Cleanup at the Page Ownership Boundary | HIGH | Use per-page cleanup when multiple routed panes remain mounted; audit every context field when splitting a shared context |
 
-### 5. Refs & DOM (8 rules)
+### 5. Refs & DOM (10 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -82,6 +82,8 @@ AI-assisted code generation, review, and refactoring.
 | [5-5](rules/5-5-avoid-innerhtml.md) | Avoid innerHTML | HIGH | Avoid `innerHTML` to prevent XSS; use JSX or `textContent` |
 | [5-7](rules/5-7-web-component-controlled-state.md) | Web Component Controlled State | HIGH | Use `prop:*` properties and `on:wc-*` events for modern custom elements; reserve refs/effects for native or legacy APIs |
 | [5-8](rules/5-8-view-transition-wraps-signal-mutation.md) | Wrap Signal Mutation in View Transition | HIGH | Call the Solid setter inside `startViewTransition()` so the browser captures the old DOM before applying the new reactive state |
+| [5-9](rules/5-9-two-way-scroll-sync-settle-and-echo.md) | Two-Way Scroll Sync | HIGH | Report only settled scroll positions and skip re-scrolling for your own echo |
+| [5-10](rules/5-10-nullable-value-on-progress-and-meter.md) | Possibly Missing progress/meter value | HIGH | `value` is always a property and throws on `undefined`; use `attr:value` |
 | [5-4](rules/5-4-use-directives.md) | Use Directives | MEDIUM | Use `use:` directives for reusable element behaviors |
 | [5-6](rules/5-6-event-handler-patterns.md) | Event Handler Patterns | MEDIUM | Use `on:`/`oncapture:` namespaces and array handler syntax correctly |
 
@@ -242,6 +244,12 @@ Components, etc.) or native browser APIs like `<dialog>` and the Popover API:
 | [6-6](rules/6-6-web-component-css-and-bundle.md) | Per-component imports for tree-shaking; `::part()` overrides in global CSS only |
 | [9-8](rules/9-8-wrapper-signal-for-controlled-only-wc.md) | When the WC has no `defaultValue`, own the uncontrolled → controlled bridge with `createSignal` |
 | [5-8](rules/5-8-view-transition-wraps-signal-mutation.md) | Keep Solid's DOM update inside the View Transition snapshot callback |
+| [5-10](rules/5-10-nullable-value-on-progress-and-meter.md) | `value` on native `<progress>`/`<meter>` throws on `undefined` |
+
+### Carousels and Scroll-Synced Components
+
+Load [5-9](rules/5-9-two-way-scroll-sync-settle-and-echo.md) when an index is both driven into a
+scroll container and reported back out of it.
 
 ### Migrating From React
 
