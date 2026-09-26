@@ -6,7 +6,7 @@ component integration.
 
 ## Features
 
-- **61 actionable rules** organized into 9 categories
+- **71 actionable rules** organized into 9 categories
 - **Priority levels** (CRITICAL, HIGH, MEDIUM, LOW) for focused code review
 - **Before/after code examples** showing incorrect vs. correct patterns
 - **Detailed explanations** of why each practice matters

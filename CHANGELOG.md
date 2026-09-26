@@ -2,6 +2,24 @@
 
 All notable changes to this skill will be documented in this file.
 
+## [Unreleased] - Field-note promotions
+
+### Added
+
+- 5-9: Two-Way Scroll Sync Needs a Settle Signal and Echo Suppression (HIGH).
+- 5-10: Bind a Possibly Missing value on progress or meter as an Attribute (HIGH).
+
+### Changed
+
+- 9-5 and 2-10 now describe Solid's real compiler behavior: un-namespaced dynamic props on custom
+  elements compile to camel-case property assignments, and `attr:` is required for `data-*`,
+  ID-reference ARIA, and other attributes CSS or the element must see. The previous text claimed
+  such props were written as attributes.
+- 3-4 (with a pointer from 3-1) explains that narrowed `Match`/`Show` accessors throw once their
+  branch deactivates, and how to keep them out of lazily read nested slots.
+- 4-5 requires provider accessors to read signals, memos, or stores.
+- 4-7 adds a consumer audit for splitting a shared context into per-pane providers.
+
 ## [1.8.0] - 2026-05-14 - Generic web component integration guidance
 
 ### Added

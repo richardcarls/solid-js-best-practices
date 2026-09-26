@@ -1,30 +1,47 @@
 ---
+id: 9-5
 title: Property vs Attribute Binding
-priority: HIGH
 category: Web Component Integration
+priority: HIGH
+description: "Dynamic props on custom elements compile to property assignments; use `prop:` to state that intent and `attr:` whenever the element, CSS, or dataset must see a real attribute"
 ---
 
 # Property vs Attribute Binding
 
 ## Rule
 
-Use `prop:*` for custom element public APIs that are property-based, especially controlled state and
-all rich data. Use attributes for static strings, booleans that the element explicitly reflects, and
-HTML-only progressive enhancement.
+On a hyphenated (custom-element) tag, Solid's compiler turns every un-namespaced dynamic prop into a
+camel-case property assignment: `value={x()}` becomes `el.value = x()`, and `data-tone={t()}`
+becomes `el.dataTone = t()`. Native elements get `setAttribute` except for a short list of
+properties such as `value`.
+
+- Use `prop:*` for property-based public APIs: controlled state and all rich data. On a custom
+  element it compiles the same way, but it states the intent and survives a tag change.
+- Use `attr:*` whenever the element, a CSS selector, or a `.dataset` reader must see an attribute:
+  every `data-*`, ID-reference ARIA (`aria-controls`, `aria-labelledby`, `aria-describedby`,
+  `aria-activedescendant`, `aria-owns`), and attributes the element observes without exposing a
+  property.
+- String ARIA such as `aria-label` works without `attr:` because browser ARIA reflection
+  (`el.ariaLabel`) writes the attribute. ID-reference ARIA has no string property, so it silently
+  does nothing.
 
 ## Incorrect
 
 ```tsx
-<wc-select
-  value={selectedIds()}
-  options={options()}
-  plugin={markdownPlugin}
-/>
+// ❌ Compiles to el.dataTone = ... and el.ariaControls = ...; neither reflects, so
+// [data-tone='danger'] never matches and the popup relationship is never exposed
+<wc-button data-tone={tone()} aria-controls={menuId}>
+  Delete
+</wc-button>
 ```
 
-This writes attributes, so arrays and objects become strings such as `"[object Object]"`.
-
 ## Correct
+
+```tsx
+<wc-button attr:data-tone={tone()} attr:aria-controls={menuId}>
+  Delete
+</wc-button>
+```
 
 ```tsx
 <wc-select
@@ -46,19 +63,22 @@ This writes attributes, so arrays and objects become strings such as `"[object O
 />
 ```
 
-```tsx
-<wc-textarea prop:plugin={markdownPlugin} />
-```
+`disabled={isDisabled()}` is a property assignment too; it works because the element defines a
+`disabled` property. `slot={...}` works without `attr:` because `slot` is a reflected
+`HTMLElement` property.
 
 ## Why It Matters
 
-Solid treats normal JSX attributes as HTML attributes unless a binding uses the `prop:` namespace.
-Custom elements commonly expose JavaScript properties for `value`, `open`, `options`, callbacks, and
-plugin objects. Binding those through attributes loses identity, breaks updates, and can hide bugs
-until real browser integration.
+The failure is silent. Assigning a property the element never defined succeeds, TypeScript accepts
+the prop, and the only symptom is a selector or `.dataset` read that never matches, which looks
+like a cascade or token bug. The compiled module is the ground truth: Vite serves it transformed,
+so `_el$.dataTone = ...` versus `setAttribute(_el$, "data-tone", ...)` settles the question. One
+instance usually means more; grep every dynamic `data-*` and ID-reference `aria-*` binding on a
+custom element.
 
 ## Related Rules
 
+- [2-10 Custom Element TypeScript Declarations](2-10-custom-element-typescript-declarations.md)
 - [5-6 Event Handler Patterns](5-6-event-handler-patterns.md)
 - [5-7 Web Component Controlled State](5-7-web-component-controlled-state.md)
 - [9-4 Thin Web Component Wrappers](9-4-thin-web-component-wrappers.md)

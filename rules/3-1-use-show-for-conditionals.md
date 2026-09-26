@@ -116,6 +116,10 @@ const upcoming = () => {
 </Show>
 ```
 
+The narrowed accessor is valid only while its branch is active. Before passing it into a nested
+conditional's `children` or `fallback`, read
+[3-4: Narrowed Accessors Expire With Their Branch](3-4-use-switch-match.md#narrowed-accessors-expire-with-their-branch).
+
 JSX attributes have no function-child boundary. Read once in an inline function so the same
 reactive expression owns the guard and the narrowed value:
 
