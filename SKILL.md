@@ -130,7 +130,7 @@ AI-assisted code generation, review, and refactoring.
 | [9-2](rules/9-2-defer-slotchange-handlers.md) | Defer slotchange Handler Side Effects | HIGH | Always defer focus, state writes, and DOM mutations in `slotchange` via `queueMicrotask` |
 | [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | Treat Custom Element and SolidJS Reactivity as Decoupled | MEDIUM | Use one-way data flow (SolidJS -> attributes/props -> events -> SolidJS); never read custom element internal state from SolidJS reactive contexts |
 | [9-4](rules/9-4-thin-web-component-wrappers.md) | Thin Web Component Wrappers | HIGH | Wrappers own labels, layout, type adaptation, and form glue; custom elements own timing and native sync |
-| [9-5](rules/9-5-property-vs-attribute-binding.md) | Property vs Attribute Binding | HIGH | Use `prop:*` for controlled state and rich data; use attributes only for appropriate primitives |
+| [9-5](rules/9-5-property-vs-attribute-binding.md) | Property vs Attribute Binding | HIGH | Dynamic props on custom elements are already properties; use `prop:*` for intent and `attr:*` for `data-*`, ID-reference ARIA, and CSS-visible attributes |
 | [9-6](rules/9-6-register-custom-fields-with-form-libraries.md) | Register Custom Fields with Form Libraries | HIGH | Ensure property-bound custom fields enter lazy form-library registries |
 | [9-7](rules/9-7-store-state-for-web-component-heavy-forms.md) | Store State for Web-Component-Heavy Forms | MEDIUM | Prefer a Solid store when custom elements already own field interaction |
 | [9-8](rules/9-8-wrapper-signal-for-controlled-only-wc.md) | Wrapper Signal for Controlled-Only WC | HIGH | When a WC has no `defaultValue`, use `createSignal` in the wrapper to own the uncontrolled → controlled bridge |
@@ -164,7 +164,7 @@ Load these rules when integrating Lit or other custom elements with SolidJS:
 | [9-2](rules/9-2-defer-slotchange-handlers.md) | Prevent synchronous side effects inside `runUpdates` |
 | [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | One-way data flow design |
 | [9-4](rules/9-4-thin-web-component-wrappers.md) | Keep wrappers focused on app concerns |
-| [9-5](rules/9-5-property-vs-attribute-binding.md) | Bind JS properties with `prop:*` |
+| [9-5](rules/9-5-property-vs-attribute-binding.md) | `prop:*` for properties, `attr:*` for attributes CSS or ARIA must see |
 | [5-6](rules/5-6-event-handler-patterns.md) | Use `on:` namespace for custom element events |
 
 ### Code Review

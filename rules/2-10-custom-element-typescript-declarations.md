@@ -163,19 +163,19 @@ const anchorStyle = (name: string): JSX.CSSProperties =>
 
 ### 5. The `prop:` Prefix for JS Properties (Not HTML Attributes)
 
-Custom elements often expose JavaScript properties that are not HTML attributes. HTML attributes are
-always strings; properties can be objects, arrays, or booleans. Use `prop:` so Solid sets the DOM
-property instead of calling `setAttribute`:
+Custom elements often expose JavaScript properties that are not HTML attributes. On a hyphenated
+tag, Solid already compiles an un-namespaced dynamic prop to a camel-case property assignment, so
+`options={optionsList()}` reaches the property at runtime. `prop:` states that intent explicitly and
+keeps it correct if the tag ever changes; `attr:` is the namespace that forces `setAttribute` (see
+[9-5](9-5-property-vs-attribute-binding.md)):
 
 ```tsx
-// ❌ WRONG: sets the attribute — complex values become "[object Object]"
-<my-select options={optionsList()} />
-
-// ✅ CORRECT: sets the JS property directly
+// ✅ Explicit property bindings
 <my-select prop:options={optionsList()} />
-
-// ✅ CORRECT: also works for boolean properties
 <my-toggle prop:checked={isChecked()} />
+
+// ✅ Attribute binding for CSS selectors and .dataset readers
+<my-toggle attr:data-size={size()} />
 ```
 
 ## Why It Matters
@@ -186,8 +186,9 @@ property instead of calling `setAttribute`:
    string where a `boolean` is expected.
 1. **`@ts-ignore` debt**: Suppressing errors hides real bugs in adjacent lines; targeted
    declarations or casts are always preferable.
-1. **`prop:` correctness**: Passing arrays or objects without `prop:` silently coerces them to
-   strings; no error, wrong behavior.
+1. **Binding correctness**: A hyphenated tag defaults dynamic props to properties, and only a
+   namespace overrides that. An un-namespaced `data-*` on a custom element silently becomes an
+   unused property.
 
 ## Related Rules
 
