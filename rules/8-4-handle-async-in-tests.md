@@ -98,6 +98,19 @@ test("debounced search", async () => {
 });
 ```
 
+### Fake Timers Do Not Flush Effects
+
+`createEffect`'s first run is scheduled on a microtask. A synchronous test body
+(`setSignal(...)`, then `vi.advanceTimersByTime(...)`, then `expect(...)`) never yields, so the
+effect never runs and a `setInterval` it would have started never ticks. `advanceTimersByTime`
+advances the fake macrotask clock only.
+
+- Prefer managing imperative resources such as intervals from the functions that start and stop
+  them, not from an effect derived from a signal; behavior is then identical in a bare
+  `createRoot` test and a full component tree.
+- When an effect-driven side effect must be tested, yield first (`await Promise.resolve()` or an
+  awaited `vi.waitFor(...)`) so the effect can run before advancing timers.
+
 ### Portal Content
 
 ```tsx
