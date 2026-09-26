@@ -178,6 +178,16 @@ keeps it correct if the tag ever changes; `attr:` is the namespace that forces `
 <my-toggle attr:data-size={size()} />
 ```
 
+### 6. Hand-Maintained Declarations Drift
+
+When declarations are written by hand rather than generated from the component, a renamed
+attribute or a newly added property leaves the declaration stale. A consumer error such as
+`Property 'prop:allowCreate' does not exist ... Did you mean 'allowcreate'?` on a call site that
+matches the component's documentation usually means the declaration file is stale, not the call
+site. Compare the declaration's key with the component's current property and `attribute:`
+mapping, fix the declaration, and prefer generating it from the component's metadata (for
+example a custom elements manifest) so it cannot drift.
+
 ## Why It Matters
 
 1. **LSP noise**: Undeclared custom elements produce errors on every usage, making it hard to spot
