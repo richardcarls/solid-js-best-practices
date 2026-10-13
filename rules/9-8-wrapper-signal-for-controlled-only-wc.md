@@ -1,6 +1,7 @@
 ---
 title: Wrapper-Owned Signal for Controlled-Only Custom Elements
 priority: HIGH
+version_basis: ["1.x"]
 category: Web Component Integration
 ---
 
@@ -8,9 +9,10 @@ category: Web Component Integration
 
 ## Rule
 
-When a custom element exposes only a controlled `value` property and no `defaultValue` mechanism,
-initialize a `createSignal` from the wrapper's `defaultValue` prop and bind `prop:value` to that
-signal. The wrapper owns the uncontrolled → controlled bridge in this case; not the custom element.
+When a custom element exposes a `value` property but no `defaultValue` mechanism, the wrapper
+needs local state for an **uncontrolled** `defaultValue`. If callers supply `value`, read that prop
+reactively so later controlled updates reach the element. The wrapper owns this bridge because the
+custom element has no default-value contract.
 
 ## Why This Differs from Rule 9-4
 
@@ -18,20 +20,29 @@ Rule 9-4 says let the custom element own value/default handling. That applies wh
 it. Some lighter-weight WCs deliberately omit `defaultValue` and expose only a controlled `value`
 property. For those, the wrapper must fill the gap.
 
-**Check before wrapping:** read the WC's property definitions. If you see `@property() value = 0`
-but no `@property() defaultValue`, the WC is controlled-only and the wrapper needs the signal.
+**Check before wrapping:** read the WC's property definitions. If it exposes `value` but no
+`defaultValue`, the wrapper needs the signal for uncontrolled callers. Keep the choice between
+controlled and uncontrolled modes fixed for a mounted wrapper instance.
 
 ## Correct
 
 ```tsx
+interface SliderProps {
+  value?: number;
+  defaultValue?: number;
+  onChange?: (value: number) => void;
+}
+
 export const Slider = (props: SliderProps) => {
-  const [value, setValue] = createSignal(props.defaultValue ?? props.value ?? 0);
+  const [localValue, setLocalValue] = createSignal(props.defaultValue ?? 0);
+  const isControlled = props.value !== undefined;
+  const currentValue = () => isControlled ? props.value! : localValue();
 
   return (
-    <rc-slider
-      prop:value={value()}
-      on:rc-slider-change={(e: CustomEvent<{ value: number }>) => {
-        setValue(e.detail.value);
+    <wc-slider
+      prop:value={currentValue()}
+      on:wc-slider-change={(e: CustomEvent<{ value: number }>) => {
+        if (!isControlled) setLocalValue(e.detail.value);
         props.onChange?.(e.detail.value);
       }}
     />
@@ -42,17 +53,20 @@ export const Slider = (props: SliderProps) => {
 ## Incorrect; passing defaultValue to a WC that doesn't support it
 
 ```tsx
-<rc-slider
-  prop:defaultValue={props.defaultValue}  // rc-slider ignores this
-  on:rc-slider-change={handleChange}
+<wc-slider
+  prop:defaultValue={props.defaultValue}  // ignored when the element has no such property
+  on:wc-slider-change={handleChange}
 />
 ```
 
+Also avoid initializing a local signal from `props.value` and then always binding the signal:
+later controlled prop changes would never reach the element.
+
 ## Why It Matters
 
-Without the internal signal, `prop:value` stays at its initial render value because Solid's JSX
-only reacts to signals; a plain `props.defaultValue` expression won't drive updates after the
-first render.
+Without local state, an uncontrolled field cannot reflect user changes through the wrapper.
+Controlled callers, however, already provide a reactive `props.value`; copying it only once into
+a signal would make the field stale after the parent changes it.
 
 ## Related Rules
 

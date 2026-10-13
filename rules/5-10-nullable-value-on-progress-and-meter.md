@@ -3,6 +3,7 @@ id: 5-10
 title: Bind a Possibly Missing value on progress or meter as an Attribute
 category: Refs & DOM
 priority: HIGH
+version_basis: ["1.x"]
 description: Solid always assigns value as a DOM property, and the progress and meter value setters throw on undefined; use attr:value, which removes the attribute for null or undefined, or branch so the element never receives a non-finite value
 ---
 

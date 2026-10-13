@@ -3,6 +3,7 @@ id: 1-2
 title: Use Memo for Derived Values
 category: Reactivity
 priority: HIGH
+version_basis: ["1.x"]
 description: Use createMemo for computed values, not createEffect
 ---
 

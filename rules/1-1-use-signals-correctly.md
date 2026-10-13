@@ -3,6 +3,7 @@ id: 1-1
 title: Use Signals Correctly
 category: Reactivity
 priority: CRITICAL
+version_basis: ["1.x"]
 description: Always call signals as functions count() not count
 ---
 

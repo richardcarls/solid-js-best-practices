@@ -2,6 +2,7 @@
 title: Wrap Signal Mutation in View Transition
 category: Refs & DOM
 priority: HIGH
+version_basis: ["1.x"]
 description: Call the Solid setter inside startViewTransition() so the browser captures the old DOM before applying the new reactive state
 ---
 

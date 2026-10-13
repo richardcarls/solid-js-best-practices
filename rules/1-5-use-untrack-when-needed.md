@@ -3,6 +3,7 @@ id: 1-5
 title: Use Untrack When Needed
 category: Reactivity
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Use untrack() to prevent unwanted reactive subscriptions
 ---
 

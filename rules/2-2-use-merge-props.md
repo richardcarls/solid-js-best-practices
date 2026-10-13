@@ -3,6 +3,7 @@ id: 2-2
 title: Use mergeProps
 category: Components
 priority: HIGH
+version_basis: ["1.x"]
 description: Use mergeProps for default prop values
 ---
 

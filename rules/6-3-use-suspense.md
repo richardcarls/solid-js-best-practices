@@ -3,6 +3,7 @@ id: 6-3
 title: Use Suspense
 category: Performance
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Use <Suspense> for async loading boundaries
 ---
 

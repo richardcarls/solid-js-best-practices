@@ -3,6 +3,7 @@ id: 7-3
 title: Support Keyboard Navigation
 category: Accessibility
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Ensure all interactive elements are keyboard accessible
 ---
 

@@ -3,6 +3,7 @@ id: 2-5
 title: Prefer Composition
 category: Components
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Prefer composition and context over prop drilling
 ---
 

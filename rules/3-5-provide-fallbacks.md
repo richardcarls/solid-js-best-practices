@@ -3,6 +3,7 @@ id: 3-5
 title: Provide Fallbacks
 category: Control Flow
 priority: LOW
+version_basis: ["1.x"]
 description: Always provide fallback props for loading states
 ---
 

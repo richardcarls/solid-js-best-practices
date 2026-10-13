@@ -3,6 +3,7 @@ id: 3-2
 title: Use `For` for Lists
 category: Control Flow
 priority: HIGH
+version_basis: ["1.x"]
 description: Use <For> for referentially keyed list rendering
 ---
 

@@ -3,6 +3,7 @@ id: 8-5
 title: Use Accessible Query Priority
 category: Testing
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Prefer role and label queries over test IDs for resilient, accessible tests
 ---
 

@@ -3,6 +3,7 @@ id: 2-1
 title: Never Destructure Props
 category: Components
 priority: CRITICAL
+version_basis: ["1.x"]
 description: Destructuring props breaks reactivity
 ---
 

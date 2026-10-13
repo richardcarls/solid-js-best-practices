@@ -3,6 +3,7 @@ id: 5-4
 title: Use Directives
 category: Refs & DOM
 priority: MEDIUM
+version_basis: ["1.x"]
 description: "Use use: directives for reusable element behaviors"
 ---
 

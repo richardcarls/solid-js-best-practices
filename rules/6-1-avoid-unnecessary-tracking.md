@@ -3,6 +3,7 @@ id: 6-1
 title: Avoid Unnecessary Tracking
 category: Performance
 priority: HIGH
+version_basis: ["1.x"]
 description: Don't access signals outside reactive contexts
 ---
 

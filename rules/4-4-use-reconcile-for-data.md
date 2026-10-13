@@ -3,6 +3,7 @@ id: 4-4
 title: Use reconcile for Server Data
 category: State Management
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Use reconcile when integrating server/external data
 ---
 

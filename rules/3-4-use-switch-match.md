@@ -3,6 +3,7 @@ id: 3-4
 title: Use Switch/Match
 category: Control Flow
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Use <Switch>/<Match> for multiple conditions and function children to consume matched values without assertions
 ---
 

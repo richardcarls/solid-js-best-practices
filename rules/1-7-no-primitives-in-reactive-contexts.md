@@ -3,6 +3,7 @@ id: 1-7
 title: No Primitives in Reactive Contexts
 category: Reactivity
 priority: HIGH
+version_basis: ["1.x"]
 description: Don't call hooks or create reactive primitives inside effects or memos; they are recreated and disposed on every run
 ---
 

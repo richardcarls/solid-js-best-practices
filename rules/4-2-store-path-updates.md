@@ -3,6 +3,7 @@ id: 4-2
 title: Use Store Path Syntax
 category: State Management
 priority: HIGH
+version_basis: ["1.x"]
 description: Use path syntax for granular, efficient store updates
 ---
 

@@ -3,6 +3,7 @@ id: 8-9
 title: Browser-Native API Test Isolation
 category: Testing
 priority: HIGH
+version_basis: ["1.x"]
 description: Clear IndexedDB and localStorage between tests in browser mode; real browser storage persists across tests and causes cross-test contamination
 ---
 

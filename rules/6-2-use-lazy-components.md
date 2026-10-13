@@ -3,6 +3,7 @@ id: 6-2
 title: Use Lazy Components
 category: Performance
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Use lazy() for code splitting large components
 ---
 

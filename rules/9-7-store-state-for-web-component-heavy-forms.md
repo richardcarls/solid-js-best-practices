@@ -3,6 +3,7 @@ id: 9-7
 title: Store State for Web-Component-Heavy Forms
 category: Web Component Integration
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Prefer a Solid store when custom elements already own field interaction
 ---
 

@@ -3,6 +3,7 @@ id: 5-1
 title: Use Refs Correctly
 category: Refs & DOM
 priority: HIGH
+version_basis: ["1.x"]
 description: Use callback refs for conditional elements
 ---
 

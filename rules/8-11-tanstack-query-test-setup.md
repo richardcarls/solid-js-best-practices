@@ -3,6 +3,7 @@ id: 8-11
 title: TanStack Query Test Setup
 category: Testing
 priority: HIGH
+version_basis: ["1.x"]
 description: Create a fresh QueryClient per test with retry and caching disabled to prevent flaky tests and cross-test state leakage
 ---
 

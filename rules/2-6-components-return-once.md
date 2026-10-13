@@ -3,6 +3,7 @@ id: 2-6
 title: Components Return Once
 category: Components
 priority: CRITICAL
+version_basis: ["1.x"]
 description: Never use early returns in components; use Show, Switch, or other control flow in JSX
 ---
 

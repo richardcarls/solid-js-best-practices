@@ -3,6 +3,7 @@ id: 8-6
 title: Separate Logic from UI Tests
 category: Testing
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Test reactive primitives and hooks independently from component rendering
 ---
 

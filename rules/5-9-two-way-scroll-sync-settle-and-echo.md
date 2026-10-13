@@ -3,6 +3,7 @@ id: 5-9
 title: Two-Way Scroll Sync Needs a Settle Signal and Echo Suppression
 category: Refs & DOM
 priority: HIGH
+version_basis: ["1.x"]
 description: A scroll-snap carousel whose index is both a prop (an effect scrolls to it) and reported outward (native settling calls back up) must report only settled positions and must not re-scroll for its own echo
 ---
 

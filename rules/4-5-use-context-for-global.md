@@ -3,6 +3,7 @@ id: 4-5
 title: Use Context for Global State
 category: State Management
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Use Context API for cross-component shared state
 ---
 

@@ -3,6 +3,7 @@ id: 8-4
 title: Handle Async Reactivity in Tests
 category: Testing
 priority: HIGH
+version_basis: ["1.x"]
 description: Use findBy queries and proper timer configuration for async Solid behavior
 ---
 

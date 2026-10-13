@@ -1,6 +1,6 @@
 ---
 name: solid-js-best-practices
-description: "Solid.js best practices for AI-assisted coding, review, refactoring, and debugging. Use for Solid components, signals, control flow, state, refs and DOM work, performance, accessibility, tests, React migration, and web component integration."
+description: "Version-aware Solid.js best practices for AI-assisted coding, review, and migration. Use for Solid components, reactivity, state, DOM work, testing, React migration, and web component integration."
 license: MIT
 allowed-tools:
   - Read
@@ -14,10 +14,18 @@ metadata:
 
 # Solid.js Best Practices
 
-> **Managed skill; do not edit this installed copy.** Changes may be overwritten.
-
 Comprehensive best practices for building Solid.js applications and components, optimized for
 AI-assisted code generation, review, and refactoring.
+
+## Version Routing
+
+Read the project's `solid-js` version from its manifest and lockfile before applying code examples.
+If the major is unknown, ask which major the project uses. The existing rule files are based on
+Solid 1.x; `version_basis` records the version behind a rule, without limiting its principle to
+that major. Do not copy a 1.x API example into a 2.x project without checking its current equivalent.
+Solid 2.x coverage is deferred until its official release. For a pre-release 2.x project, consult
+the [official 1.x migration guide](https://v2.solidjs.com/migration/from-solid-1) and documentation
+for the installed release candidate; do not treat these 1.x rules as verified 2.x guidance.
 
 ## Rules by Category
 
@@ -117,7 +125,7 @@ AI-assisted code generation, review, and refactoring.
 | [8-4](rules/8-4-handle-async-in-tests.md) | Handle Async in Tests | HIGH | Use `findBy` queries and proper timer config for async behavior |
 | [8-5](rules/8-5-use-accessible-queries.md) | Use Accessible Queries | MEDIUM | Prefer role and label queries over test IDs |
 | [8-6](rules/8-6-separate-logic-from-ui-tests.md) | Separate Logic from UI Tests | MEDIUM | Test primitives/hooks independently from component rendering |
-| [8-7](rules/8-7-browser-mode-for-web-components-and-pwa-apis.md) | Browser Mode for Web Components and PWA APIs | HIGH | Use Vitest browser mode (real Chromium) for custom elements, shadow DOM, and browser-native APIs |
+| [8-7](rules/8-7-browser-mode-for-web-components-and-pwa-apis.md) | Browser Mode for Browser-Dependent Behavior | HIGH | Use a real browser for layout, focus, native APIs, and custom-element behavior jsdom cannot model faithfully |
 | [8-8](rules/8-8-testing-headless-ui-libraries.md) | Testing Headless UI Libraries with Non-Standard ARIA | MEDIUM | Headless UI libraries use non-obvious ARIA structures and portals; inspect the actual tree before querying |
 | [8-9](rules/8-9-browser-native-api-test-isolation.md) | Browser-Native API Test Isolation | HIGH | Clear IndexedDB and localStorage between tests; close connection before deleteDatabase |
 | [8-10](rules/8-10-router-integration-testing.md) | Router Integration Testing | HIGH | Use MemoryRouter `root` prop to provide router context to layout providers |
@@ -129,7 +137,7 @@ AI-assisted code generation, review, and refactoring.
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
 | [9-1](rules/9-1-register-custom-elements-early.md) | Register Custom Elements at App Entry | HIGH | Import `/define` side-effects before any SolidJS reactive context |
-| [9-2](rules/9-2-defer-slotchange-handlers.md) | Defer slotchange Handler Side Effects | HIGH | Always defer focus, state writes, and DOM mutations in `slotchange` via `queueMicrotask` |
+| [9-2](rules/9-2-defer-slotchange-handlers.md) | Handle slotchange After Slot Assignment | HIGH | `slotchange` is delivered in a microtask; defer only work that needs a later lifecycle or rendering phase |
 | [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | Treat Custom Element and SolidJS Reactivity as Decoupled | MEDIUM | Use one-way data flow (SolidJS -> attributes/props -> events -> SolidJS); never read custom element internal state from SolidJS reactive contexts |
 | [9-4](rules/9-4-thin-web-component-wrappers.md) | Thin Web Component Wrappers | HIGH | Wrappers own labels, layout, type adaptation, and form glue; custom elements own timing and native sync |
 | [9-5](rules/9-5-property-vs-attribute-binding.md) | Property vs Attribute Binding | HIGH | Dynamic props on custom elements are already properties; use `prop:*` for intent and `attr:*` for `data-*`, ID-reference ARIA, and CSS-visible attributes |
@@ -163,7 +171,7 @@ Load these rules when integrating Lit or other custom elements with SolidJS:
 | Rule | Why |
 | ---- | --- |
 | [9-1](rules/9-1-register-custom-elements-early.md) | Register before any SolidJS context mounts |
-| [9-2](rules/9-2-defer-slotchange-handlers.md) | Prevent synchronous side effects inside `runUpdates` |
+| [9-2](rules/9-2-defer-slotchange-handlers.md) | Handle assigned nodes after the browser delivers `slotchange` |
 | [9-3](rules/9-3-decouple-lit-and-solid-reactivity.md) | One-way data flow design |
 | [9-4](rules/9-4-thin-web-component-wrappers.md) | Keep wrappers focused on app concerns |
 | [9-5](rules/9-5-property-vs-attribute-binding.md) | `prop:*` for properties, `attr:*` for attributes CSS or ARIA must see |

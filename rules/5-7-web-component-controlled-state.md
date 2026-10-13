@@ -1,6 +1,7 @@
 ---
 title: Web Component Controlled State
 priority: HIGH
+version_basis: ["1.x"]
 category: Refs & DOM
 ---
 
@@ -28,11 +29,16 @@ createEffect(() => {
 ```
 
 ```tsx
+// ❌ Incomplete controlled binding: no event returns the changed value to Solid.
 <wc-select
   value={selectedIds()}
   options={categoryOptions()}
 />
 ```
+
+On a hyphenated custom-element tag, the unprefixed dynamic `value` and `options` above already
+compile to property assignments. Their absence of `prop:` is not the error; `prop:` makes the
+property contract explicit. The example is incomplete because it omits the change event.
 
 ## Correct
 

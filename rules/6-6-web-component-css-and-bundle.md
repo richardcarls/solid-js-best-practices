@@ -3,6 +3,7 @@ id: 6-6
 title: Web Component CSS and Bundle Strategy
 category: Performance
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Import web components individually for tree-shaking; place ::part() overrides and CSS variable mappings in a global stylesheet, not CSS Modules
 ---
 

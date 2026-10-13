@@ -3,6 +3,7 @@ id: 9-5
 title: Property vs Attribute Binding
 category: Web Component Integration
 priority: HIGH
+version_basis: ["1.x"]
 description: "Dynamic props on custom elements compile to property assignments; use `prop:` to state that intent and `attr:` whenever the element, CSS, or dataset must see a real attribute"
 ---
 

@@ -3,6 +3,7 @@ id: 4-3
 title: Use produce for Mutations
 category: State Management
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Use produce for complex mutable-style store updates
 ---
 
