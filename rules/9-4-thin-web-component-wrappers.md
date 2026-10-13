@@ -1,6 +1,7 @@
 ---
 title: Thin Web Component Wrappers
 priority: HIGH
+version_basis: ["1.x"]
 category: Web Component Integration
 ---
 

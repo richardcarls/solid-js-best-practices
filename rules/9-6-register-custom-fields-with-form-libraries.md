@@ -3,6 +3,7 @@ id: 9-6
 title: Register Custom Fields with Form Libraries
 category: Web Component Integration
 priority: HIGH
+version_basis: ["1.x"]
 description: Ensure property-bound custom fields enter lazy form-library registries
 ---
 

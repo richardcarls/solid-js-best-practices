@@ -3,6 +3,7 @@ id: 6-4
 title: Optimize Store Access
 category: Performance
 priority: LOW
+version_basis: ["1.x"]
 description: Access only the store properties you need
 ---
 

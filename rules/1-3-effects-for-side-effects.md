@@ -3,6 +3,7 @@ id: 1-3
 title: Effects for Side Effects Only
 category: Reactivity
 priority: HIGH
+version_basis: ["1.x"]
 description: Use createEffect only for side effects, not derivations
 ---
 

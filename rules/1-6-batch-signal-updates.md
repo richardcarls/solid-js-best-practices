@@ -3,6 +3,7 @@ id: 1-6
 title: Batch Signal Updates
 category: Reactivity
 priority: LOW
+version_basis: ["1.x"]
 description: Use batch() for multiple synchronous signal updates
 ---
 

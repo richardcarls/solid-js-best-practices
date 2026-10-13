@@ -3,6 +3,7 @@ id: 3-6
 title: Stable Component Mount
 category: Control Flow
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Avoid rendering the same component in multiple Switch/Show branches; it unmounts and remounts, destroying all local state
 ---
 

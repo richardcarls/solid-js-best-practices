@@ -3,6 +3,7 @@ id: 5-2
 title: Access DOM in onMount
 category: Refs & DOM
 priority: HIGH
+version_basis: ["1.x"]
 description: Access DOM elements in onMount, not during render
 ---
 

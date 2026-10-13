@@ -3,6 +3,7 @@ id: 8-8
 title: Testing Headless UI Libraries with Non-Standard ARIA
 category: Testing
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Headless UI libraries use non-obvious ARIA structures and render into portals; query with screen and inspect the actual ARIA tree before writing assertions
 ---
 

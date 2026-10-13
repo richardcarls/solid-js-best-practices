@@ -3,6 +3,7 @@ id: 4-7
 title: Cleanup at the Page Ownership Boundary
 category: State Management
 priority: HIGH
+version_basis: ["1.x"]
 description: Use per-page cleanup when multiple routed panes remain mounted
 ---
 

@@ -3,6 +3,7 @@ id: 4-1
 title: Signals vs Stores
 category: State Management
 priority: HIGH
+version_basis: ["1.x"]
 description: Use signals for primitives, stores for nested objects
 ---
 

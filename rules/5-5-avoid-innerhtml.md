@@ -3,6 +3,7 @@ id: 5-5
 title: Avoid innerHTML
 category: Refs & DOM
 priority: HIGH
+version_basis: ["1.x"]
 description: Avoid innerHTML to prevent XSS vulnerabilities; use JSX or textContent instead
 ---
 

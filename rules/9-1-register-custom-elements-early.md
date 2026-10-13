@@ -3,6 +3,7 @@ id: 9-1
 title: Register Custom Elements at App Entry
 category: Web Component Integration
 priority: HIGH
+version_basis: ["1.x"]
 description: Import custom element define side-effects at the app entry point, before any SolidJS reactive context is established
 ---
 
@@ -112,7 +113,7 @@ which subpath you are importing.
 
 ## Related Rules
 
-- [9-2: Defer slotchange Handler Side Effects](9-2-defer-slotchange-handlers.md) - Safe slot handling
+- [9-2: Handle slotchange After Slot Assignment](9-2-defer-slotchange-handlers.md) - Event timing
 - [9-3: Treat Custom Element and SolidJS Reactivity as
   Decoupled](9-3-decouple-lit-and-solid-reactivity.md) - Reactivity boundary design
 - [5-6: Event Handler Patterns](5-6-event-handler-patterns.md) - Use `on:` for custom element events

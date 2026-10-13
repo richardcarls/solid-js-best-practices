@@ -3,6 +3,7 @@ id: 6-5
 title: Prefer classList
 category: Performance
 priority: LOW
+version_basis: ["1.x"]
 description: Use the classList prop for conditional class toggling instead of string concatenation
 ---
 

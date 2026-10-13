@@ -3,6 +3,7 @@ id: 3-3
 title: Use Index for Primitives
 category: Control Flow
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Use <Index> when array index matters more than identity
 ---
 

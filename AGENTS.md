@@ -13,6 +13,8 @@ solid-js-best-practices/
 ├── AGENTS.md          # This file - contributor guidance
 ├── README.md          # Human documentation
 ├── CHANGELOG.md       # Version history
+├── docs/              # Version audit plan
+├── scripts/           # Structural checks
 └── rules/             # Individual rule files
     ├── 1-*.md         # Reactivity rules
     ├── 2-*.md         # Component rules
@@ -45,7 +47,7 @@ Files follow the pattern `[category]-[number]-[hyphenated-topic].md`.
 
 Each rule file should contain:
 
-1. YAML frontmatter with title, category, priority, and description when useful.
+1. YAML frontmatter with title, category, priority, and `version_basis`; add a description when useful.
 1. Problem section explaining what goes wrong.
 1. Incorrect code examples.
 1. Correct code examples.
@@ -54,3 +56,12 @@ Each rule file should contain:
 
 Examples should stay generic and publishable. Use hypothetical `<wc-*>` custom elements or native
 platform elements, not project-local components.
+
+`version_basis` lists Solid majors that informed the rule. The current examples came from 1.x work.
+Defer the Solid 2.x audit until an official release is available.
+Do not mark a rule as based on 2.x merely because its principle appears version-neutral; check the
+example's imports, JSX syntax, and runtime behavior against the targeted 2.x release first. Keep
+existing rule IDs and links stable when adding version-specific guidance.
+
+Run `node scripts/check-skill.mjs` after editing rules, indexes, counts, or links. It checks the
+version metadata, category counts, index coverage, and local links.

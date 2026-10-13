@@ -3,6 +3,7 @@ id: 5-6
 title: Event Handler Patterns
 category: Refs & DOM
 priority: MEDIUM
+version_basis: ["1.x"]
 description: "Understand delegated vs native events, on:/oncapture: namespaces, and array handler syntax"
 ---
 

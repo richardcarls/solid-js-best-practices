@@ -2,12 +2,17 @@
 
 All notable changes to this skill will be documented in this file.
 
-## [Unreleased] - Field-note promotions
+## [1.9.0] - 2026-10-13 - Solid 1.x rule audit and version routing
 
 ### Added
 
-- 5-9: Two-Way Scroll Sync Needs a Settle Signal and Echo Suppression (HIGH).
-- 5-10: Bind a Possibly Missing value on progress or meter as an Attribute (HIGH).
+- State management: 4-6 (store function values) and 4-7 (page ownership cleanup).
+- DOM and browser behavior: 5-8 (view transitions), 5-9 (two-way scroll sync), and 5-10
+  (possibly missing progress or meter values).
+- Accessibility: 7-4 (root router links).
+- Testing: 8-12 (deproxy before structured clone).
+- Web component integration: 9-6 (form-library registration), 9-7 (store-backed forms), and
+  9-8 (a wrapper signal for custom elements without `defaultValue`).
 
 ### Changed
 
@@ -19,6 +24,15 @@ All notable changes to this skill will be documented in this file.
   branch deactivates, and how to keep them out of lazily read nested slots.
 - 4-5 requires provider accessors to read signals, memos, or stores.
 - 4-7 adds a consumer audit for splitting a shared context into per-pane providers.
+- 3-1 and 3-4 clarify narrowed value access in conditional branches; 8-4 adds fake-timer and
+  effect scheduling guidance; 2-10 warns about hand-maintained custom-element declarations.
+- `SKILL.md` now indexes all 71 rules and has shorter task-based routing; the duplicated quick
+  reference, mistake table, and React comparison were removed.
+- Existing rules now identify the Solid major that informed them. The skill
+  defers Solid 2.x coverage until its official release and points pre-release readers to the
+  official migration guide.
+- Corrected the `slotchange` timing explanation, modernized Vitest configuration, repaired the
+  controlled-wrapper example, and clarified component tracking and CSS type assertions.
 
 ## [1.8.0] - 2026-05-14 - Generic web component integration guidance
 

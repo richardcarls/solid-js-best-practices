@@ -3,6 +3,7 @@ id: 3-1
 title: Use Show for Conditionals
 category: Control Flow
 priority: HIGH
+version_basis: ["1.x"]
 description: Use <Show> for conditional rendering and its function child when callers need a narrowed value
 ---
 

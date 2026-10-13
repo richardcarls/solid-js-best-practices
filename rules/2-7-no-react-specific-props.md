@@ -3,6 +3,7 @@ id: 2-7
 title: No React-Specific Props
 category: Components
 priority: HIGH
+version_basis: ["1.x"]
 description: Use class instead of className, for instead of htmlFor, and other Solid-native prop names
 ---
 

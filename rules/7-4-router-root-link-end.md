@@ -3,6 +3,7 @@ id: 7-4
 title: End-Match Root Router Links
 category: Accessibility
 priority: HIGH
+version_basis: ["1.x"]
 description: Add end matching so the root link is not current on every route
 ---
 

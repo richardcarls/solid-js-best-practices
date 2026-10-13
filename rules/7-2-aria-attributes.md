@@ -3,6 +3,7 @@ id: 7-2
 title: Use ARIA Attributes
 category: Accessibility
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Apply appropriate ARIA attributes for custom controls
 ---
 

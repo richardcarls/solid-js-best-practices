@@ -3,6 +3,7 @@ id: 8-12
 title: Deproxy Before Structured Clone
 category: Testing
 priority: HIGH
+version_basis: ["1.x"]
 description: Remove every reactive proxy before writing data to IndexedDB
 ---
 

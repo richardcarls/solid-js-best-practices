@@ -3,6 +3,7 @@ id: 2-10
 title: Custom Element TypeScript Declarations
 category: Components
 priority: HIGH
+version_basis: ["1.x"]
 description: Declare custom element tags in the solid-js JSX namespace and augment TypeScript's DOM types for newer HTML attributes and experimental CSS properties
 ---
 
@@ -66,35 +67,10 @@ declare module "solid-js" {
 }
 ```
 
-### 2. Augment Newer HTML Attributes Missing from the DOM Lib
+### 2. Augment Newer JSX Attributes Only When Missing
 
-Some recent HTML attributes (`popover`, `popoverTarget`, `popoverTargetAction`) may not yet be in
-the TypeScript DOM lib. Declare them in the same `.d.ts` file:
-
-```typescript
-// src/custom-elements.d.ts (continued)
-
-// Augment built-in HTML element types for newer spec attributes
-declare global {
-  interface HTMLElement {
-    // Native Popover API — popover host attribute
-    popover?: "auto" | "manual" | "";
-  }
-
-  interface HTMLButtonElement {
-    // Native Popover API — trigger button attributes
-    popoverTarget?: string;
-    popoverTargetAction?: "toggle" | "show" | "hide";
-  }
-
-  interface HTMLInputElement {
-    popoverTarget?: string;
-    popoverTargetAction?: "toggle" | "show" | "hide";
-  }
-}
-```
-
-And in the Solid JSX namespace, so they work in JSX:
+Check the installed Solid JSX and TypeScript DOM declarations first. If JSX types lack a newer
+attribute, add the missing JSX member with the spelling and value type supported by that version:
 
 ```typescript
 declare module "solid-js" {
@@ -110,6 +86,12 @@ declare module "solid-js" {
   }
 }
 ```
+
+Do not add `popoverTarget?: string` to `HTMLButtonElement` or `HTMLInputElement`. The HTML
+`popovertarget` attribute takes an ID, but the DOM property is
+[`popoverTargetElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement/popoverTargetElement)
+and takes an element reference. Also avoid declaring DOM members that the installed TypeScript
+version already provides; incompatible interface merging will itself cause type errors.
 
 ### 3. Type Custom Events Correctly
 
@@ -135,14 +117,14 @@ using the detail type:
 
 ### 4. Experimental CSS Properties
 
-Use `as unknown as JSX.CSSProperties` instead of `as never`; it preserves type checking on the rest
-of the object:
+Keep the assertion around only the unsupported property. An assertion on the complete style object
+also suppresses mistakes in ordinary properties:
 
 ```tsx
 // ❌ WRONG: as never disables all type checking on the style object
 <div style={{ "anchor-name": "--btn", color: "red" } as never} />
 
-// ✅ CORRECT: as unknown as JSX.CSSProperties — only the unknown props need the cast
+// ✅ CORRECT: only the unknown property is cast
 const anchorStyle = (name: string): JSX.CSSProperties =>
   ({ "anchor-name": name } as unknown as JSX.CSSProperties);
 
@@ -153,12 +135,8 @@ const anchorStyle = (name: string): JSX.CSSProperties =>
   }}
 />
 
-// ✅ CORRECT: inline cast for a one-off
-<div
-  style={
-    { "anchor-name": "--my-anchor", color: "red" } as unknown as JSX.CSSProperties
-  }
-/>
+// ✅ CORRECT: a one-off assertion still stays separate from known properties
+<div style={{ ...({ "anchor-name": "--my-anchor" } as unknown as JSX.CSSProperties), color: "red" }} />
 ```
 
 ### 5. The `prop:` Prefix for JS Properties (Not HTML Attributes)

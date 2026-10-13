@@ -3,6 +3,7 @@ id: 8-2
 title: Wrap Render Calls in Arrow Functions
 category: Testing
 priority: CRITICAL
+version_basis: ["1.x"]
 description: Always use render(() => <Component />) not render(<Component />)
 ---
 

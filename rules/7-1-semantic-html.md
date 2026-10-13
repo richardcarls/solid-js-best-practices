@@ -3,6 +3,7 @@ id: 7-1
 title: Use Semantic HTML
 category: Accessibility
 priority: HIGH
+version_basis: ["1.x"]
 description: Use appropriate semantic HTML elements
 ---
 

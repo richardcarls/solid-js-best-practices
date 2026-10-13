@@ -3,6 +3,7 @@ id: 2-3
 title: Use splitProps
 category: Components
 priority: HIGH
+version_basis: ["1.x"]
 description: Use splitProps to separate prop groups safely
 ---
 

@@ -3,6 +3,7 @@ id: 8-10
 title: Router Integration Testing
 category: Testing
 priority: HIGH
+version_basis: ["1.x"]
 description: Use MemoryRouter with the root prop to provide router context to providers that call useLocation, useSearchParams, or render <A> links
 ---
 

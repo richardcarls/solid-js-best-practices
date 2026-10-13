@@ -3,6 +3,7 @@ id: 8-3
 title: Test Reactive Primitives in a Root
 category: Testing
 priority: HIGH
+version_basis: ["1.x"]
 description: Wrap signal, effect, and memo tests in createRoot or use renderHook
 ---
 

@@ -3,6 +3,7 @@ id: 2-4
 title: Use children Helper
 category: Components
 priority: MEDIUM
+version_basis: ["1.x"]
 description: Use children() helper for safe children access
 ---
 

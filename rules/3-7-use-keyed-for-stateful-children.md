@@ -3,6 +3,7 @@ id: 3-7
 title: Use keyed for Stateful Children
 category: Control Flow
 priority: HIGH
+version_basis: ["1.x"]
 description: Add keyed prop when the child component has internal state and the input value (not just truthiness) determines identity
 ---
 

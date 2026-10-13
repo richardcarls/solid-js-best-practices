@@ -3,6 +3,7 @@ id: 4-6
 title: Store Functions with a Wrapper
 category: State Management
 priority: HIGH
+version_basis: ["1.x"]
 description: Wrap function values so setStore does not invoke them as updater functions
 ---
 
