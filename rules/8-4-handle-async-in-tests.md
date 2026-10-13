@@ -3,12 +3,17 @@ id: 8-4
 title: Handle Async Reactivity in Tests
 category: Testing
 priority: HIGH
+version_basis: ["1.x"]
 description: Use findBy queries and proper timer configuration for async Solid behavior
 ---
 
 ## Problem
 
-Solid batches signal updates synchronously, but many real-world patterns involve async behavior: `createResource`, lazy components, router transitions, and timer-driven effects. Tests that use `getBy` queries immediately after triggering async operations fail because the DOM has not yet updated. Additionally, using fake timers with `userEvent` requires explicit `advanceTimers` configuration, or user interactions silently hang.
+Solid batches signal updates synchronously, but many real-world patterns involve async behavior:
+`createResource`, lazy components, router transitions, and timer-driven effects. Tests that use
+`getBy` queries immediately after triggering async operations fail because the DOM has not yet
+updated. Additionally, using fake timers with `userEvent` requires explicit `advanceTimers`
+configuration, or user interactions silently hang.
 
 ## Incorrect
 
@@ -94,6 +99,19 @@ test("debounced search", async () => {
 });
 ```
 
+### Fake Timers Do Not Flush Effects
+
+`createEffect`'s first run is scheduled on a microtask. A synchronous test body
+(`setSignal(...)`, then `vi.advanceTimersByTime(...)`, then `expect(...)`) never yields, so the
+effect never runs and a `setInterval` it would have started never ticks. `advanceTimersByTime`
+advances the fake macrotask clock only.
+
+- Prefer managing imperative resources such as intervals from the functions that start and stop
+  them, not from an effect derived from a signal; behavior is then identical in a bare
+  `createRoot` test and a full component tree.
+- When an effect-driven side effect must be tested, yield first (`await Promise.resolve()` or an
+  awaited `vi.waitFor(...)`) so the effect can run before advancing timers.
+
 ### Portal Content
 
 ```tsx
@@ -168,9 +186,11 @@ await waitFor(() =>
 );
 ```
 
-The problem: the component starts empty (no data yet), so the assertion passes before the query settles. You're not testing "loaded and found nothing" — you're testing "hasn't loaded yet."
+The problem: the component starts empty (no data yet), so the assertion passes before the query
+settles. You're not testing "loaded and found nothing"; you're testing "hasn't loaded yet."
 
-**Fix**: wait for a stable "settled anchor" — an element that only renders after queries resolve — then assert absence synchronously:
+**Fix**: wait for a stable "settled anchor" (an element that only renders after queries resolve),
+then assert absence synchronously:
 
 ```tsx
 // ✅ CORRECT: wait for a settled anchor, then assert absence
@@ -183,8 +203,8 @@ expect(screen.queryAllByRole("listitem")).toHaveLength(0);  // synchronous
 Choosing a settled anchor:
 
 1. A heading or control that **always renders** after the query settles (regardless of data)
-2. With `<Suspense>`: once any component content appears, all queries within the boundary have settled
-3. Avoid `setTimeout` hacks — they create implicit timing assumptions that break under slower environments
+1. With `<Suspense>`: once any component content appears, all queries within the boundary have settled
+1. Avoid `setTimeout` hacks; they create implicit timing assumptions that break under slower environments
 
 ## Query Selection Guide
 
@@ -197,18 +217,24 @@ Choosing a settled anchor:
 
 ## Why It Matters
 
-1. **False Failures**: `getBy` throws immediately when the element is absent. `findBy` polls with a configurable timeout, matching async rendering patterns.
+1. **False Failures**: `getBy` throws immediately when the element is absent. `findBy` polls with a
+   configurable timeout, matching async rendering patterns.
 
-2. **Frozen Tests**: Fake timers intercept `setTimeout`/`setInterval` globally. `userEvent` uses internal delays that freeze without `advanceTimers`, causing indefinite hangs.
+1. **Frozen Tests**: Fake timers intercept `setTimeout`/`setInterval` globally. `userEvent` uses
+   internal delays that freeze without `advanceTimers`, causing indefinite hangs.
 
-3. **Invisible Content**: Portal-rendered content (modals, tooltips, dropdowns) exists outside the render container. Only `screen` queries the full document.
+1. **Invisible Content**: Portal-rendered content (modals, tooltips, dropdowns) exists outside the
+   render container. Only `screen` queries the full document.
 
-4. **Flaky Tests**: Async tests without proper waiting produce race conditions that pass locally but fail in CI.
+1. **Flaky Tests**: Async tests without proper waiting produce race conditions that pass locally but
+   fail in CI.
 
 ## Related Rules
 
 - [6-3: Use Suspense](6-3-use-suspense.md) - Suspense boundaries affect async test timing
 - [8-2: Wrap Render in Arrow Functions](8-2-wrap-render-in-arrow.md) - Prerequisite for reactive rendering
 - [8-5: Use Accessible Queries](8-5-use-accessible-queries.md) - Query selection best practices
-- [8-8: Testing Headless UI Libraries](8-8-testing-headless-ui-libraries.md) - Portal content and non-standard ARIA
-- [8-11: TanStack Query Test Setup](8-11-tanstack-query-test-setup.md) - Configuring QueryClient for deterministic async behavior
+- [8-8: Testing Headless UI Libraries](8-8-testing-headless-ui-libraries.md) - Portal content and
+  non-standard ARIA
+- [8-11: TanStack Query Test Setup](8-11-tanstack-query-test-setup.md) - Configuring QueryClient for
+  deterministic async behavior

@@ -3,12 +3,15 @@ id: 3-1
 title: Use Show for Conditionals
 category: Control Flow
 priority: HIGH
-description: Use <Show> instead of ternary operators
+version_basis: ["1.x"]
+description: Use <Show> for conditional rendering and its function child when callers need a narrowed value
 ---
 
 ## Problem
 
-Using JavaScript ternary operators or logical AND (`&&`) for conditional rendering works but bypasses Solid's optimizations. The `<Show>` component is optimized for conditional rendering and provides better performance and semantics.
+Using JavaScript ternary operators or logical AND (`&&`) for conditional rendering works but
+bypasses Solid's optimizations. The `<Show>` component is optimized for conditional rendering and
+provides better performance and semantics.
 
 ## Incorrect
 
@@ -60,7 +63,7 @@ function Notification(props) {
 ```tsx
 import { Show } from "solid-js";
 
-// ✅ CORRECT: Use callback to access narrowed type
+// ✅ CORRECT: The callback receives a narrowed accessor
 function UserProfile(props) {
   return (
     <Show when={props.user} fallback={<p>Loading...</p>}>
@@ -73,6 +76,60 @@ function UserProfile(props) {
     </Show>
   );
 }
+```
+
+The function-child form is the type-narrowing boundary. Plain JSX children do not narrow a
+separate read of the original accessor or prop:
+
+```tsx
+// ❌ WRONG: props.icon remains string | undefined inside plain children
+<Show when={props.icon}>
+  <Icon icon={props.icon!} />
+</Show>
+
+// ✅ CORRECT: icon is Accessor<string>
+<Show when={props.icon}>
+  {(icon) => <Icon icon={icon()} />}
+</Show>
+```
+
+For a combined condition, put the value to consume last so the expression returns that value
+instead of a boolean:
+
+```tsx
+<Show when={syncStatus() !== "syncing" && lastSyncAt()}>
+  {(syncedAt) => <span>{syncedAt().toLocaleTimeString()}</span>}
+</Show>
+```
+
+When two independent optional values must narrow together, derive one combined accessor:
+
+```tsx
+const upcoming = () => {
+  const meal = nextMeal.data;
+  const recipe = recipeQuery.data;
+
+  return meal && recipe ? { meal, recipe } : undefined;
+};
+
+<Show when={upcoming()}>
+  {(value) => <RecipeCard recipe={value().recipe} />}
+</Show>
+```
+
+The narrowed accessor is valid only while its branch is active. Before passing it into a nested
+conditional's `children` or `fallback`, read
+[3-4: Narrowed Accessors Expire With Their Branch](3-4-use-switch-match.md#narrowed-accessors-expire-with-their-branch).
+
+JSX attributes have no function-child boundary. Read once in an inline function so the same
+reactive expression owns the guard and the narrowed value:
+
+```tsx
+title={(() => {
+  const step = managedDirectionStep();
+
+  return step ? `Ingredients used in step ${step.stepIndex + 1}` : "Step associations";
+})()}
 ```
 
 ### Keyed Show for Object Identity
@@ -110,15 +167,17 @@ function Dashboard(props) {
 
 ## Why It Matters
 
-1. **Optimization**: `<Show>` preserves DOM nodes and component instances when toggling. Ternaries may recreate elements.
+1. **Optimization**: `<Show>` preserves DOM nodes and component instances when toggling. Ternaries
+   may recreate elements.
 
-2. **Type Narrowing**: The callback form provides a narrowed, non-null accessor for the condition value.
+1. **Type Narrowing**: The callback form provides a narrowed, non-null accessor. Plain children
+   do not narrow later reads of the original value.
 
-3. **Falsy Safety**: Properly handles `0`, `""`, and other falsy values that `&&` renders incorrectly.
+1. **Falsy Safety**: Properly handles `0`, `""`, and other falsy values that `&&` renders incorrectly.
 
-4. **Readability**: Explicit `fallback` prop is clearer than ternary's `:` alternative.
+1. **Readability**: Explicit `fallback` prop is clearer than ternary's `:` alternative.
 
-5. **Keyed Updates**: The `keyed` prop gives control over when to recreate content.
+1. **Keyed Updates**: The `keyed` prop gives control over when to recreate content.
 
 ## Show Props
 
@@ -145,6 +204,10 @@ Ternaries are acceptable for:
 - Very simple toggles where performance doesn't matter
 
 But for component rendering, prefer `<Show>`.
+
+`<Show>` also works well for conditional slotted children of a custom element. It inserts and
+removes the child without adding a wrapper element, so the custom element's slot assignment and
+`slotchange` behavior continue to see the expected direct child.
 
 ## Related Rules
 

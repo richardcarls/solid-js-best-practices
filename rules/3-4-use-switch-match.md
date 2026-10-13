@@ -3,12 +3,15 @@ id: 3-4
 title: Use Switch/Match
 category: Control Flow
 priority: MEDIUM
-description: Use <Switch>/<Match> for multiple conditions
+version_basis: ["1.x"]
+description: Use <Switch>/<Match> for multiple conditions and function children to consume matched values without assertions
 ---
 
 ## Problem
 
-When rendering different content based on multiple conditions, nested `<Show>` components or chained ternaries become hard to read and maintain. The `<Switch>` and `<Match>` components provide a cleaner pattern for multiple mutually exclusive conditions.
+When rendering different content based on multiple conditions, nested `<Show>` components or chained
+ternaries become hard to read and maintain. The `<Switch>` and `<Match>` components provide a
+cleaner pattern for multiple mutually exclusive conditions.
 
 ## Incorrect
 
@@ -94,6 +97,46 @@ function UserStatus(props) {
 }
 ```
 
+As with `<Show>`, only the function-child form narrows the matched value for the caller. Plain JSX
+children do not narrow later reads of the original prop or accessor.
+
+### Narrowed Accessors Expire With Their Branch
+
+The accessor a `<Match>` or `<Show>` function child receives is guarded: calling it after its
+branch stops being active throws Solid's stale-value error ("Attempting to access a stale value
+from `<Match>`..."). A read in the callback body runs once, while the branch is active, so it is
+safe. Reads that run later are not: component props compile to getters, and a nested `<Show>`
+re-evaluates its `children` and `fallback` whenever its own `when` changes. If that happens in the
+same flush that deactivates the outer branch, the read throws.
+
+The window is timing-dependent. In the observed case it opened only on a cold first load, when
+async data resolved in the same flush as another condition change; a warm cache mounted with data
+already present and never reproduced it.
+
+```tsx
+// ❌ RISKY: the narrowed accessor escapes into lazily read slots of a nested conditional
+<Match when={query.data}>
+  {(data) => (
+    <Show when={mode() === "edit"} fallback={<ItemView item={data()} />}>
+      <ItemForm item={data()} />
+    </Show>
+  )}
+</Match>
+
+// ✅ SAFER: the outer branch already guarantees the value; the source accessor has no expiry
+<Match when={query.data}>
+  <Show when={mode() === "edit"} fallback={<ItemView item={query.data!} />}>
+    <ItemForm item={query.data!} />
+  </Show>
+</Match>
+```
+
+The fix trades narrowing for an assertion, so reserve it for accessors that would otherwise
+escape into nested conditionals keyed on other signals. Alternatives: `keyed`, which passes a
+plain value with no expiry but remounts the subtree when the value's identity changes
+([3-7](3-7-use-keyed-for-stateful-children.md)), or restructuring so the nested condition sits
+outside the narrowed branch.
+
 ### Order Matters
 
 ```tsx
@@ -155,16 +198,28 @@ type State =
   | { status: "error"; error: Error };
 
 function AsyncContent(props: { state: State }) {
+  const errorState = () => {
+    const state = props.state;
+
+    return state.status === "error" ? state : undefined;
+  };
+
+  const successState = () => {
+    const state = props.state;
+
+    return state.status === "success" ? state : undefined;
+  };
+
   return (
     <Switch>
       <Match when={props.state.status === "loading"}>
         <Spinner />
       </Match>
-      <Match when={props.state.status === "error" && props.state}>
-        {(state) => <Error message={(state() as { error: Error }).error.message} />}
+      <Match when={errorState()}>
+        {(state) => <Error message={state().error.message} />}
       </Match>
-      <Match when={props.state.status === "success" && props.state}>
-        {(state) => <Content data={(state() as { data: string }).data} />}
+      <Match when={successState()}>
+        {(state) => <Content data={state().data} />}
       </Match>
       <Match when={props.state.status === "idle"}>
         <Placeholder />
@@ -178,11 +233,14 @@ function AsyncContent(props: { state: State }) {
 
 1. **Readability**: Flat structure is easier to scan than nested conditionals.
 
-2. **Maintainability**: Adding or removing conditions is straightforward.
+1. **Maintainability**: Adding or removing conditions is straightforward.
 
-3. **Explicit Fallback**: The `fallback` prop makes the default case clear.
+1. **Explicit Fallback**: The `fallback` prop makes the default case clear.
 
-4. **First Match Wins**: Clear precedence when conditions might overlap.
+1. **First Match Wins**: Clear precedence when conditions might overlap.
+
+1. **Type Narrowing**: Function children expose the matched value; derived accessors can preserve
+   discriminated-union narrowing without assertions.
 
 ## Switch/Match Props
 
@@ -218,7 +276,7 @@ condition-value memos, N boolean-condition memos, and one "eval conditions" memo
 
 `<Show>` creates **3 memos**: a `children` helper (2 memos) and one condition memo.
 
-This matters when gating a single, heavy component — especially one that creates many reactive
+This matters when gating a single, heavy component; especially one that creates many reactive
 primitives (form libraries, complex stores, rich editor components). Each memo is a reactive
 subscription that participates in SolidJS's Transition tracking during navigation. Unnecessary
 memos amplify the cost of every route change.
@@ -244,4 +302,5 @@ its memo cost.
 
 - [3-1: Use Show for Conditionals](3-1-use-show-for-conditionals.md) - For simple conditions
 - [3-5: Provide Fallbacks](3-5-provide-fallbacks.md) - Always handle default case
-- [3-7: Use keyed for Stateful Children](3-7-use-keyed-for-stateful-children.md) - When the value (not just truthiness) determines identity
+- [3-7: Use keyed for Stateful Children](3-7-use-keyed-for-stateful-children.md) - When the value
+  (not just truthiness) determines identity

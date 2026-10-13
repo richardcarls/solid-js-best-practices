@@ -3,12 +3,15 @@ id: 1-2
 title: Use Memo for Derived Values
 category: Reactivity
 priority: HIGH
+version_basis: ["1.x"]
 description: Use createMemo for computed values, not createEffect
 ---
 
 ## Problem
 
-When you need to compute a value based on reactive state, you should use `createMemo` to cache the result. Using a plain function recalculates on every access, while using `createEffect` is semantically incorrect and can cause issues.
+When you need to compute a value based on reactive state, you should use `createMemo` to cache the
+result. Using a plain function recalculates on every access, while using `createEffect` is
+semantically incorrect and can cause issues.
 
 ## Incorrect
 
@@ -110,11 +113,15 @@ const averageOfEvens = createMemo(() => sumOfEvens() / evenItems().length);
 
 ## Why It Matters
 
-1. **Performance**: Memos cache their result and only recompute when dependencies change. Plain functions recalculate on every access.
+1. **Performance**: Memos cache their result and only recompute when dependencies change. Plain
+   functions recalculate on every access.
 
-2. **Consistency**: Memos ensure all consumers see the same computed value. With plain functions, if state changes between accesses, you could get inconsistent results.
+1. **Consistency**: Memos ensure all consumers see the same computed value. With plain functions, if
+   state changes between accesses, you could get inconsistent results.
 
-3. **Semantic Correctness**: `createEffect` is for side effects (API calls, DOM manipulation), not for deriving state. Using effects for derived values creates an unnecessary signal and update cycle.
+1. **Semantic Correctness**: `createEffect` is for side effects (API calls, DOM manipulation), not
+   for deriving state. Using effects for derived values creates an unnecessary signal and update
+   cycle.
 
 ## When to Use What
 

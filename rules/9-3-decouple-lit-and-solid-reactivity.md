@@ -3,7 +3,8 @@ id: 9-3
 title: Treat Custom Element and SolidJS Reactivity as Decoupled
 category: Web Component Integration
 priority: MEDIUM
-description: Custom element internal state and SolidJS signals are independent reactive systems — design for one-way data flow and event-driven communication
+version_basis: ["1.x"]
+description: Custom element internal state and SolidJS signals are independent reactive systems; design for one-way data flow and event-driven communication
 ---
 
 ## Problem
@@ -11,7 +12,7 @@ description: Custom element internal state and SolidJS signals are independent r
 Custom elements manage their own internal state through whatever mechanism their implementation
 uses (Lit `@state`, Stencil `@State`, FAST observables, or hand-rolled `attributeChangedCallback`
 logic). These systems are all asynchronous and component-scoped. SolidJS signals are synchronous
-and fine-grained. The two systems do not communicate — a change in one does not propagate to the
+and fine-grained. The two systems do not communicate; a change in one does not propagate to the
 other automatically.
 
 When developers assume the two systems are integrated, they introduce patterns that create
@@ -24,7 +25,7 @@ bugs.
 
 Treat the boundary between SolidJS and a custom element as a strict one-way interface:
 
-```
+```text
 SolidJS signals / stores
       ↓  (attributes, properties, slotted children)
   custom element
@@ -34,6 +35,48 @@ SolidJS signal setters / event handlers
 
 SolidJS owns the data. Custom elements display it and report user interactions upward. The
 custom element never writes to a SolidJS signal directly.
+
+## Bridge at the Boundary
+
+Use declarative `prop:*` bindings for modern custom element property APIs. Use
+`createEffect` as an explicit bridge only when the element exposes an imperative API or a
+legacy property contract that cannot be expressed declaratively.
+
+```tsx
+// Legacy property bridge: SolidJS signal -> custom element property.
+let slider!: HTMLElement & { value: number; valueText: string };
+
+createEffect(() => {
+  slider.value = position();
+  slider.valueText = label();
+});
+
+<wc-slider
+  ref={slider}
+  on:wc-slider-change={(event: CustomEvent<{ value: number }>) => {
+    setPosition(event.detail.value);
+  }}
+/>;
+```
+
+Native platform APIs can also require imperative effects because their public API is
+method-based:
+
+```tsx
+let dialog!: HTMLDialogElement;
+
+createEffect(() => {
+  if (isOpen() && !dialog.open) dialog.showModal();
+  if (!isOpen() && dialog.open) dialog.close();
+});
+```
+
+Type refs as DOM-facing public contracts, not implementation classes. Avoid forcing consumers
+to import the custom element's framework type just to write a wrapper:
+
+```typescript
+let slider!: HTMLElement & { value: number; valueText: string };
+```
 
 ## Incorrect
 
@@ -137,11 +180,11 @@ function Combobox(props) {
 A custom element's async internal update cycle creates a timing gap:
 
 1. SolidJS effect writes a property on a custom element.
-1. The element schedules an internal re-render — async.
+1. The element schedules an internal re-render; async.
 1. SolidJS effect completes.
 1. Element re-renders (next microtask checkpoint or animation frame).
 1. Element re-render may change slot contents.
-1. `slotchange` fires — potentially inside SolidJS's next reactive update pass.
+1. `slotchange` fires in a mutation-observer microtask after slot assignment.
 
 This chain can create apparent cycles that are actually just the two systems taking turns. The
 fix is always to make the element's output (custom events) the authoritative signal source and
@@ -149,12 +192,12 @@ avoid reading internal element state from SolidJS reactive contexts.
 
 ## MutationObserver on SolidJS-Managed DOM
 
-Custom elements sometimes observe their slotted children via `MutationObserver` (e.g., watching
+Custom elements sometimes observe their slotted children via `MutationObserver` (for example, watching
 a `<select>` for `<option>` changes managed by SolidJS `<For>`). This is safe as long as:
 
 1. The MO callback writes only to the element's own internal state, not to SolidJS signals.
-1. The MO callback is set up in a deferred handler (see rule 9-2), not synchronously during
-   `slotchange`.
+1. The observer is installed once for the current slotted node and replaced or disconnected when
+   that node changes. Installation from `slotchange` does not itself need another microtask.
 1. The `MutationObserver` is disconnected in `disconnectedCallback` to prevent leaks.
 
 ```typescript
@@ -167,7 +210,13 @@ override disconnectedCallback(): void {
 
 ## Related Rules
 
-- [9-1: Register Custom Elements at App Entry](9-1-register-custom-elements-early.md) - Registration timing
-- [9-2: Defer slotchange Handler Side Effects](9-2-defer-slotchange-handlers.md) - slotchange safety
-- [5-6: Event Handler Patterns](5-6-event-handler-patterns.md) - Use `on:` namespace for custom element events
+- [9-1: Register Custom Elements at App Entry](9-1-register-custom-elements-early.md) - Registration
+  timing
+- [9-2: Handle slotchange After Slot Assignment](9-2-defer-slotchange-handlers.md) - event timing
+- [9-5: Property vs Attribute Binding](9-5-property-vs-attribute-binding.md) - Use `prop:*` for
+  property APIs
+- [5-7: Web Component Controlled State](5-7-web-component-controlled-state.md) - Prefer
+  property/event flow
+- [5-6: Event Handler Patterns](5-6-event-handler-patterns.md) - Use `on:` namespace for custom
+  element events
 - [5-3: Cleanup with onCleanup](5-3-cleanup-with-oncleanup.md) - Cleaning up observers on SolidJS side

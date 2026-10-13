@@ -3,19 +3,18 @@ id: 2-8
 title: Style Prop Conventions
 category: Components
 priority: MEDIUM
-description: Use object syntax with kebab-case properties and string values for the style prop
+version_basis: ["1.x"]
+description: Use CSS strings or object syntax with kebab-case keys and explicit units
 ---
 
 ## Problem
 
-Solid.js requires the `style` prop to be an object (not a string) with **kebab-case** CSS property names and **string values** for dimensions. Using a string, React's camelCase property names, or bare numbers will produce broken or silently ignored styles.
+Solid accepts either a CSS string or a style object. In an object, keys use **kebab-case** CSS
+property names and dimensions need explicit units. React's camelCase object keys and unitless
+numbers can produce missing or invalid styles. See the
+[Solid `style` reference](https://docs.solidjs.com/reference/jsx-attributes/style).
 
 ## Incorrect
-
-```tsx
-// ❌ WRONG: String style (not supported)
-<div style="color: red; font-size: 16px;" />
-```
 
 ```tsx
 // ❌ WRONG: React camelCase property names
@@ -32,6 +31,11 @@ Solid.js requires the `style` prop to be an object (not a string) with **kebab-c
 ```tsx
 // ✅ CORRECT: Object with kebab-case and string values
 <div style={{ color: "red", "font-size": "16px" }} />
+```
+
+```tsx
+// ✅ CORRECT: A CSS string is also supported
+<div style="color: red; font-size: 16px;" />
 ```
 
 ```tsx
@@ -100,7 +104,7 @@ function Alert(props) {
 | `fontSize: 16` | `"font-size": "16px"` | Kebab-case, explicit units |
 | `backgroundColor: "red"` | `"background-color": "red"` | Kebab-case |
 | `marginTop: "10px"` | `"margin-top": "10px"` | Kebab-case |
-| `style="color: red"` | `style={{ color: "red" }}` | Must be an object |
+| `style="color: red"` | `style="color: red"` or `style={{ color: "red" }}` | Both forms work |
 | `zIndex: 10` | `"z-index": "10"` | String values for numbers |
 
 ## CSS Custom Properties
@@ -119,31 +123,38 @@ function Alert(props) {
 
 ## Why It Matters
 
-1. **Silent Failures**: String styles and camelCase properties are silently ignored — no error, just missing styles.
+1. **Silent Failures**: CamelCase object keys can be ignored or applied incorrectly without a
+   useful error.
 
-2. **Solid Compiles Styles**: Solid compiles style objects to efficient `setProperty` calls. String styles bypass this optimization.
+1. **Update Granularity**: Style objects apply properties individually. CSS strings replace the
+   inline style text, which may be appropriate for a small static style.
 
-3. **Migration Pitfall**: React developers instinctively write camelCase style properties. This is a mechanical but frequent migration fix.
+1. **Migration Pitfall**: React developers instinctively write camelCase style properties. This is a
+   mechanical but frequent migration fix.
 
-4. **Type Safety**: When using TypeScript with kebab-case properties, incorrect property names are caught at compile time.
+1. **Type Safety**: When using TypeScript with kebab-case properties, incorrect property names are
+   caught at compile time.
 
 ## Experimental CSS Properties Not Yet in TypeScript's DOM Types
 
-Some newer CSS features — CSS Anchor Positioning (`anchor-name`, `position-anchor`), `view-timeline-name`, and others — may not yet appear in TypeScript's `JSX.CSSProperties` type. Attempting to use them produces a type error.
+Some newer CSS features, such as CSS Anchor Positioning (`anchor-name`, `position-anchor`) and
+`view-timeline-name`, may not yet appear in TypeScript's `JSX.CSSProperties` type. Attempting to use
+them produces a type error.
 
 ### Safe Cast Pattern
 
-Use `as unknown as JSX.CSSProperties` rather than `as never`. The `as never` cast removes all type checking on the object; the `unknown` cast is narrower and preserves checking on all other properties:
+Keep an assertion around only the unsupported property. Casting the entire style object through
+`unknown` also hides mistakes in supported properties:
 
 ```tsx
 // ❌ WRONG: as never disables type checking on the entire object
 <div style={{ "anchor-name": "--btn", color: "red" } as never} />
 
-// ✅ CORRECT: only the experimental property needs the cast
+// ✅ CORRECT: isolate the unsupported property so color remains checked
+const anchorStyle = { "anchor-name": "--btn" } as unknown as JSX.CSSProperties;
+
 <div
-  style={
-    { "anchor-name": "--btn", color: "red" } as unknown as JSX.CSSProperties
-  }
+  style={{ ...anchorStyle, color: "red" }}
 />
 ```
 
@@ -151,23 +162,25 @@ Use `as unknown as JSX.CSSProperties` rather than `as never`. The `as never` cas
 
 ```tsx
 // ✅ CORRECT: a helper that accepts experimental props without losing safety elsewhere
-const experimentalCss = (props: Record<string, string>): JSX.CSSProperties =>
-  props as unknown as JSX.CSSProperties;
+const anchorStyle = (name: string): JSX.CSSProperties =>
+  ({ "anchor-name": name } as unknown as JSX.CSSProperties);
 
 // Usage
 <div
   style={{
-    ...experimentalCss({ "anchor-name": "--my-anchor" }),
+    ...anchorStyle("--my-anchor"),
     color: "red",  // still type-checked
     "font-size": "16px",
   }}
 />
 ```
 
-The same pattern applies to any CSS property ahead of TypeScript's DOM lib: `container-type`, `view-timeline-name`, `position-anchor`, `overlay`, etc.
+The same pattern applies to any CSS property ahead of TypeScript's DOM lib: `container-type`,
+`view-timeline-name`, `position-anchor`, `overlay`, etc.
 
 ## Related Rules
 
 - [2-7: No React-Specific Props](2-7-no-react-specific-props.md) - Other React prop name differences
 - [6-5: Prefer classList](6-5-prefer-classlist.md) - Conditional class toggling
-- [2-10: Custom Element TypeScript Declarations](2-10-custom-element-typescript-declarations.md) - Augmenting TS types for custom elements and newer HTML attributes
+- [2-10: Custom Element TypeScript Declarations](2-10-custom-element-typescript-declarations.md) -
+  Augmenting TS types for custom elements and newer HTML attributes
