@@ -29,7 +29,7 @@ for the installed release candidate; do not treat these 1.x rules as verified 2.
 
 ## Rules by Category
 
-### 1. Reactivity (7 rules)
+### 1. Reactivity (8 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -37,6 +37,7 @@ for the installed release candidate; do not treat these 1.x rules as verified 2.
 | [1-2](rules/1-2-use-memo-for-derived.md) | Use Memo for Derived Values | HIGH | Use `createMemo` for computed values, not `createEffect` |
 | [1-3](rules/1-3-effects-for-side-effects.md) | Effects for Side Effects Only | HIGH | Use `createEffect` only for side effects, not derivations |
 | [1-7](rules/1-7-no-primitives-in-reactive-contexts.md) | No Primitives in Reactive Contexts | HIGH | Don't call hooks or create reactive primitives inside effects or memos |
+| [1-8](rules/1-8-memo-primitive-slice-not-whole-record.md) | Memo the Primitive Slice | HIGH | Memo the field a derivation reads, not the whole record; render rebuilt rows with `<Index>` |
 | [1-4](rules/1-4-avoid-signal-in-effect.md) | Avoid Setting Signals in Effects | MEDIUM | Setting signals in effects can cause infinite loops |
 | [1-5](rules/1-5-use-untrack-when-needed.md) | Use Untrack When Needed | MEDIUM | Use `untrack()` to prevent unwanted reactive subscriptions |
 | [1-6](rules/1-6-batch-signal-updates.md) | Batch Signal Updates | LOW | Use `batch()` for multiple synchronous signal updates |
@@ -195,6 +196,7 @@ Load these rules when optimizing performance:
 | Rule | Focus |
 | ---- | ----- |
 | [1-2](rules/1-2-use-memo-for-derived.md) | Prevent unnecessary recomputation |
+| [1-8](rules/1-8-memo-primitive-slice-not-whole-record.md) | Stop record replacements from remounting rows |
 | [1-6](rules/1-6-batch-signal-updates.md) | Reduce update cycles |
 | [4-2](rules/4-2-store-path-updates.md) | Granular store updates |
 | [6-1](rules/6-1-avoid-unnecessary-tracking.md) | Prevent unwanted subscriptions |
