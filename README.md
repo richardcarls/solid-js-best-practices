@@ -12,7 +12,7 @@ rule; it does not limit the rule's applicability.
 
 ## Features
 
-- **71 actionable rules** organized into 9 categories
+- **75 actionable rules** organized into 9 categories
 - **Priority levels** (CRITICAL, HIGH, MEDIUM, LOW) for focused code review
 - **Before/after code examples** showing incorrect vs. correct patterns
 - **Detailed explanations** of why each practice matters
@@ -22,10 +22,10 @@ rule; it does not limit the rule's applicability.
 
 | Category | Rules | Focus Area |
 | -------- | ----- | ---------- |
-| [Reactivity](rules/1-1-use-signals-correctly.md) | 7 | Signals, effects, memos, batching |
+| [Reactivity](rules/1-1-use-signals-correctly.md) | 8 | Signals, effects, memos, batching |
 | [Components](rules/2-1-never-destructure-props.md) | 10 | Props, composition, children, return-once, custom element types |
-| [Control Flow](rules/3-1-use-show-for-conditionals.md) | 7 | Show, For, Switch, Index, keyed stateful children |
-| [State Management](rules/4-1-signals-vs-stores.md) | 7 | Stores, context, reconcile |
+| [Control Flow](rules/3-1-use-show-for-conditionals.md) | 8 | Show, For, Switch, Index, keyed stateful children |
+| [State Management](rules/4-1-signals-vs-stores.md) | 9 | Stores, context, reconcile |
 | [Refs & DOM](rules/5-1-use-refs-correctly.md) | 10 | Refs, lifecycle, directives, events, security, custom elements |
 | [Performance](rules/6-1-avoid-unnecessary-tracking.md) | 6 | Lazy loading, Suspense, optimization, classList, web component bundles |
 | [Accessibility](rules/7-1-semantic-html.md) | 4 | Semantic HTML, ARIA, keyboard |

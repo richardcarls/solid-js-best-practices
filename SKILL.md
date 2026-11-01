@@ -57,7 +57,7 @@ for the installed release candidate; do not treat these 1.x rules as verified 2.
 | [2-5](rules/2-5-component-composition.md) | Prefer Composition | MEDIUM | Prefer composition and context over prop drilling |
 | [2-8](rules/2-8-style-prop-conventions.md) | Style Prop Conventions | MEDIUM | Use object syntax with kebab-case properties for `style` |
 
-### 3. Control Flow (7 rules)
+### 3. Control Flow (8 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -68,8 +68,9 @@ for the installed release candidate; do not treat these 1.x rules as verified 2.
 | [3-4](rules/3-4-use-switch-match.md) | Use Switch/Match | MEDIUM | Use `<Switch>`/`<Match>` for multiple conditions; narrowed accessors throw once their branch deactivates |
 | [3-6](rules/3-6-stable-component-mount.md) | Stable Component Mount | MEDIUM | Avoid rendering the same component in multiple Switch/Show branches |
 | [3-5](rules/3-5-provide-fallbacks.md) | Provide Fallbacks | LOW | Always provide `fallback` props for loading states |
+| [3-08](rules/3-08-route-leave-discard-guard.md) | Guard a routed form with useBeforeLeave, and test it with string navigation | MEDIUM | Guard a routed form with `useBeforeLeave` (prevent, prompt, `retry(true)`), let same-URL navigation through, add `beforeunload`; `MemoryRouter` back skips the guard, so test with a link and check history back in a browser |
 
-### 4. State Management (7 rules)
+### 4. State Management (9 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -80,6 +81,8 @@ for the installed release candidate; do not treat these 1.x rules as verified 2.
 | [4-5](rules/4-5-use-context-for-global.md) | Use Context for Global State | MEDIUM | Use Context API for cross-component shared state |
 | [4-6](rules/4-6-store-functions-with-wrapper.md) | Store Functions with a Wrapper | HIGH | Wrap function values so setStore does not invoke them as updater functions |
 | [4-7](rules/4-7-cleanup-at-page-ownership-boundary.md) | Cleanup at the Page Ownership Boundary | HIGH | Use per-page cleanup when multiple routed panes remain mounted; audit every context field when splitting a shared context |
+| [4-08](rules/4-08-late-enabled-query-data-read-suspends.md) | Reading a late-enabled solid-query's `data` while pending suspends and remounts the page | HIGH | Reading a solid-query's `data` while a query enabled after mount is still pending suspends the nearest `<Suspense>` and remounts it, wiping inputs; read `data` only when `isSuccess` |
+| [4-09](rules/4-09-cached-query-read-resuspends-on-every-fetch.md) | A solid-query read of cached data suspends the boundary again on every later fetch | HIGH | solid-query 5.x reads cached `data` through `queryResource.latest`, so a read before it resolves stays registered with `<Suspense>` and every later fetch re-inserts the whole subtree; yarn patch the getter to return `state.data` |
 
 ### 5. Refs & DOM (10 rules)
 

@@ -132,6 +132,28 @@ title={(() => {
 })()}
 ```
 
+### Keep callback reads in tracked JSX
+
+`<Show>` calls a function child inside `untrack`. Reading its accessor in a plain callback
+expression freezes that value while the branch stays active. Put the read in a JSX expression
+or in a memo created outside the callback:
+
+```tsx
+// Stays at the first count while it remains truthy
+<Show when={selected().length}>
+  {(count) => ` · ${count()} selected`}
+</Show>
+
+// Updates from one selected item to two without remounting the branch
+<Show when={selected().length}>
+  {(count) => <> · {count()} selected</>}
+</Show>
+```
+
+The same applies to a local variable, `.map()` result, or concatenation calculated in the
+callback body. Test by changing the condition's value while it remains truthy; a first-render
+assertion cannot expose this mistake.
+
 ### Keyed Show for Object Identity
 
 ```tsx
