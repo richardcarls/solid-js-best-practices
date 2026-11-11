@@ -70,7 +70,7 @@ for the installed release candidate; do not treat these 1.x rules as verified 2.
 | [3-5](rules/3-5-provide-fallbacks.md) | Provide Fallbacks | LOW | Always provide `fallback` props for loading states |
 | [3-08](rules/3-08-route-leave-discard-guard.md) | Guard a routed form with useBeforeLeave, and test it with string navigation | MEDIUM | Guard a routed form with `useBeforeLeave` (prevent, prompt, `retry(true)`), let same-URL navigation through, add `beforeunload`; `MemoryRouter` back skips the guard, so test with a link and check history back in a browser |
 
-### 4. State Management (9 rules)
+### 4. State Management (10 rules)
 
 | # | Rule | Priority | Description |
 | - | ---- | -------- | ----------- |
@@ -83,6 +83,7 @@ for the installed release candidate; do not treat these 1.x rules as verified 2.
 | [4-7](rules/4-7-cleanup-at-page-ownership-boundary.md) | Cleanup at the Page Ownership Boundary | HIGH | Use per-page cleanup when multiple routed panes remain mounted; audit every context field when splitting a shared context |
 | [4-08](rules/4-08-late-enabled-query-data-read-suspends.md) | Reading a late-enabled solid-query's `data` while pending suspends and remounts the page | HIGH | Reading a solid-query's `data` while a query enabled after mount is still pending suspends the nearest `<Suspense>` and remounts it, wiping inputs; read `data` only when `isSuccess` |
 | [4-09](rules/4-09-cached-query-read-resuspends-on-every-fetch.md) | A solid-query read of cached data suspends the boundary again on every later fetch | HIGH | solid-query 5.x reads cached `data` through `queryResource.latest`, so a read before it resolves stays registered with `<Suspense>` and every later fetch re-inserts the whole subtree; yarn patch the getter to return `state.data` |
+| [4-10](rules/4-10-transition-pending-copy-overwrites-registry-writes.md) | A router transition's pending signal copy can overwrite registry writes from cleanups | HIGH | A transition pending signal copy can overwrite cleanup writes to a registry; keep registry data outside the signal. |
 
 ### 5. Refs & DOM (10 rules)
 
